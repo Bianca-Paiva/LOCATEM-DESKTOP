@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Auth.RecuperarSenha.TokenInputView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:behaviors="clr-namespace:LOCATEM_DESKTOP.Behaviors"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <HorizontalStackLayout x:Name="Container" Spacing="10" HorizontalOptions="Center">
+        <HorizontalStackLayout.Behaviors>
+            <behaviors:ShakeBehavior IsShaking="{Binding HasError, Source={x:Reference Root}}" />
+        </HorizontalStackLayout.Behaviors>
+
+        <Border x:Name="Box0" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
+            <Entry x:Name="Entry0" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
+                   TextChanged="OnDigitTextChanged" />
+        </Border>
+        <Border x:Name="Box1" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
+            <Entry x:Name="Entry1" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
+                   TextChanged="OnDigitTextChanged" />
+        </Border>
+        <Border x:Name="Box2" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
+            <Entry x:Name="Entry2" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
+                   TextChanged="OnDigitTextChanged" />
+        </Border>
+        <Border x:Name="Box3" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
+            <Entry x:Name="Entry3" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
+                   TextChanged="OnDigitTextChanged" />
+        </Border>
+        <Border x:Name="Box4" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
+            <Entry x:Name="Entry4" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
+                   TextChanged="OnDigitTextChanged" />
+        </Border>
+    </HorizontalStackLayout>
+</ContentView>

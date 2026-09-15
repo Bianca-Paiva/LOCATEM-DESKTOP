@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Auth.CardOpcaoConta"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root">
+
+    <Border x:Name="CardBorder"
+            Padding="20,30"
+            StrokeShape="RoundRectangle 20"
+            Stroke="#DCDCDC"
+            StrokeThickness="1"
+            BackgroundColor="#FAFAFA"
+            HorizontalOptions="FillAndExpand">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnCardTapped" />
+        </Border.GestureRecognizers>
+
+        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+
+            <Border x:Name="IconBorder"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    StrokeShape="RoundRectangle 30"
+                    Stroke="Transparent"
+                    BackgroundColor="#EEEEEE"
+                    HorizontalOptions="Center">
+                <Grid>
+                    <mi:MauiIcon x:Name="IconLocatario"
+                                 Icon="{mi:Material Person}"
+                                 IconSize="24"
+                                 IconColor="#555555"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+                    <mi:MauiIcon x:Name="IconLocador"
+                                 Icon="{mi:Material Build}"
+                                 IconSize="24"
+                                 IconColor="#555555"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 IsVisible="False" />
+                </Grid>
+            </Border>
+
+            <Label Text="{Binding Titulo, Source={x:Reference Root}}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource TextPrimaryColor}" />
+
+            <Label Text="{Binding Descricao, Source={x:Reference Root}}"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   TextColor="#555555" />
+
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

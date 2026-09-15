@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Auth.RecuperarSenha.InformeTokenPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:recuperar="clr-namespace:LOCATEM_DESKTOP.Components.Auth.RecuperarSenha"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Auth"
+    x:DataType="vm:InformeTokenViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,0,0,40">
+
+            <layout:AuthHeader />
+
+            <recuperar:RecoveryStepper CurrentStep="2" HorizontalOptions="Center" />
+
+            <shared:PageHeader Title="Código de verificação"
+                                Subtitle="Insira o código de 5 dígitos que enviamos para o seu e-mail." />
+
+            <VerticalStackLayout Spacing="16" HorizontalOptions="Center" Margin="0,16,0,32">
+
+                <recuperar:TokenInputView Value="{Binding Token}" HasError="{Binding HasError}" />
+
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#E53935" FontSize="14" HorizontalTextAlignment="Center"
+                       IsVisible="{Binding TemErro}" />
+
+                <Label Text="{Binding ReenviarTexto}"
+                       TextColor="{StaticResource LinkAccentColor}" FontSize="14" FontAttributes="Bold"
+                       HorizontalOptions="End">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ReenviarCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+
+            <Button Text="Verificar código" Style="{StaticResource BtnPrincipalStyle}" Command="{Binding VerificarCommand}"
+                    MaximumWidthRequest="500" HorizontalOptions="Center" WidthRequest="500" Margin="20,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

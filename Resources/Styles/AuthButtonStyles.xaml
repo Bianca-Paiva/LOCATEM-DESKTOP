@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--
+        Estilos de botão migrados de components/Botoes/*. Como o MAUI já tem um controle Button
+        nativo e completo (com VisualStateManager para Disabled/PointerOver), optou-se por Styles
+        reutilizáveis em vez de recriar cada variante como um ContentView próprio — evita
+        duplicação e seguindo o mesmo padrão dos Styles já existentes em Resources/Styles/Styles.xaml.
+    -->
+
+    <!-- BtnPrincipal.tsx: botão amarelo de ação primária (Entrar, Criar conta, Enviar e-mail...) -->
+    <Style x:Key="BtnPrincipalStyle" TargetType="Button">
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryColor}" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryHoverColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- BtnSecundario.tsx -->
+    <Style x:Key="BtnSecundarioStyle" TargetType="Button">
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BackgroundColor" Value="#F5E3B3" />
+        <Setter Property="TextColor" Value="#6E5000" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+
+    <!-- BtnNeutro.tsx -->
+    <Style x:Key="BtnNeutroStyle" TargetType="Button">
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="TextColor" Value="#141D23" />
+        <Setter Property="BorderColor" Value="{StaticResource InputBorderColor}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+
+    <!-- BtnNegativo.tsx -->
+    <Style x:Key="BtnNegativoStyle" TargetType="Button">
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BackgroundColor" Value="#FDECEC" />
+        <Setter Property="TextColor" Value="#C0392B" />
+        <Setter Property="BorderColor" Value="#F3B8B8" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+
+</ResourceDictionary>

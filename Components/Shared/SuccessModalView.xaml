@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Shared.SuccessModalView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root"
+    IsVisible="{Binding IsOpen, Source={x:Reference Root}}"
+    InputTransparent="False"
+    HorizontalOptions="Fill"
+    VerticalOptions="Fill">
+
+    <!-- Overlay escuro cobrindo a tela inteira, igual ao "position:fixed; inset:0" do React -->
+    <Grid BackgroundColor="#40000000" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Border BackgroundColor="White"
+                StrokeShape="RoundRectangle 20"
+                Stroke="Transparent"
+                Padding="42"
+                MaximumWidthRequest="430"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+            <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
+
+                <Border WidthRequest="72" HeightRequest="72" StrokeShape="RoundRectangle 36" Stroke="Transparent"
+                        BackgroundColor="{StaticResource SuccessColor}" HorizontalOptions="Center">
+                    <mi:MauiIcon Icon="{mi:Material Check}" IconSize="34" IconColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+
+                <Label Text="{Binding Title, Source={x:Reference Root}}"
+                       FontSize="26" TextColor="#222222" HorizontalTextAlignment="Center" />
+
+                <Label Text="{Binding Message, Source={x:Reference Root}}"
+                       FontSize="15" TextColor="#666666" HorizontalTextAlignment="Center" />
+
+                <Button Text="{Binding ButtonText, Source={x:Reference Root}}"
+                        Style="{StaticResource BtnPrincipalStyle}"
+                        Command="{Binding ConfirmCommand, Source={x:Reference Root}}"
+                        Margin="0,10,0,0" />
+
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentView>

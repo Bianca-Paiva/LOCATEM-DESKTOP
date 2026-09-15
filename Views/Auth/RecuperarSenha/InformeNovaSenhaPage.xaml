@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Auth.RecuperarSenha.InformeNovaSenhaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:auth="clr-namespace:LOCATEM_DESKTOP.Components.Auth"
+    xmlns:recuperar="clr-namespace:LOCATEM_DESKTOP.Components.Auth.RecuperarSenha"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Auth"
+    x:DataType="vm:InformeNovaSenhaViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="0" Padding="0,0,0,40">
+
+                <layout:AuthHeader />
+
+                <recuperar:RecoveryStepper CurrentStep="3" HorizontalOptions="Center" />
+
+                <shared:PageHeader Title="Informe sua nova senha" />
+
+                <VerticalStackLayout Spacing="20" MaximumWidthRequest="1000" HorizontalOptions="Center" Padding="20,0">
+
+                    <auth:AlertaBanner IsVisible="{Binding TemAlerta}"
+                                       Titulo="{Binding Alerta.Titulo}"
+                                       Mensagem="{Binding Alerta.Mensagem}"
+                                       CloseCommand="{Binding FecharAlertaCommand}" />
+
+                    <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" AlignItems="Start">
+
+                        <VerticalStackLayout Spacing="16" WidthRequest="420" Margin="0,0,20,20">
+                            <shared:PasswordEntry Label="Digite sua nova senha" Text="{Binding Senha}" Placeholder="Crie uma senha segura"
+                                                   IsRequiredField="True"
+                                                   IsShaking="{Binding SenhaError.Shake}"
+                                                   Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+
+                            <auth:PasswordStrengthMeter Visivel="{Binding MostrarMedidorSenha}" Strength="{Binding StrengthResult.Strength}" />
+
+                            <shared:PasswordEntry Label="Confirme sua nova senha" Text="{Binding ConfirmarSenha}" Placeholder="Digite a senha novamente"
+                                                   IsRequiredField="True" ErrorText="{Binding ConfirmarSenhaErrorText}"
+                                                   IsShaking="{Binding ConfirmarSenhaError.Shake}"
+                                                   Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}" />
+                        </VerticalStackLayout>
+
+                        <BoxView WidthRequest="300" HeightRequest="1" Opacity="0" />
+                        <recuperar:PasswordValidationList WidthRequest="300" Titulo="Dicas de segurança" Itens="{Binding PasswordValidationItems}" />
+
+                    </FlexLayout>
+
+                    <Button Text="Alterar senha" Style="{StaticResource BtnPrincipalStyle}" Command="{Binding AlterarSenhaCommand}" />
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <shared:SuccessModalView IsOpen="{Binding SuccessModalOpen}"
+                                  Title="Senha alterada!"
+                                  Message="Sua senha foi alterada com sucesso. Entre na sua conta para continuar."
+                                  ButtonText="Continuar"
+                                  ConfirmCommand="{Binding ConfirmarSucessoCommand}" />
+    </Grid>
+</ContentPage>

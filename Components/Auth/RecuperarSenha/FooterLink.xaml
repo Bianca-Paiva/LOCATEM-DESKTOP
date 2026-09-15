@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Auth.RecuperarSenha.FooterLink"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+        <Label Text="{Binding Text, Source={x:Reference Root}}" FontSize="14" TextColor="{StaticResource TextSecondaryMutedColor}" VerticalOptions="Center" />
+        <Label Text="{Binding LinkText, Source={x:Reference Root}}"
+               FontSize="14" FontAttributes="Bold"
+               TextDecorations="Underline"
+               TextColor="{StaticResource TextPrimaryColor}"
+               VerticalOptions="Center">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLinkTapped" />
+            </Label.GestureRecognizers>
+        </Label>
+    </HorizontalStackLayout>
+</ContentView>

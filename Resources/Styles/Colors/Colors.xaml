@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--
+        Cores específicas do fluxo de Login/Cadastro, migradas das variáveis CSS de
+        styles/global.css e dos valores hexadecimais espalhados pelos módulos .css do React
+        (Login.module.css, FormInput.module.css, PasswordInput.module.css, Alerta.module.css, etc).
+        Centralizadas aqui para nunca precisar de hex direto nos XAMLs de Auth.
+    -->
+
+    <!-- Marca / Ações principais (equivalente a color-primary e variações) -->
+    <Color x:Key="AuthPrimaryColor">#FFCA00</Color>
+    <Color x:Key="AuthPrimaryHoverColor">#E6B800</Color>
+    <Color x:Key="AuthPrimaryLightColor">#FFE97A</Color>
+    <Color x:Key="AuthPrimarySoftColor">#FFF6C7</Color>
+    <Color x:Key="AuthSecondaryColor">#F0C000C0</Color>
+
+    <!-- Fundos (equivalente a color-bg-*) -->
+    <Color x:Key="AuthBackgroundColor">#F9FAFB</Color>
+    <Color x:Key="AuthCardBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="AuthInputBackgroundColor">#F8F8F8</Color>
+
+    <!-- Texto (equivalente a color-text-*) -->
+    <Color x:Key="TextPrimaryColor">#0A0A0A</Color>
+    <Color x:Key="TextMutedColor">#6B7280</Color>
+    <Color x:Key="TextSecondaryMutedColor">#8A8A8A</Color>
+    <Color x:Key="TextBodyColor">#333333</Color>
+
+    <!-- Bordas de input -->
+    <Color x:Key="InputBorderColor">#E5E7EB</Color>
+    <Color x:Key="InputFocusBorderColor">#FFCC0060</Color>
+
+    <!-- Erro / validação (usado em FormInput, PasswordInput, Alerta, TokenInput) -->
+    <Color x:Key="ErrorColor">#E11D48</Color>
+    <Color x:Key="ErrorStrongColor">#B42318</Color>
+    <Color x:Key="ErrorTextColor">#9F3A32</Color>
+    <Color x:Key="ErrorBackgroundColor">#FFF1F2</Color>
+    <Color x:Key="ErrorBorderColor">#FECACA</Color>
+    <Color x:Key="ErrorTitleColor">#9F1239</Color>
+    <Color x:Key="ErrorBodyColor">#881337</Color>
+
+    <!-- Força de senha (fraca / média / forte) -->
+    <Color x:Key="PasswordWeakColor">#E11D48</Color>
+    <Color x:Key="PasswordMediumColor">#F39C12</Color>
+    <Color x:Key="PasswordStrongColor">#2ECC71</Color>
+    <Color x:Key="PasswordBarIdleColor">#E2E8F0</Color>
+
+    <!-- Sucesso (SuccessModal, validações OK) -->
+    <Color x:Key="SuccessColor">#2ECC71</Color>
+
+    <!-- Etapas / Stepper (RecuperarSenha) -->
+    <Color x:Key="StepBorderColor">#D9D9D9</Color>
+    <Color x:Key="StepActiveColor">#222222</Color>
+    <Color x:Key="StepCheckColor">#22C55E</Color>
+
+    <!-- Link de reenviar código -->
+    <Color x:Key="LinkAccentColor">#F2AF0D</Color>
+
+    <SolidColorBrush x:Key="AuthPrimaryBrush" Color="{StaticResource AuthPrimaryColor}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+
+</ResourceDictionary>

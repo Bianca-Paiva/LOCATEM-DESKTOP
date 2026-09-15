@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Auth.RecuperarSenha.InformeEmailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:recuperar="clr-namespace:LOCATEM_DESKTOP.Components.Auth.RecuperarSenha"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Auth"
+    x:DataType="vm:InformeEmailViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,0,0,40">
+
+            <layout:AuthHeader />
+
+            <recuperar:RecoveryStepper CurrentStep="1" HorizontalOptions="Center" />
+
+            <shared:PageHeader Title="Informe seu e-mail"
+                                Subtitle="Digite o e-mail associado à sua conta. Enviaremos um token para recuperação da senha." />
+
+            <VerticalStackLayout Spacing="20" MaximumWidthRequest="500" HorizontalOptions="Center" Padding="20,0" WidthRequest="500">
+
+                <shared:FormEntry Label="E-mail" Text="{Binding Email}" Placeholder="seu@email.com" EntryKeyboard="Email"
+                                   IsRequiredField="True" ErrorText="{Binding EmailErrorText}"
+                                   IsShaking="{Binding EmailError.Shake}"
+                                   Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+
+                <Button Text="Enviar e-mail" Style="{StaticResource BtnPrincipalStyle}" Command="{Binding EnviarEmailCommand}" />
+
+                <recuperar:FooterLink Text="Precisa de ajuda?" LinkText="Entre em contato com o suporte." Command="{Binding ContatoSuporteCommand}" Margin="0,24,0,0" />
+
+                <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="12" Margin="0,16">
+                    <BoxView Grid.Column="0" HeightRequest="1" Color="#E0E0E0" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="ou" TextColor="#8A8A8A" FontSize="14" />
+                    <BoxView Grid.Column="2" HeightRequest="1" Color="#E0E0E0" VerticalOptions="Center" />
+                </Grid>
+
+                <FlexLayout Wrap="Wrap" JustifyContent="Center" AlignItems="Center">
+                    <recuperar:FooterLink Text="Lembrou sua senha?" LinkText="Entrar na minha conta" Command="{Binding IrParaLoginCommand}" Margin="0,0,12,0" />
+                    <Label Text="•" Margin="0,0,12,0" VerticalOptions="Center" />
+                    <recuperar:FooterLink Text="Ainda não tem conta?" LinkText="Criar nova conta" Command="{Binding IrParaCadastroCommand}" />
+                </FlexLayout>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,26 @@
+using LOCATEM_DESKTOP.Views.Auth;
+using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
+
+namespace LOCATEM_DESKTOP
+{
+    public partial class AppShell : Shell
+    {
+        public AppShell()
+        {
+            InitializeComponent();
+            RegisterAuthRoutes();
+        }
+
+        // Rotas do fluxo de Login/Cadastro — não aparecem como itens de menu/flyout, só são
+        // navegáveis via Shell.Current.GoToAsync("rota"), da mesma forma que o roteador por hash
+        // do React (useRouter.ts) tratava essas telas.
+        private static void RegisterAuthRoutes()
+        {
+            Routing.RegisterRoute("login", typeof(LoginPage));
+            Routing.RegisterRoute("cadastro", typeof(CadastroPage));
+            Routing.RegisterRoute("informeEmail", typeof(InformeEmailPage));
+            Routing.RegisterRoute("informeToken", typeof(InformeTokenPage));
+            Routing.RegisterRoute("informeNovaSenha", typeof(InformeNovaSenhaPage));
+        }
+    }
+}
