@@ -7,7 +7,6 @@
     xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
     xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
     xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Auth"
-    x:DataType="vm:LoginViewModel"
     Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource AuthBackgroundColor}">
 
@@ -17,15 +16,19 @@
 
                 <layout:AuthHeader />
 
-                <shared:PageHeader Title="Bem-vindo de volta!" Subtitle="Entre na sua conta para continuar" />
+                <shared:PageHeader 
+                    Title="Bem-vindo de volta!" 
+                    Subtitle="Entre na sua conta para continuar" 
+                />
 
                 <Border Margin="20,10,20,40"
                         MaximumWidthRequest="560"
-                        HorizontalOptions="Center"
+                        HorizontalOptions="Fill"
                         Padding="40"
                         StrokeShape="RoundRectangle 20"
                         Stroke="Transparent"
-                        BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+                        BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                >
                     <Border.Shadow>
                         <Shadow Brush="Black" Opacity="0.15" Radius="25" Offset="0,10" />
                     </Border.Shadow>
@@ -33,22 +36,26 @@
                     <VerticalStackLayout Spacing="20">
 
                         <VerticalStackLayout Spacing="25">
-                            <shared:FormEntry Label="E-mail"
-                                               Text="{Binding Email}"
-                                               Placeholder="seu@email.com"
-                                               EntryKeyboard="Email"
-                                               IsRequiredField="True"
-                                               ErrorText="{Binding EmailErrorText}"
-                                               IsShaking="{Binding EmailError.Shake}"
-                                               Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:FormEntry 
+                                Label="E-mail"
+                                Text="{Binding Email}"
+                                Placeholder="seu@email.com"
+                                EntryKeyboard="Email"
+                                IsRequiredField="True"
+                                ErrorText="{Binding EmailErrorText}"
+                                IsShaking="{Binding EmailError.Shake}"
+                                Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                            />
 
-                            <shared:PasswordEntry Label="Senha"
-                                                   Text="{Binding Senha}"
-                                                   Placeholder="Digite sua senha"
-                                                   IsRequiredField="True"
-                                                   ErrorText="{Binding SenhaErrorText}"
-                                                   IsShaking="{Binding SenhaError.Shake}"
-                                                   Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:PasswordEntry 
+                                Label="Senha"
+                                Text="{Binding Senha}"
+                                Placeholder="Digite sua senha"
+                                IsRequiredField="True"
+                                ErrorText="{Binding SenhaErrorText}"
+                                IsShaking="{Binding SenhaError.Shake}"
+                                Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                            />
                         </VerticalStackLayout>
 
                         <Grid ColumnDefinitions="Auto,*" IsVisible="{Binding HasError}" ColumnSpacing="8">
@@ -59,23 +66,30 @@
                             </VerticalStackLayout>
                         </Grid>
 
-                        <Label Text="Esqueceu sua senha?"
-                               FontSize="14"
-                               TextColor="{StaticResource TextPrimaryColor}"
-                               HorizontalOptions="End">
+                        <Label 
+                            Text="Esqueceu sua senha?"
+                            FontSize="14"
+                            FontFamily="InterRegular"
+                            TextDecorations="Underline"
+                            TextColor="{StaticResource TextPrimaryColor}"
+                            HorizontalOptions="End"
+                        >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding EsqueceuSenhaCommand}" />
                             </Label.GestureRecognizers>
                         </Label>
 
-                        <Button Text="{Binding IsBusy, Converter={StaticResource BusyToLoginTextConverter}}"
-                                Style="{StaticResource BtnPrincipalStyle}"
-                                Command="{Binding EntrarCommand}"
-                                IsEnabled="{Binding IsNotBusy}" />
+                        <Button 
+                            Text="{Binding IsBusy, Converter={StaticResource BusyToLoginTextConverter}}"
+                            Style="{StaticResource BtnPrincipalStyle}"
+                            FontFamily="InterBold"
+                            Command="{Binding EntrarCommand}"
+                            IsEnabled="{Binding IsNotBusy}" 
+                        />
 
                         <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" Margin="0,10,0,0">
-                            <Label Text="Não tem uma conta?" FontSize="14" TextColor="{StaticResource TextBodyColor}" VerticalOptions="Center" />
-                            <Label Text="Criar conta" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center">
+                            <Label Text="Não tem uma conta?" FontSize="14" FontFamily="InterRegular" TextColor="{StaticResource TextBodyColor}" VerticalOptions="Center" />
+                            <Label Text="Criar conta" FontSize="14" FontFamily="InterBold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CriarContaCommand}" />
                                 </Label.GestureRecognizers>
@@ -84,7 +98,7 @@
 
                     </VerticalStackLayout>
                 </Border>
-
+                    
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

@@ -8,20 +8,37 @@
     <Grid HeightRequest="100" Padding="32,24">
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="{StaticResource AuthPrimaryColor}" Offset="0.0" />
-                <GradientStop Color="{StaticResource AuthPrimaryLightColor}" Offset="0.5" />
-                <GradientStop Color="{StaticResource AuthPrimarySoftColor}" Offset="0.75" />
-                <GradientStop Color="Transparent" Offset="1.0" />
+                <GradientStop Color="#FFCC00" Offset="0.0" />
+                <GradientStop Color="#FFE066" Offset="0.3" />
+                <GradientStop Color="#FFF1B3" Offset="0.65" />
+                <GradientStop Color="#F9FAFB" Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
 
-        <HorizontalStackLayout Spacing="7" VerticalOptions="Center" HorizontalOptions="Start">
+        <HorizontalStackLayout
+            Spacing="7"
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+        >
+
             <HorizontalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnLogoTapped" />
             </HorizontalStackLayout.GestureRecognizers>
 
-            <Image Source="logolocatem.png" HeightRequest="32" Aspect="AspectFit" />
-            <Label Text="LOCATEM" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center" />
+            <Image
+                Source="logo_locatem.png"
+                HeightRequest="32"
+                Aspect="AspectFit" 
+            />
+
+            <Label
+                Text="LOCATEM"
+                FontSize="22"
+                FontFamily="InterExtraBold"
+                TextColor="{StaticResource TextPrimaryColor}"
+                VerticalOptions="Center" 
+            />
+
         </HorizontalStackLayout>
     </Grid>
 </ContentView>
