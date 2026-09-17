@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Home.HomeLocadorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:ferramentas="clr-namespace:LOCATEM_DESKTOP.Components.Ferramentas"
+    xmlns:home="clr-namespace:LOCATEM_DESKTOP.Components.Home.HomeLocador"
+    xmlns:modelsFerramentas="clr-namespace:LOCATEM_DESKTOP.Models.Ferramentas"
+    xmlns:modelsLocacoes="clr-namespace:LOCATEM_DESKTOP.Models.Locacoes"
+    xmlns:modelsHome="clr-namespace:LOCATEM_DESKTOP.Models.Home"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Home"
+    x:Name="Pagina"
+    x:DataType="vm:HomeLocadorViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <layout:AppHeader RotaAtual="homeLocador"
+                              NomeUsuario="{Binding NomeUsuario}"
+                              NavegarCommand="{Binding NavegarCommand}" />
+
+            <VerticalStackLayout Padding="24,20,24,48" Spacing="24" MaximumWidthRequest="2000">
+
+                <shared:CabecalhoPagina Titulo="{Binding Saudacao}" Subtitulo="{Binding Subtitulo}" />
+
+                <!-- ── Cards de resumo ───────────────────────────────────── -->
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Stretch">
+                    <FlexLayout.Resources>
+                        <Style TargetType="home:HomeLocadorResumoCard">
+                            <Setter Property="FlexLayout.Grow" Value="1" />
+                            <Setter Property="FlexLayout.Basis" Value="220" />
+                            <Setter Property="Margin" Value="0,0,16,16" />
+                        </Style>
+                    </FlexLayout.Resources>
+
+                    <home:HomeLocadorResumoCard Icone="{mi:Material Build}"
+                                                CorIcone="{StaticResource InfoColor}"
+                                                FundoIcone="{StaticResource InfoBackgroundColor}"
+                                                Label="Ferramentas ativas"
+                                                Valor="{Binding FerramentasAtivas}"
+                                                Tendencia="{Binding FerramentasTendencia}" />
+
+                    <home:HomeLocadorResumoCard Icone="{mi:Material CalendarToday}"
+                                                CorIcone="{StaticResource InfoColor}"
+                                                FundoIcone="{StaticResource InfoBackgroundColor}"
+                                                Label="Locações em andamento"
+                                                Valor="{Binding LocacoesEmAndamento}"
+                                                Legenda="{Binding LocacoesLegenda}" />
+
+                    <home:HomeLocadorResumoCard Icone="{mi:Material Schedule}"
+                                                CorIcone="{StaticResource WarningColor}"
+                                                FundoIcone="{StaticResource WarningBackgroundColor}"
+                                                Label="Solicitações pendentes"
+                                                Valor="{Binding SolicitacoesPendentes}"
+                                                Legenda="Aguardando sua resposta" />
+
+                    <home:HomeLocadorResumoCard Icone="{mi:Material Payments}"
+                                                CorIcone="{StaticResource SuccessStrongColor}"
+                                                FundoIcone="{StaticResource SuccessBackgroundColor}"
+                                                Label="Faturamento do mês"
+                                                Valor="{Binding FaturamentoMes}"
+                                                Tendencia="{Binding FaturamentoTendencia}" />
+
+                    <home:HomeLocadorResumoCard Icone="{mi:Material Star}"
+                                                CorIcone="{StaticResource StarColor}"
+                                                FundoIcone="{StaticResource WarningBackgroundColor}"
+                                                Label="Avaliação média"
+                                                Valor="{Binding AvaliacaoMedia}"
+                                                MostrarEstrelas="True"
+                                                Nota="{Binding AvaliacaoNota}"
+                                                LegendaEstrelas="{Binding TotalAvaliacoes}" />
+                </FlexLayout>
+
+                <!-- ── Solicitações Recentes / Agenda da Semana ───────────── -->
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Start">
+
+                    <Border FlexLayout.Grow="1" FlexLayout.Basis="360" Margin="0,0,20,20"
+                            Padding="20" StrokeThickness="1"
+                            Stroke="{StaticResource CardBorderColor}"
+                            StrokeShape="RoundRectangle 14"
+                            BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+                        <VerticalStackLayout Spacing="0">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Margin="0,0,0,12">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Solicitações Recentes" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimaryColor}" />
+                                    <Label Text="Confira as últimas solicitações de locação das suas ferramentas."
+                                           FontSize="13" TextColor="{StaticResource TextMutedColor}" />
+                                </VerticalStackLayout>
+
+                                <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Start">
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding VerTodasSolicitacoesCommand}" />
+                                    </HorizontalStackLayout.GestureRecognizers>
+                                    <Label Text="Ver todas" FontSize="13" FontAttributes="Bold"
+                                           TextColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                                    <mi:MauiIcon Icon="{mi:Material ArrowForward}" IconSize="16"
+                                                 IconColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Label Text="Nenhuma solicitação por aqui ainda."
+                                   IsVisible="{Binding SemSolicitacoes}"
+                                   Padding="0,24" FontSize="13"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource TextMutedColor}" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding SolicitacoesRecentes}"
+                                                 IsVisible="{Binding TemSolicitacoes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="modelsLocacoes:Locacao">
+                                        <home:HomeLocadorSolicitacaoItem
+                                            VerDetalhesCommand="{Binding BindingContext.VerDetalhesSolicitacaoCommand, Source={x:Reference Pagina}}" />
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border FlexLayout.Grow="1" FlexLayout.Basis="360" Margin="0,0,0,20"
+                            Padding="20" StrokeThickness="1"
+                            Stroke="{StaticResource CardBorderColor}"
+                            StrokeShape="RoundRectangle 14"
+                            BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+                        <VerticalStackLayout Spacing="0">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Margin="0,0,0,12">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Agenda da Semana" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimaryColor}" />
+                                    <Label Text="Próximos movimentos logísticos das suas ferramentas."
+                                           FontSize="13" TextColor="{StaticResource TextMutedColor}" />
+                                </VerticalStackLayout>
+
+                                <!-- "Ver agenda completa" aparece no layout, mas ainda não existe página de agenda. -->
+                                <HorizontalStackLayout Grid.Column="1" Spacing="4" Opacity="0.8" VerticalOptions="Start">
+                                    <Label Text="Ver agenda completa" FontSize="13" FontAttributes="Bold"
+                                           TextColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                                    <mi:MauiIcon Icon="{mi:Material ArrowForward}" IconSize="16"
+                                                 IconColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Label Text="Nenhum movimento logístico previsto no momento."
+                                   IsVisible="{Binding SemAgenda}"
+                                   Padding="0,24" FontSize="13"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource TextMutedColor}" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding AgendaSemana}"
+                                                 IsVisible="{Binding TemAgenda}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="modelsHome:AgendaSemanaLocadorItem">
+                                        <home:HomeLocadorAgendaItem />
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </FlexLayout>
+
+                <!-- ── Minhas Ferramentas ────────────────────────────────── -->
+                <Border Padding="20" StrokeThickness="1"
+                        Stroke="{StaticResource CardBorderColor}"
+                        StrokeShape="RoundRectangle 14"
+                        BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+                    <VerticalStackLayout Spacing="0">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Margin="0,0,0,12">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="Minhas Ferramentas" FontSize="15" FontAttributes="Bold"
+                                       TextColor="{StaticResource TextPrimaryColor}" />
+                                <Label Text="Acesse e gerencie suas ferramentas cadastradas."
+                                       FontSize="13" TextColor="{StaticResource TextMutedColor}" />
+                            </VerticalStackLayout>
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Start">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding VerTodasFerramentasCommand}" />
+                                </HorizontalStackLayout.GestureRecognizers>
+                                <Label Text="Ver todas" FontSize="13" FontAttributes="Bold"
+                                       TextColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                                <mi:MauiIcon Icon="{mi:Material ArrowForward}" IconSize="16"
+                                             IconColor="{StaticResource AuthSecondaryColor}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <!-- Carrossel horizontal: no React o arraste é feito por pointer events; aqui o
+                             próprio ScrollView já entrega o gesto de arrastar/rolar nativo. -->
+                        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                            <HorizontalStackLayout Spacing="20" Padding="0,0,0,4">
+
+                                <!-- BindableLayout assume todos os filhos do layout, então a lista fica
+                                     num container próprio e o card "nova ferramenta" vem depois dele. -->
+                                <HorizontalStackLayout Spacing="20"
+                                                       BindableLayout.ItemsSource="{Binding MinhasFerramentas}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="modelsFerramentas:ProdutoHome">
+                                            <ferramentas:ProductCard
+                                                WidthRequest="210"
+                                                Title="{Binding Title}"
+                                                Brand="{Binding Locador}"
+                                                Price="{Binding Price}"
+                                                Imagem="{Binding Imagem}"
+                                                Rating="{Binding RatingTexto}"
+                                                ReviewCount="{Binding ReviewCount}"
+                                                Status="{Binding Status}"
+                                                MostrarAcoes="True"
+                                                CommandParameter="{Binding Id}"
+                                                VerCommand="{Binding BindingContext.VerFerramentaCommand, Source={x:Reference Pagina}}"
+                                                EditarCommand="{Binding BindingContext.EditarFerramentaCommand, Source={x:Reference Pagina}}" />
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+
+                                <home:HomeLocadorCardNovaFerramenta
+                                    WidthRequest="210"
+                                    CadastrarCommand="{Binding CadastrarFerramentaCommand}" />
+                            </HorizontalStackLayout>
+                        </ScrollView>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

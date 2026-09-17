@@ -93,11 +93,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
-	  <Folder Include="Components\" />
-	  <Folder Include="Services\" />
-	  <Folder Include="Views\" />
-	  <Folder Include="ViewModels\" />
+	  <MauiXaml Update="Components\Layout\AppHeader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Home\HomeLocadorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
