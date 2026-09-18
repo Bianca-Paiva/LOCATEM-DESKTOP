@@ -21,7 +21,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
         /// Autentica pelo e-mail digitado no login (mesmo comportamento do AuthProvider: resolve
         /// pelo catálogo mockado, com fallback para um usuário novo).
         /// </summary>
-        Usuario Login(string email);
+        void DefinirUsuario(Usuario usuario); 
 
         void Logout();
 
