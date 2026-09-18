@@ -1,4 +1,6 @@
 using LOCATEM_DESKTOP.ViewModels.Home;
+using MauiIcons;
+using MauiIcons.Core;
 
 namespace LOCATEM_DESKTOP.Views.Home
 {
@@ -10,6 +12,7 @@ namespace LOCATEM_DESKTOP.Views.Home
         public HomeLocadorPage(HomeLocadorViewModel viewModel)
         {
             InitializeComponent();
+            _ = new MauiIcon();
             _viewModel = viewModel;
             BindingContext = viewModel;
         }

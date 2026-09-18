@@ -1,9 +1,13 @@
 using Microsoft.Extensions.Logging;
 using MauiIcons.Material;
 using LOCATEM_DESKTOP.Services.Auth;
+using LOCATEM_DESKTOP.Services.Ferramentas;
+using LOCATEM_DESKTOP.Services.Locacoes;
 using LOCATEM_DESKTOP.ViewModels.Auth;
+using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
+using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
 {
@@ -17,8 +21,6 @@ namespace LOCATEM_DESKTOP
                 .UseMaterialMauiIcons() // AathifMahir.Maui.MauiIcons.Material — usado nos ícones do fluxo de Auth
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 
                     // Fonte usada em todo o fluxo de Auth no React (styles/global.css: font-family 'Inter').
                     // Os arquivos já existiam em Resources/Fonts mas ainda não estavam registrados.
@@ -51,6 +53,10 @@ namespace LOCATEM_DESKTOP
 
             // Redirecionamento pós-login (utils/Auth/redirectAposLogin.ts).
             services.AddSingleton<IRedirectAposLoginService, RedirectAposLoginService>();
+            // Catálogo de ferramentas e locações — singletons
+            services.AddSingleton<ICatalogoService, CatalogoService>();
+            services.AddSingleton<ILocacaoService, LocacaoService>();
+
         }
 
         private static void RegisterViewModels(IServiceCollection services)
@@ -60,6 +66,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeEmailViewModel>();
             services.AddTransient<InformeTokenViewModel>();
             services.AddTransient<InformeNovaSenhaViewModel>();
+            services.AddTransient<HomeLocadorViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -69,6 +76,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeEmailPage>();
             services.AddTransient<InformeTokenPage>();
             services.AddTransient<InformeNovaSenhaPage>();
+            services.AddTransient<HomeLocadorPage>();
         }
     }
 }

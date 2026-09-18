@@ -1,5 +1,6 @@
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
+using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
 {
@@ -9,6 +10,7 @@ namespace LOCATEM_DESKTOP
         {
             InitializeComponent();
             RegisterAuthRoutes();
+            RegisterHomeRoutes();
         }
 
         // Rotas do fluxo de Login/Cadastro — não aparecem como itens de menu/flyout, só são
@@ -21,6 +23,12 @@ namespace LOCATEM_DESKTOP
             Routing.RegisterRoute("informeEmail", typeof(InformeEmailPage));
             Routing.RegisterRoute("informeToken", typeof(InformeTokenPage));
             Routing.RegisterRoute("informeNovaSenha", typeof(InformeNovaSenhaPage));
+        }
+
+        //Telas internas. Só a Home do Locador foi migrada; as demais rotas do locador, ficara aqui conforme forem migradas.
+        private static void RegisterHomeRoutes()
+        {
+            Routing.RegisterRoute("homeLocador", typeof(HomeLocadorPage));
         }
     }
 }

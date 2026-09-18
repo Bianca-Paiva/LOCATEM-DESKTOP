@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Home.HomeLocador.HomeLocadorCardNovaFerramenta"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root">
+
+    <Border Padding="20"
+            MinimumHeightRequest="240"
+            StrokeThickness="2"
+            Stroke="{StaticResource DashedBorderColor}"
+            StrokeDashArray="6,4"
+            StrokeDashOffset="0"
+            StrokeShape="RoundRectangle 14"
+            BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CadastrarCommand, Source={x:Reference Root}}" />
+        </Border.GestureRecognizers>
+
+        <VerticalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+            <Border WidthRequest="44"
+                    HeightRequest="44"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 22"
+                    BackgroundColor="{StaticResource CardBorderColor}"
+                    HorizontalOptions="Center">
+                <mi:MauiIcon Icon="{mi:Material Add}" IconSize="22" IconColor="{StaticResource TextMutedColor}"
+                             HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+
+            <Label Text="Cadastrar nova ferramenta"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource TextMutedColor}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

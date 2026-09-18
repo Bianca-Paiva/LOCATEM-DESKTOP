@@ -1,8 +1,10 @@
 using LOCATEM_DESKTOP.Helpers;
 using LOCATEM_DESKTOP.Helpers.Auth;
+using LOCATEM_DESKTOP.Models.Auth;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Validation.Auth;
 using LOCATEM_DESKTOP.ViewModels.Base;
+
 
 namespace LOCATEM_DESKTOP.ViewModels.Auth
 {
@@ -110,7 +112,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 if (Senha == "erro-login")
                     throw new InvalidOperationException("Falha de autenticacao simulada");
 
-                _authSession.Login(Email);
+                var usuario = _authSession.Login(Email);
 
                 var rotaRedirect = _redirectService.LerRedirect();
                 if (rotaRedirect is not null)
@@ -118,10 +120,16 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                     _redirectService.LimparRedirect();
                     await Shell.Current.GoToAsync($"//{rotaRedirect}");
                 }
+                else if (usuario.Tipo == TipoUsuario.Locador)
+                {
+                    // O locador tem dashboard próprio e nunca cai no marketplace do locatário —
+                    // mesma regra do Header/Home do React.
+                    await Shell.Current.GoToAsync("homeLocador");
+                }
                 else
                 {
-                    // NOTA DE ESCOPO: a Home ainda não foi migrada para o MAUI (fora do escopo
-                    // de Login/Cadastro desta tarefa). Assim que existir, troque a rota abaixo.
+                    // NOTA DE ESCOPO: a Home do locatário ainda não foi migrada para o MAUI.
+                    // Assim que existir, troque a rota abaixo.
                     await Shell.Current.GoToAsync("//login");
                 }
             }

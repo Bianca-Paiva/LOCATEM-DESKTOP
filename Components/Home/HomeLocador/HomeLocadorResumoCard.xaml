@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Home.HomeLocador.HomeLocadorResumoCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:avaliacoes="clr-namespace:LOCATEM_DESKTOP.Components.Avaliacoes"
+    x:Name="Root">
+
+    <Border Padding="20,18"
+            StrokeThickness="1"
+            Stroke="{StaticResource CardBorderColor}"
+            StrokeShape="RoundRectangle 14"
+            BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+
+        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+
+            <VerticalStackLayout Spacing="0">
+                <Label Text="{Binding Label, Source={x:Reference Root}}"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       Margin="0,0,0,6"
+                       TextColor="{StaticResource TextMutedColor}" />
+
+                <Label Text="{Binding Valor, Source={x:Reference Root}}"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimaryColor}" />
+
+                <Label Text="{Binding Tendencia, Source={x:Reference Root}}"
+                       IsVisible="{Binding HasTendencia, Source={x:Reference Root}}"
+                       Margin="0,4,0,0"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource SuccessStrongColor}" />
+
+                <Label Text="{Binding Legenda, Source={x:Reference Root}}"
+                       IsVisible="{Binding HasLegenda, Source={x:Reference Root}}"
+                       Margin="0,4,0,0"
+                       FontSize="12"
+                       TextColor="{StaticResource TextMutedColor}" />
+
+                <!-- Bloco extra do card "Avaliação média" (extra do React) -->
+                <HorizontalStackLayout Spacing="6" Margin="0,4,0,0"
+                                       IsVisible="{Binding MostrarEstrelas, Source={x:Reference Root}}">
+                    <avaliacoes:EstrelasAvaliacao Nota="{Binding Nota, Source={x:Reference Root}}" />
+                    <Label Text="{Binding LegendaEstrelas, Source={x:Reference Root}}"
+                           FontSize="12"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource TextMutedColor}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Ferramentas.StatusFerramentaBadge"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons">
+
+    <Border x:Name="Pilula"
+            Padding="8,3"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 999"
+            HorizontalOptions="Start">
+        <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+            <mi:MauiIcon x:Name="Icone" IconSize="12" VerticalOptions="Center" />
+            <Label x:Name="Texto" FontSize="10.5" FontAttributes="Bold" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+    </Border>
+</ContentView>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Ferramentas.ProductCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:ferramentas="clr-namespace:LOCATEM_DESKTOP.Components.Ferramentas"
+    x:Name="Root">
+
+    <Border Padding="16"
+            StrokeThickness="1"
+            Stroke="{StaticResource CardBorderColor}"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+        <Border.Shadow>
+            <Shadow Brush="Black" Opacity="0.04" Radius="8" Offset="0,2" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="12">
+
+            <ferramentas:StatusFerramentaBadge Status="{Binding Status, Source={x:Reference Root}}" />
+
+            <Image Source="{Binding Imagem, Source={x:Reference Root}}"
+                   HeightRequest="150"
+                   Aspect="AspectFit" />
+
+            <!-- Título com 2 linhas fixas, como o line-clamp do card no React -->
+            <Label Text="{Binding Title, Source={x:Reference Root}}"
+                   FontSize="14"
+                   LineBreakMode="TailTruncation"
+                   MaxLines="2"
+                   HeightRequest="40"
+                   TextColor="{StaticResource TextPrimaryColor}" />
+
+            <HorizontalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label Text="{Binding Brand, Source={x:Reference Root}}"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="Black"
+                       VerticalOptions="Center" />
+                <mi:MauiIcon Icon="{mi:Material Verified}" IconSize="14" IconColor="{StaticResource VerificadoColor}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                <HorizontalStackLayout Grid.Column="0" Spacing="1">
+                    <Label Text="R$" FontSize="17" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="End" />
+                    <Label Text="{Binding Price, Source={x:Reference Root}}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="End" />
+                    <Label Text="/dia" FontSize="12" TextColor="{StaticResource TextMutedColor}" VerticalOptions="End" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                    <Label Text="★" FontSize="14" TextColor="{StaticResource AuthPrimaryColor}" VerticalOptions="Center" />
+                    <Label Text="{Binding Rating, Source={x:Reference Root}}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center" />
+                    <Label Text="{Binding ReviewCountTexto, Source={x:Reference Root}}" FontSize="10" TextColor="{StaticResource TextMutedColor}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Ações "Ver"/"Editar" (footerExtra do React) — só aparecem nas telas do locador -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8"
+                  IsVisible="{Binding MostrarAcoes, Source={x:Reference Root}}">
+                <Button Grid.Column="0"
+                        Text="Ver"
+                        Style="{StaticResource BtnAcaoCardStyle}"
+                        Command="{Binding VerCommand, Source={x:Reference Root}}"
+                        CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+                <Button Grid.Column="1"
+                        Text="Editar"
+                        Style="{StaticResource BtnAcaoCardStyle}"
+                        Command="{Binding EditarCommand, Source={x:Reference Root}}"
+                        CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
