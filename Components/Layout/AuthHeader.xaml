@@ -15,11 +15,7 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <HorizontalStackLayout
-            Spacing="7"
-            VerticalOptions="Center"
-            HorizontalOptions="Start"
-        >
+        <HorizontalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Start">
 
             <HorizontalStackLayout.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnLogoTapped" />
@@ -29,15 +25,23 @@
                 Source="logo_locatem.png"
                 HeightRequest="32"
                 Aspect="AspectFit" 
-            />
+            />   
 
-            <Label
-                Text="LOCATEM"
-                FontSize="22"
-                FontFamily="InterExtraBold"
-                TextColor="{StaticResource TextPrimaryColor}"
-                VerticalOptions="Center" 
-            />
+            <VerticalStackLayout Spacing="-2" VerticalOptions="Center">
+                <Label
+                    Text="LOCATEM"
+                    FontSize="22"
+                    FontFamily="InterExtraBold"
+                    TextColor="{StaticResource TextPrimaryColor}" 
+                />
+
+                <Label
+                    Text="Portal do Locador"
+                    FontSize="12"
+                    FontFamily="InterMedium"
+                    TextColor="{StaticResource TextPrimaryColor}" 
+                />  
+            </VerticalStackLayout>
 
         </HorizontalStackLayout>
     </Grid>

@@ -1,5 +1,3 @@
-using LOCATEM_DESKTOP.Models.Auth;
-
 namespace LOCATEM_DESKTOP.Validation.Auth
 {
     /// <summary>
@@ -36,16 +34,14 @@ namespace LOCATEM_DESKTOP.Validation.Auth
             else if (!Helpers.Auth.MaskHelper.ValidatePhone(data.Telefone))
                 errors.Telefone = "Digite um telefone válido com DDD";
 
-            // documento (obrigatório + checksum, dependendo do tipo)
+            // documento (obrigatório + checksum de CNPJ)
             if (string.IsNullOrWhiteSpace(data.Documento))
             {
                 errors.Documento = "O documento é obrigatório";
             }
-            else
+            else if (!DocumentValidator.IsValidCnpj(data.Documento))
             {
-                var isCnpj = data.Tipo == TipoUsuario.Locador;
-                var valido = isCnpj ? DocumentValidator.IsValidCnpj(data.Documento) : DocumentValidator.IsValidCpf(data.Documento);
-                if (!valido) errors.Documento = "Documento inválido";
+                errors.Documento = "Documento inválido";
             }
 
             // cep

@@ -6,12 +6,19 @@
     x:Name="Root">
 
     <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
-        <Label Text="{Binding Text, Source={x:Reference Root}}" FontSize="14" TextColor="{StaticResource TextSecondaryMutedColor}" VerticalOptions="Center" />
-        <Label Text="{Binding LinkText, Source={x:Reference Root}}"
-               FontSize="14" FontAttributes="Bold"
-               TextDecorations="Underline"
-               TextColor="{StaticResource TextPrimaryColor}"
-               VerticalOptions="Center">
+        <Label 
+            Text="{Binding Text, Source={x:Reference Root}}" 
+            FontSize="14" 
+            TextColor="{StaticResource TextSecondaryMutedColor}" 
+            VerticalOptions="Center" />
+        <Label 
+            Text="{Binding LinkText, Source={x:Reference Root}}"
+            FontSize="14" 
+            FontFamily="InterBold"
+            TextDecorations="Underline"
+            TextColor="{StaticResource TextPrimaryColor}"
+            VerticalOptions="Center"
+        >
             <Label.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnLinkTapped" />
             </Label.GestureRecognizers>
