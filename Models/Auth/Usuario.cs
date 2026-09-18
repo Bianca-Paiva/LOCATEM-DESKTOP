@@ -1,7 +1,8 @@
 namespace LOCATEM_DESKTOP.Models.Auth
 {
     /// <summary>
-    /// Usuário autenticado (Locatário ou Locador).
+    /// Usuário autenticado. Nesta versão do desktop, exclusiva para locadores, o usuário é
+    /// sempre tratado como Locador.
     /// Migrado de types/Auth/usuario.types.ts.
     ///
     /// O projeto ainda não tem uma API real de autenticação (ver Services/Auth/AuthService.cs,
@@ -15,7 +16,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
         public string Email { get; set; } = string.Empty;
         public string Telefone { get; set; } = string.Empty;
 
-        /// <summary>CPF (locatário) ou CNPJ (locador) — sem máscara ou com, conforme preenchido no cadastro/edição.</summary>
+        /// <summary>CNPJ (locador) — sem máscara ou com, conforme preenchido no cadastro/edição.</summary>
         public string Documento { get; set; } = string.Empty;
         public string Endereco { get; set; } = string.Empty;
         public TipoUsuario Tipo { get; set; }
@@ -28,7 +29,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
 
         public bool EmailVerificado { get; set; }
 
-        /// <summary>Ano de criação da conta — exibido como "Locador/Locatário desde {ano}".</summary>
+        /// <summary>Ano de criação da conta — exibido como "Locador desde {ano}".</summary>
         public int Desde { get; set; }
 
         public ReputacaoUsuario Reputacao { get; set; } = new();

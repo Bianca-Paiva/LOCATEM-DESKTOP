@@ -17,11 +17,7 @@ namespace LOCATEM_DESKTOP
                 .UseMaterialMauiIcons() // AathifMahir.Maui.MauiIcons.Material — usado nos ícones do fluxo de Auth
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-
                     // Fonte usada em todo o fluxo de Auth no React (styles/global.css: font-family 'Inter').
-                    // Os arquivos já existiam em Resources/Fonts mas ainda não estavam registrados.
                     fonts.AddFont("Inter-Regular.ttf", "InterRegular");
                     fonts.AddFont("Inter-Medium.ttf", "InterMedium");
                     fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");

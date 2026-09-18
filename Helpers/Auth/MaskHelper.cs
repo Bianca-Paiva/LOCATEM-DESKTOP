@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace LOCATEM_DESKTOP.Helpers.Auth
 {
     /// <summary>
-    /// Máscaras de campos usadas em CadastroUsuario.tsx (maskCPF, maskCNPJ, maskPhone, maskCEP)
+    /// Máscaras de campos usadas em CadastroUsuario.tsx (maskCNPJ, maskPhone, maskCEP)
     /// e as validações de formato que acompanhavam essas máscaras (validatePhone, validateCEP).
     ///
     /// NOTA DE MIGRAÇÃO: o arquivo original "utils/Formatacao/masks.ts" não fazia parte do ZIP
@@ -18,22 +18,6 @@ namespace LOCATEM_DESKTOP.Helpers.Auth
     public static class MaskHelper
     {
         private static string OnlyDigits(string value) => Regex.Replace(value ?? string.Empty, @"\D", string.Empty);
-
-        /// <summary>000.000.000-00</summary>
-        public static string MaskCpf(string value)
-        {
-            var d = OnlyDigits(value);
-            if (d.Length > 11) d = d[..11];
-
-            var sb = new StringBuilder();
-            for (int i = 0; i < d.Length; i++)
-            {
-                if (i == 3 || i == 6) sb.Append('.');
-                if (i == 9) sb.Append('-');
-                sb.Append(d[i]);
-            }
-            return sb.ToString();
-        }
 
         /// <summary>00.000.000/0000-00</summary>
         public static string MaskCnpj(string value)

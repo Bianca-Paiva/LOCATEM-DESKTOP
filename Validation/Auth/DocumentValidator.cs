@@ -3,24 +3,12 @@ using System.Text.RegularExpressions;
 namespace LOCATEM_DESKTOP.Validation.Auth
 {
     /// <summary>
-    /// Validação e checksum de CPF/CNPJ — migrado do pacote "cpf-cnpj-validator" (cpf.isValid / cnpj.isValid)
+    /// Validação e checksum de CNPJ — migrado do pacote "cpf-cnpj-validator" (cnpj.isValid)
     /// usado em validation/Cadastro/cadastroSchema.ts. Implementa o mesmo algoritmo de dígito verificador
     /// da Receita Federal usado por essa biblioteca.
     /// </summary>
     public static class DocumentValidator
     {
-        public static bool IsValidCpf(string? cpf)
-        {
-            var d = OnlyDigits(cpf);
-            if (d.Length != 11 || AllDigitsEqual(d)) return false;
-
-            var numeros = d[..9].Select(c => c - '0').ToArray();
-            var dv1 = CalcularDigito(numeros, new[] { 10, 9, 8, 7, 6, 5, 4, 3, 2 });
-            var dv2 = CalcularDigito(numeros.Append(dv1).ToArray(), new[] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 });
-
-            return d[9] - '0' == dv1 && d[10] - '0' == dv2;
-        }
-
         public static bool IsValidCnpj(string? cnpj)
         {
             var d = OnlyDigits(cnpj);

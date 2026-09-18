@@ -22,7 +22,6 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         {
             _authService = authService;
 
-            SelecionarTipoCommand = new RelayCommand(param => SelecionarTipo((TipoUsuario)param!));
             SubmitCommand = new AsyncRelayCommand(SubmitAsync, () => IsNotBusy);
             IrParaLoginCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync(".."));
             AbrirBuscaCepCommand = new AsyncRelayCommand(async () =>
@@ -35,38 +34,6 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             });
 
             AtualizarValidacaoSenha();
-        }
-
-        // ===================== TIPO DE CONTA =====================
-
-        private TipoUsuario _tipo = TipoUsuario.Locatario;
-        public TipoUsuario Tipo
-        {
-            get => _tipo;
-            private set
-            {
-                if (SetProperty(ref _tipo, value))
-                {
-                    OnPropertyChanged(nameof(IsCNPJ));
-                    OnPropertyChanged(nameof(IsLocatarioSelecionado));
-                    OnPropertyChanged(nameof(IsLocadorSelecionado));
-                    OnPropertyChanged(nameof(DocumentoLabel));
-                    OnPropertyChanged(nameof(DocumentoPlaceholder));
-                }
-            }
-        }
-
-        public bool IsCNPJ => Tipo == TipoUsuario.Locador;
-        public bool IsLocatarioSelecionado => Tipo == TipoUsuario.Locatario;
-        public bool IsLocadorSelecionado => Tipo == TipoUsuario.Locador;
-        public string DocumentoLabel => IsCNPJ ? "CNPJ" : "CPF";
-        public string DocumentoPlaceholder => IsCNPJ ? "00.000.000/0000-00" : "000.000.000-00";
-
-        private void SelecionarTipo(TipoUsuario tipo)
-        {
-            Tipo = tipo;
-            Documento = string.Empty;
-            DocumentoError.Clear();
         }
 
         // ===================== CAMPOS =====================
@@ -102,7 +69,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             get => _documento;
             set
             {
-                var mascarado = IsCNPJ ? MaskHelper.MaskCnpj(value) : MaskHelper.MaskCpf(value);
+                var mascarado = MaskHelper.MaskCnpj(value);
                 if (SetProperty(ref _documento, mascarado)) DocumentoError.Clear();
             }
         }
@@ -238,7 +205,6 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
         // ===================== COMMANDS =====================
 
-        public ICommand SelecionarTipoCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand IrParaLoginCommand { get; }
         public ICommand AbrirBuscaCepCommand { get; }
@@ -251,7 +217,8 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         {
             var snapshot = new CadastroFormSnapshot
             {
-                Tipo = Tipo,
+                // O desktop é exclusivo para locadores — o tipo de conta não é mais escolhido no formulário.
+                Tipo = TipoUsuario.Locador,
                 Nome = Nome,
                 Email = Email,
                 Telefone = Telefone,
@@ -307,7 +274,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             if (_campoErros.Email is not null) { Alerta = CadastroMessages.InvalidEmail; return true; }
             if (_campoErros.Nome is not null) { Alerta = CadastroMessages.InvalidName; return true; }
             if (_campoErros.Telefone is not null) { Alerta = CadastroMessages.InvalidPhone; return true; }
-            if (_campoErros.Documento is not null) { Alerta = IsCNPJ ? CadastroMessages.InvalidCnpj : CadastroMessages.InvalidCpf; return true; }
+            if (_campoErros.Documento is not null) { Alerta = CadastroMessages.InvalidCnpj; return true; }
             if (_campoErros.Cep is not null) { Alerta = CadastroMessages.InvalidCep; return true; }
 
             if (_campoErros.ConfirmarSenha == "As senhas não coincidem")
@@ -338,7 +305,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                     ConfirmarSenha = data.ConfirmarSenha,
                     Telefone = data.Telefone,
                     Documento = System.Text.RegularExpressions.Regex.Replace(data.Documento, @"\D", string.Empty),
-                    TipoUsuario = data.Tipo == TipoUsuario.Locador ? 2 : 1
+                    TipoUsuario = 2 // Locador — este desktop é exclusivo para locadores.
                 });
 
                 SuccessModalOpen = true;
