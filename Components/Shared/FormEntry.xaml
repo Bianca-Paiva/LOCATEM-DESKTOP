@@ -41,6 +41,7 @@
                 Text="{Binding Text, Source={x:Reference Root}, Mode=TwoWay}"
                 Placeholder="{Binding Placeholder, Source={x:Reference Root}}"
                 Keyboard="{Binding EntryKeyboard, Source={x:Reference Root}}"
+                MaxLength="{Binding MaxLength, Source={x:Reference Root}}"
 
                 FontSize="14"
                 TextColor="{StaticResource TextPrimaryColor}"

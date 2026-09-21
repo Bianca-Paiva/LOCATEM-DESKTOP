@@ -54,7 +54,8 @@
                                 Placeholder="Digite seu nome completo"                                
                                 IsRequiredField="True" ErrorText="{Binding NomeErrorText}"
                                 IsShaking="{Binding NomeError.Shake}"
-                                Status="{Binding NomeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                Status="{Binding NomeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="100"
                             />
 
                             <shared:FormEntry 
@@ -65,7 +66,8 @@
                                 IsRequiredField="True" 
                                 ErrorText="{Binding EmailErrorText}"
                                 IsShaking="{Binding EmailError.Shake}"
-                                Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="254"
                             />
 
                             <shared:FormEntry
@@ -75,7 +77,8 @@
                                 IsRequiredField="True" 
                                 ErrorText="{Binding TelefoneErrorText}"
                                 IsShaking="{Binding TelefoneError.Shake}"
-                                Status="{Binding TelefoneError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                Status="{Binding TelefoneError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="15"
                             />
 
                             <!-- SENHA -->
@@ -87,6 +90,7 @@
                                 ErrorText="{Binding SenhaErrorText}"
                                 IsShaking="{Binding SenhaError.Shake}"
                                 Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="128"
                             />
 
                             <auth:PasswordStrengthMeter 
@@ -107,7 +111,8 @@
                                 IsRequiredField="True" 
                                 ErrorText="{Binding ConfirmarSenhaErrorText}"
                                 IsShaking="{Binding ConfirmarSenhaError.Shake}"
-                                Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}" 
+                                Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}"
+                                MaxLength="128"
                             />
 
                             <shared:FormEntry 
@@ -118,7 +123,8 @@
                                 IsRequiredField="True" 
                                 ErrorText="{Binding DocumentoErrorText}"
                                 IsShaking="{Binding DocumentoError.Shake}"
-                                Status="{Binding DocumentoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                Status="{Binding DocumentoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="18"
                             />
 
                             <!-- ENDEREÇO -->
@@ -144,7 +150,8 @@
                                         IsRequiredField="True" 
                                         ErrorText="{Binding CepErrorText}"
                                         IsShaking="{Binding CepError.Shake}"
-                                        Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                        Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="9"
                                     />
 
                                     <Label 
@@ -172,7 +179,8 @@
                                         IsRequiredField="True" 
                                         ErrorText="{Binding LogradouroErrorText}"
                                         IsShaking="{Binding LogradouroError.Shake}"
-                                        Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                        Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="100"
                                     />
 
                                     <shared:FormEntry 
@@ -183,7 +191,8 @@
                                         IsRequiredField="True" 
                                         ErrorText="{Binding NumeroErrorText}"
                                         IsShaking="{Binding NumeroError.Shake}"
-                                        Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" 
+                                        Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="10"
                                     />
                                 </Grid>
                             </VerticalStackLayout>
