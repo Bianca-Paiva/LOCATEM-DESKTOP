@@ -2,14 +2,9 @@ using LOCATEM_DESKTOP.Models.Ferramentas;
 
 namespace LOCATEM_DESKTOP.Services.Ferramentas
 {
+    // Catálogo central de ferramentas — migrado de mocks/produtos.mock.ts. Segue o mesmo padrão já adotado em Services/Auth/UsuariosMock.cs: fonte inicial de dados enquanto o projeto não tem uma API de catálogo (no React o CatalogoProvider também parte deste mesmo mock).
     //
-    // Catálogo central de ferramentas — migrado de mocks/produtos.mock.ts. Segue o mesmo padrão já
-    // adotado em Services/Auth/UsuariosMock.cs: fonte inicial de dados enquanto o projeto não tem
-    // uma API de catálogo (no React o CatalogoProvider também parte deste mesmo mock).
-    //
-    // Os nomes de imagem seguem a sanitização do MAUI para recursos (minúsculas, sem caracteres
-    // inválidos) sobre os arquivos já existentes em Resources/Images/ProdutosImg.
-    //
+    // Os nomes de imagem seguem a sanitização do MAUI para recursos (minúsculas, sem caracteres inválidos) sobre os arquivos já existentes em Resources/Images/ProdutosImg.
     public static class ProdutosMock
     {
         public static List<Produto> Criar() => new()
@@ -20,7 +15,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Furadeira Parafusadeira Sem Fio A Bateria The Black Tools",
                 Marca = "The Black Tools",
                 Price = "25,00",
-                Images = new List<string> { "furadeiratheblacktools.png" },
+                Images = new List<string> { "furadeira_theblack_tools.png" },
                 Locador = "MS Ferramentas",
                 LocadorId = "loc-ms",
                 Localizacao = "São Paulo - SP",
@@ -40,7 +35,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Pistola de Pintura Sucção The Black Tools",
                 Marca = "The Black Tools",
                 Price = "35,00",
-                Images = new List<string> { "pistolapintura.png" },
+                Images = new List<string> { "pistola_pintura.png" },
                 Locador = "WZ Ferramentas",
                 LocadorId = "loc-wz",
                 Localizacao = "São Paulo - SP",
@@ -60,7 +55,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Parafusadeira Furadeira de Impacto Hanabi",
                 Marca = "Hanabi",
                 Price = "38,00",
-                Images = new List<string> { "furadeirahanabi.png" },
+                Images = new List<string> { "furadeira_hanabi.png" },
                 Locador = "JB Ferramentas",
                 LocadorId = "loc-jb",
                 Localizacao = "São Paulo - SP",
@@ -80,7 +75,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Aparador De Grama Bipartido Tramontina",
                 Marca = "Tramontina",
                 Price = "40,00",
-                Images = new List<string> { "aparadorgrama.png" },
+                Images = new List<string> { "aparador_grama.png" },
                 Locador = "JB Ferramentas",
                 LocadorId = "loc-jb",
                 Localizacao = "São Paulo - SP",
@@ -100,7 +95,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Cortador De Grama Tramontina",
                 Marca = "Tramontina",
                 Price = "70,00",
-                Images = new List<string> { "aparedorgramacarrinho.png" },
+                Images = new List<string> { "aparedor_grama_carrinho.png" },
                 Locador = "JB Ferramentas",
                 LocadorId = "loc-jb",
                 Localizacao = "São Paulo - SP",
@@ -120,7 +115,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Serra Circular Profissional 220v Desoon",
                 Marca = "Desoon",
                 Price = "55,00",
-                Images = new List<string> { "serracircularprofissional.png" },
+                Images = new List<string> { "serra_circular_profissional.png" },
                 Locador = "JB Ferramentas",
                 LocadorId = "loc-jb",
                 Localizacao = "São Paulo - SP",
@@ -140,7 +135,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Parafusadeira A Bateria Wap Sem Fio + Maleta E Brocas",
                 Marca = "WAP",
                 Price = "20,00",
-                Images = new List<string> { "furadeirawapcinza.png" },
+                Images = new List<string> { "furadeira_wap_cinza.png" },
                 Locador = "JB Ferramentas",
                 LocadorId = "loc-jb",
                 Localizacao = "São Paulo - SP",
@@ -160,7 +155,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Furadeira Industrial Impacto Rev Bosch + Kit",
                 Marca = "Bosch",
                 Price = "45,00",
-                Images = new List<string> { "furadeirabosch.png" },
+                Images = new List<string> { "furadeira_bosch.png" },
                 Locador = "MS Ferramentas",
                 LocadorId = "loc-ms",
                 Localizacao = "São Paulo - SP",
@@ -180,7 +175,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Serra Mármore Makita",
                 Marca = "Makita",
                 Price = "65,00",
-                Images = new List<string> { "serramarmoremakita.png" },
+                Images = new List<string> { "serra_marmore_makita.png" },
                 Locador = "MS Ferramentas",
                 LocadorId = "loc-ms",
                 Localizacao = "São Paulo - SP",
@@ -220,7 +215,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Lixadeira Teto E Parede Telescópica Profissional Com Led E Saco Coletor The Black Tools",
                 Marca = "The Black Tools",
                 Price = "50,00",
-                Images = new List<string> { "lixadeirateto.png" },
+                Images = new List<string> { "lixadeira_teto.png" },
                 Locador = "WZ Ferramentas",
                 LocadorId = "loc-wz",
                 Localizacao = "São Paulo - SP",
@@ -240,7 +235,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 Title = "Pistola Pintura Gravidade 600ml + 3 Bicos The Black Tools",
                 Marca = "The Black Tools",
                 Price = "30,00",
-                Images = new List<string> { "pistolapintura2.png" },
+                Images = new List<string> { "pistola_pintura_second.png" },
                 Locador = "WZ Ferramentas",
                 LocadorId = "loc-wz",
                 Localizacao = "São Paulo - SP",

@@ -16,5 +16,10 @@ namespace LOCATEM_DESKTOP.Components.Home.HomeLocador
         public static readonly BindableProperty VerDetalhesCommandProperty =
             BindableProperty.Create(nameof(VerDetalhesCommand), typeof(ICommand), typeof(HomeLocadorSolicitacaoItem));
         public ICommand? VerDetalhesCommand { get => (ICommand?)GetValue(VerDetalhesCommandProperty); set => SetValue(VerDetalhesCommandProperty, value); }
+
+        // Propriedade exposta para que o pai (HomeLocadorPage) declare a imagem.
+        public static readonly BindableProperty ImagemProperty =
+            BindableProperty.Create(nameof(Imagem), typeof(string), typeof(HomeLocadorSolicitacaoItem), string.Empty);
+        public string Imagem { get => (string)GetValue(ImagemProperty); set => SetValue(ImagemProperty, value); }
     }
 }

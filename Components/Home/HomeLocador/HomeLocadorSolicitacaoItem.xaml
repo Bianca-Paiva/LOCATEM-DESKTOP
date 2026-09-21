@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <ContentView
     x:Class="LOCATEM_DESKTOP.Components.Home.HomeLocador.HomeLocadorSolicitacaoItem"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -6,51 +7,100 @@
     xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
     xmlns:locacoes="clr-namespace:LOCATEM_DESKTOP.Components.Locacoes"
     xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Locacoes"
+    xmlns:home="clr-namespace:LOCATEM_DESKTOP.Components.Home.HomeLocador"
     x:Name="Root"
     x:DataType="models:Locacao">
 
-    <VerticalStackLayout Spacing="12" Padding="0,16">
+    <VerticalStackLayout
+        Spacing="12"
+        Padding="0,16">
 
         <!-- Linha 1: foto e informações -->
-        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
-            <Border Grid.Column="0"
-                    WidthRequest="44"
-                    HeightRequest="44"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 10"
-                    BackgroundColor="{StaticResource CardBorderColor}">
-                <Image Source="{Binding Imagem}" Aspect="AspectFit" />
+        <Grid
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="12">
+
+            <Border
+                Grid.Column="0"
+                WidthRequest="44"
+                HeightRequest="44"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 10"
+                BackgroundColor="{StaticResource CardBorderColor}">
+
+                <!--
+                    A imagem vem da BindableProperty Imagem
+                    definida pelo próprio componente.
+                -->
+                <Image
+                    x:DataType="home:HomeLocadorSolicitacaoItem"
+                    Source="{Binding Imagem, Source={x:Reference Root}}"
+                    Aspect="AspectFit" />
+
             </Border>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                <Label Text="{Binding Produto}"
-                       FontSize="14"
-                       FontAttributes="Bold"
-                       LineBreakMode="TailTruncation"
-                       MaxLines="1"
-                       TextColor="{StaticResource TextPrimaryColor}" />
-                <Label Text="{Binding Locatario, StringFormat='Solicitado por {0}'}"
-                       FontSize="12"
-                       LineBreakMode="TailTruncation"
-                       MaxLines="1"
-                       TextColor="{StaticResource TextMutedColor}" />
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="2"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="{Binding Produto}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1"
+                    TextColor="{StaticResource TextPrimaryColor}" />
+
+                <Label
+                    Text="{Binding Locatario, StringFormat='Solicitado por {0}'}"
+                    FontSize="12"
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1"
+                    TextColor="{StaticResource TextMutedColor}" />
+
             </VerticalStackLayout>
+
         </Grid>
 
         <!-- Linha 2: status e botão -->
-        <HorizontalStackLayout Spacing="12">
-            <locacoes:EtiquetaStatus Status="{Binding Status}" VerticalOptions="Center" />
-            <Button Text="Ver detalhes"
-                    Style="{StaticResource BtnAcaoCardStyle}"
-                    Command="{Binding VerDetalhesCommand, Source={x:Reference Root}}" />
+        <HorizontalStackLayout
+            Spacing="12">
+
+            <locacoes:EtiquetaStatus
+                Status="{Binding Status}"
+                VerticalOptions="Center" />
+
+            <Button
+                Text="Ver detalhes"
+                Style="{StaticResource BtnAcaoCardStyle}"
+                Command="{Binding VerDetalhesCommand, Source={x:Reference Root}}" />
+
         </HorizontalStackLayout>
 
         <!-- Linha 3: período -->
-        <HorizontalStackLayout Spacing="6">
-            <mi:MauiIcon Icon="{mi:Material CalendarToday}" IconSize="14" IconColor="{StaticResource TextMutedColor}" VerticalOptions="Center" />
-            <Label Text="{Binding Periodo}" FontSize="12" TextColor="{StaticResource TextMutedColor}" VerticalOptions="Center" />
+        <HorizontalStackLayout
+            Spacing="6">
+
+            <mi:MauiIcon
+                Icon="{mi:Material CalendarToday}"
+                IconSize="14"
+                IconColor="{StaticResource TextMutedColor}"
+                VerticalOptions="Center" />
+
+            <Label
+                Text="{Binding Periodo}"
+                FontSize="12"
+                TextColor="{StaticResource TextMutedColor}"
+                VerticalOptions="Center" />
+
         </HorizontalStackLayout>
 
-        <BoxView HeightRequest="1" Color="{StaticResource CardBorderColor}" Margin="0,4,0,0" />
+        <BoxView
+            HeightRequest="1"
+            Color="{StaticResource CardBorderColor}"
+            Margin="0,4,0,0" />
+
     </VerticalStackLayout>
+
 </ContentView>

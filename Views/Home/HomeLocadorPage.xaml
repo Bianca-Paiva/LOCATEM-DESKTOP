@@ -422,8 +422,11 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="modelsLocacoes:Locacao">
 
+                                        <!-- Agora declaramos explicitamente a imagem aqui (vinda do modelo Locacao) -->
                                         <home:HomeLocadorSolicitacaoItem
-                                            VerDetalhesCommand="{Binding BindingContext.VerDetalhesSolicitacaoCommand, Source={x:Reference Pagina}}" />
+                                            Imagem="{Binding Imagem}"
+                                            VerDetalhesCommand="{Binding BindingContext.VerDetalhesSolicitacaoCommand, Source={x:Reference Pagina}}" 
+                                        />
 
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>

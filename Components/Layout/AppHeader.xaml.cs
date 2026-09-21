@@ -5,91 +5,285 @@ using MauiIcons.Material;
 namespace LOCATEM_DESKTOP.Components.Layout
 {
     /// <summary>
-    /// Cabeçalho das telas internas — migrado de components/Layout/Header/Header.tsx, na variante
-    /// desktop e já filtrado pelo perfil do locador (é o único perfil com telas internas migradas).
-    ///
-    /// Busca e carrinho não aparecem de propósito: no React eles também são ocultados para o locador,
-    /// que não realiza locações.
+    /// Cabeçalho das telas internas.
+    /// Exibe somente as opções disponíveis para o locador.
     /// </summary>
     public partial class AppHeader : ContentView
     {
-        private record NavItem(string Label, string Rota, MaterialIcons Icone);
+        private record NavItem(
+            string Label,
+            string Rota,
+            MaterialIcons Icone);
 
-        // Mesma lista (e ordem) dos itens visíveis ao locador no Header do React.
         private static readonly NavItem[] Itens =
         {
-            new("Início", "homeLocador", MaterialIcons.Home),
-            new("Minhas Ferramentas", "minhasFerramentas", MaterialIcons.Inventory),
-            new("Gerenciar Locações", "gerenciarLocacoes", MaterialIcons.Assignment),
-            new("Histórico", "historicoLocacoes", MaterialIcons.History),
-            new("Avaliações", "avaliacao", MaterialIcons.Star),
-            new("Notificações", "notificacoes", MaterialIcons.Notifications),
-            new("Suporte", "suporte", MaterialIcons.SupportAgent)
+            new(
+                "Início",
+                "homeLocador",
+                MaterialIcons.Home),
+
+            new(
+                "Minhas Ferramentas",
+                "minhasFerramentas",
+                MaterialIcons.Inventory),
+
+            new(
+                "Gerenciar Locações",
+                "gerenciarLocacoes",
+                MaterialIcons.Assignment),
+
+            new(
+                "Histórico",
+                "historicoLocacoes",
+                MaterialIcons.History),
+
+            new(
+                "Avaliações",
+                "avaliacao",
+                MaterialIcons.Star),
+
+            new(
+                "Notificações",
+                "notificacoes",
+                MaterialIcons.Notifications),
+
+            new(
+                "Suporte",
+                "suporte",
+                MaterialIcons.SupportAgent)
         };
 
         public AppHeader()
         {
             InitializeComponent();
+
             MontarNavegacao();
         }
 
-        public static readonly BindableProperty RotaAtualProperty =
-            BindableProperty.Create(nameof(RotaAtual), typeof(string), typeof(AppHeader), string.Empty,
-                propertyChanged: (b, _, _) => ((AppHeader)b).MontarNavegacao());
-        public string RotaAtual { get => (string)GetValue(RotaAtualProperty); set => SetValue(RotaAtualProperty, value); }
+        // =========================================================
+        // ROTA ATUAL
+        // =========================================================
 
-        /// <summary>Recebe a rota do item tocado como parâmetro.</summary>
+        public static readonly BindableProperty RotaAtualProperty =
+            BindableProperty.Create(
+                nameof(RotaAtual),
+                typeof(string),
+                typeof(AppHeader),
+                string.Empty,
+                propertyChanged: (bindable, _, _) =>
+                    ((AppHeader)bindable).MontarNavegacao());
+
+        public string RotaAtual
+        {
+            get => (string)GetValue(RotaAtualProperty);
+            set => SetValue(RotaAtualProperty, value);
+        }
+
+        // =========================================================
+        // COMANDO DE NAVEGAÇÃO
+        // =========================================================
+
         public static readonly BindableProperty NavegarCommandProperty =
-            BindableProperty.Create(nameof(NavegarCommand), typeof(ICommand), typeof(AppHeader),
-                propertyChanged: (b, _, _) => ((AppHeader)b).MontarNavegacao());
-        public ICommand? NavegarCommand { get => (ICommand?)GetValue(NavegarCommandProperty); set => SetValue(NavegarCommandProperty, value); }
+            BindableProperty.Create(
+                nameof(NavegarCommand),
+                typeof(ICommand),
+                typeof(AppHeader),
+                propertyChanged: (bindable, _, _) =>
+                    ((AppHeader)bindable).MontarNavegacao());
+
+        public ICommand? NavegarCommand
+        {
+            get => (ICommand?)GetValue(NavegarCommandProperty);
+            set => SetValue(NavegarCommandProperty, value);
+        }
+
+        // =========================================================
+        // NOME DO USUÁRIO
+        // =========================================================
 
         public static readonly BindableProperty NomeUsuarioProperty =
-            BindableProperty.Create(nameof(NomeUsuario), typeof(string), typeof(AppHeader), string.Empty,
-                propertyChanged: (b, _, v) => ((AppHeader)b).AvatarIniciais.Text = ExtrairIniciais(v as string));
-        public string NomeUsuario { get => (string)GetValue(NomeUsuarioProperty); set => SetValue(NomeUsuarioProperty, value); }
+            BindableProperty.Create(
+                nameof(NomeUsuario),
+                typeof(string),
+                typeof(AppHeader),
+                string.Empty,
+                propertyChanged: (bindable, _, novoValor) =>
+                {
+                    var header = (AppHeader)bindable;
+
+                    header.AvatarIniciais.Text =
+                        ExtrairIniciais(novoValor as string);
+                });
+
+        public string NomeUsuario
+        {
+            get => (string)GetValue(NomeUsuarioProperty);
+            set => SetValue(NomeUsuarioProperty, value);
+        }
+
+        // =========================================================
+        // NAVEGAÇÃO
+        // =========================================================
 
         private void MontarNavegacao()
         {
             Navegacao.Clear();
 
+            // Todos os itens da navegação ficam pretos.
+            var corTexto =
+                (Color)Application.Current!
+                    .Resources["TextPrimaryColor"];
+
             foreach (var item in Itens)
             {
-                var ativo = string.Equals(item.Rota, RotaAtual, StringComparison.OrdinalIgnoreCase);
-                var cor = ativo
-                    ? (Color)Application.Current!.Resources["TextPrimaryColor"]
-                    : (Color)Application.Current!.Resources["TextMutedColor"];
+                var ativo =
+                    string.Equals(
+                        item.Rota,
+                        RotaAtual,
+                        StringComparison.OrdinalIgnoreCase);
+
+                // -------------------------------------------------
+                // ÍCONE
+                // -------------------------------------------------
+
+                var icone = new MauiIcon
+                {
+                    Icon = item.Icone,
+                    IconSize = 20,
+                    IconColor = corTexto,
+
+                    VerticalOptions =
+                        LayoutOptions.Center
+                };
+
+                // -------------------------------------------------
+                // TEXTO
+                // -------------------------------------------------
+
+                var label = new Label
+                {
+                    Text = item.Label,
+
+                    FontSize = 13,
+
+                    TextColor = corTexto,
+
+                    VerticalOptions =
+                        LayoutOptions.Center,
+
+                    // Ativo = negrito
+                    FontAttributes =
+                        ativo
+                            ? FontAttributes.Bold
+                            : FontAttributes.None
+                };
+
+                // -------------------------------------------------
+                // CONTEÚDO DO ITEM
+                // -------------------------------------------------
 
                 var conteudo = new HorizontalStackLayout
                 {
                     Spacing = 6,
-                    Padding = new Thickness(10, 8),
+
+                    Padding =
+                        new Thickness(
+                            10,
+                            8,
+                            10,
+                            7),
+
+                    VerticalOptions =
+                        LayoutOptions.Center,
+
                     Children =
                     {
-                        new MauiIcon { Icon = item.Icone, IconSize = 20, IconColor = cor, VerticalOptions = LayoutOptions.Center },
-                        new Label { Text = item.Label, FontSize = 13, TextColor = cor, VerticalOptions = LayoutOptions.Center,
-                                    FontAttributes = ativo ? FontAttributes.Bold : FontAttributes.None }
+                        icone,
+                        label
                     }
                 };
 
-                var rota = item.Rota;
-                var toque = new TapGestureRecognizer();
-                toque.Tapped += (_, _) => NavegarCommand?.Execute(rota);
-                conteudo.GestureRecognizers.Add(toque);
+                // -------------------------------------------------
+                // LINHA INFERIOR
+                // -------------------------------------------------
 
-                Navegacao.Add(conteudo);
+                var linhaAtiva = new BoxView
+                {
+                    HeightRequest = 2,
+                    WidthRequest = 66,
+
+                    BackgroundColor =
+                        ativo
+                            ? corTexto
+                            : Colors.Transparent,
+
+                    HorizontalOptions =
+                        LayoutOptions.Fill
+                };
+
+                // -------------------------------------------------
+                // ITEM COMPLETO
+                // -------------------------------------------------
+
+                var container = new VerticalStackLayout
+                {
+                    Spacing = 0,
+
+                    Children =
+                    {
+                        conteudo,
+                        linhaAtiva
+                    }
+                };
+
+                // -------------------------------------------------
+                // CLIQUE
+                // -------------------------------------------------
+
+                var rota = item.Rota;
+
+                var toque =
+                    new TapGestureRecognizer();
+
+                toque.Tapped += (_, _) =>
+                {
+                    NavegarCommand?.Execute(rota);
+                };
+
+                container
+                    .GestureRecognizers
+                    .Add(toque);
+
+                Navegacao.Add(container);
             }
         }
 
-        /// <summary>Iniciais do nome, como o fallback do Avatar do React quando não há foto.</summary>
-        private static string ExtrairIniciais(string? nome)
-        {
-            if (string.IsNullOrWhiteSpace(nome)) return "?";
+        // =========================================================
+        // AVATAR
+        // =========================================================
 
-            var partes = nome.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            return partes.Length == 1
-                ? partes[0][..1].ToUpperInvariant()
-                : $"{partes[0][0]}{partes[^1][0]}".ToUpperInvariant();
+        private static string ExtrairIniciais(
+            string? nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                return "?";
+
+            var partes =
+                nome
+                    .Trim()
+                    .Split(
+                        ' ',
+                        StringSplitOptions.RemoveEmptyEntries);
+
+            if (partes.Length == 1)
+            {
+                return partes[0][..1]
+                    .ToUpperInvariant();
+            }
+
+            return
+                $"{partes[0][0]}{partes[^1][0]}"
+                    .ToUpperInvariant();
         }
     }
 }
