@@ -101,7 +101,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
 	  <Folder Include="Components\" />
 	  <Folder Include="Services\" />
 	  <Folder Include="Views\" />

@@ -3,6 +3,7 @@ using LOCATEM_DESKTOP.Helpers.Auth;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Validation.Auth;
 using LOCATEM_DESKTOP.ViewModels.Base;
+using LOCATEM_DESKTOP.Models.Auth;
 
 namespace LOCATEM_DESKTOP.ViewModels.Auth
 {
@@ -11,15 +12,22 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
     {
         private readonly IAuthSessionService _authSession;
         private readonly IRedirectAposLoginService _redirectService;
+        private readonly IAuthService _authService;
 
-        public LoginViewModel(IAuthSessionService authSession, IRedirectAposLoginService redirectService)
+        public LoginViewModel(
+        IAuthSessionService authSession,
+        IRedirectAposLoginService redirectService,
+        IAuthService authService)
         {
             _authSession = authSession;
             _redirectService = redirectService;
+            _authService = authService;
 
             EntrarCommand = new AsyncRelayCommand(EntrarAsync, () => IsNotBusy);
-            EsqueceuSenhaCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync("informeEmail"));
-            CriarContaCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync("cadastro"));
+            EsqueceuSenhaCommand = new AsyncRelayCommand(
+                async () => await Shell.Current.GoToAsync("informeEmail"));
+            CriarContaCommand = new AsyncRelayCommand(
+                async () => await Shell.Current.GoToAsync("cadastro"));
         }
 
         private string _email = string.Empty;
@@ -67,6 +75,20 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
+        private string _successMessage = string.Empty;
+
+        public string SuccessMessage
+        {
+            get => _successMessage;
+            set
+            {
+                if (SetProperty(ref _successMessage, value))
+                    OnPropertyChanged(nameof(HasSuccess));
+            }
+        }
+
+        public bool HasSuccess => !string.IsNullOrEmpty(SuccessMessage);
+
         public string EmailErrorText => EmailError.Active && string.IsNullOrWhiteSpace(Email)
             ? "O e-mail é obrigatório"
             : EmailError.Active ? "Digite um e-mail válido" : string.Empty;
@@ -101,18 +123,62 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
             IsBusy = true;
             ErrorMessage = string.Empty;
+            SuccessMessage = string.Empty;
 
             try
             {
-                // O AuthService (chamada HTTP real) ainda não está integrado a um backend real
-                // neste fluxo — igual ao React, onde a chamada a loginUsuario() fica comentada e
-                // o usuário autenticado é resolvido a partir do catálogo mockado.
-                if (Senha == "erro-login")
-                    throw new InvalidOperationException("Falha de autenticacao simulada");
+                var resultado = await _authService.LoginAsync(
+    new LoginPayload
+    {
+        Email = Email.Trim(),
+        Senha = Senha
+    }
+);
 
-                _authSession.Login(Email);
+                var perfil = await _authService.BuscarUsuarioLogadoAsync(
+                    resultado.Token
+                );
+
+                if (!Enum.TryParse<TipoUsuario>(
+                    perfil.TipoUsuario,
+                    true,
+                    out var tipoUsuario))
+                {
+                    throw new InvalidOperationException(
+                        "Tipo de usuário retornado pela API é inválido."
+                    );
+                }
+
+                var usuario = new Usuario
+                {
+                    Id = perfil.Id.ToString(),
+                    Nome = perfil.Nome,
+                    Email = perfil.Email,
+                    Telefone = perfil.Telefone,
+                    Documento = perfil.Documento,
+                    Endereco = perfil.Endereco ?? string.Empty,
+                    Tipo = tipoUsuario,
+                    FotoUrl = perfil.FotoUrl,
+                    EmailVerificado = false,
+                    Desde = perfil.Desde,
+                    Reputacao = new ReputacaoUsuario
+                    {
+                        Rating = perfil.Reputacao.Rating,
+                        TotalAvaliacoes = perfil.Reputacao.TotalAvaliacoes,
+                        LocacoesConcluidas = perfil.Reputacao.LocacoesConcluidas,
+                        EntregasNoPrazoPercentual =
+                            perfil.Reputacao.EntregasNoPrazoPercentual
+                    },
+                    Token = resultado.Token
+                };
+
+                _authSession.DefinirUsuario(usuario);
+
+                SuccessMessage = "Login concluído com sucesso!";
+                await Task.Delay(1500);
 
                 var rotaRedirect = _redirectService.LerRedirect();
+
                 if (rotaRedirect is not null)
                 {
                     _redirectService.LimparRedirect();
@@ -120,14 +186,12 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 }
                 else
                 {
-                    // NOTA DE ESCOPO: a Home ainda não foi migrada para o MAUI (fora do escopo
-                    // de Login/Cadastro desta tarefa). Assim que existir, troque a rota abaixo.
                     await Shell.Current.GoToAsync("//login");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                ErrorMessage = "E-mail ou senha inválidos.";
+                ErrorMessage = ex.Message;
             }
             finally
             {

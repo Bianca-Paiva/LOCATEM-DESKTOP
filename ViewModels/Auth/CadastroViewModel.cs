@@ -58,8 +58,21 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             get => _telefone;
             set
             {
-                var mascarado = MaskHelper.MaskPhone(value);
-                if (SetProperty(ref _telefone, mascarado)) TelefoneError.Clear();
+                var inputLimpo = System.Text.RegularExpressions.Regex.Replace(value ?? "", @"[^0-9\(\)\s\-]", "");
+                var mascarado = MaskHelper.MaskPhone(inputLimpo);
+
+                if (SetProperty(ref _telefone, mascarado))
+                {
+                    TelefoneError.Clear();
+                }
+                else if (value != mascarado)
+                {
+                    // PULO DO GATO PARA DESKTOP:
+                    // Se o usuário digitou uma letra, o 'value' tem letra, mas o 'mascarado' não.
+                    // Como o SetProperty deu false (o valor final já era igual ao anterior),
+                    // precisamos forçar a tela a apagar a letra imediatamente:
+                    OnPropertyChanged(nameof(Telefone));
+                }
             }
         }
 
@@ -69,8 +82,17 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             get => _documento;
             set
             {
-                var mascarado = MaskHelper.MaskCnpj(value);
-                if (SetProperty(ref _documento, mascarado)) DocumentoError.Clear();
+                var inputLimpo = System.Text.RegularExpressions.Regex.Replace(value ?? "", @"[^0-9\.\/\-]", "");
+                var mascarado = MaskHelper.MaskCnpj(inputLimpo);
+
+                if (SetProperty(ref _documento, mascarado))
+                {
+                    DocumentoError.Clear();
+                }
+                else if (value != mascarado)
+                {
+                    OnPropertyChanged(nameof(Documento)); // Força apagar a letra
+                }
             }
         }
 
@@ -80,8 +102,17 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             get => _cep;
             set
             {
-                var mascarado = MaskHelper.MaskCep(value);
-                if (SetProperty(ref _cep, mascarado)) CepError.Clear();
+                var inputLimpo = System.Text.RegularExpressions.Regex.Replace(value ?? "", @"[^0-9\-]", "");
+                var mascarado = MaskHelper.MaskCep(inputLimpo);
+
+                if (SetProperty(ref _cep, mascarado))
+                {
+                    CepError.Clear();
+                }
+                else if (value != mascarado)
+                {
+                    OnPropertyChanged(nameof(Cep)); // Força apagar a letra
+                }
             }
         }
 
@@ -303,15 +334,18 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                     Email = data.Email,
                     Senha = data.Senha,
                     ConfirmarSenha = data.ConfirmarSenha,
-                    Telefone = data.Telefone,
+                    Telefone = System.Text.RegularExpressions.Regex.Replace(data.Telefone, @"\D", string.Empty),
                     Documento = System.Text.RegularExpressions.Regex.Replace(data.Documento, @"\D", string.Empty),
                     TipoUsuario = 2 // Locador — este desktop é exclusivo para locadores.
                 });
 
                 SuccessModalOpen = true;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("ERRO CADASTRO MAUI:");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
                 Alerta = CadastroMessages.ApiError;
             }
             finally

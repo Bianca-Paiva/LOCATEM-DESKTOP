@@ -65,7 +65,43 @@
                                 <Label Text="Não foi possível entrar" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource ErrorStrongColor}" />
                                 <Label Text="{Binding ErrorMessage}" FontSize="12" TextColor="{StaticResource ErrorTextColor}" />
                             </VerticalStackLayout>
+                            
                         </Grid>
+                        <Border
+    IsVisible="{Binding HasSuccess}"
+    BackgroundColor="#E8F7EC"
+    Stroke="#8BD3A0"
+    StrokeThickness="1"
+    StrokeShape="RoundRectangle 10"
+    Padding="12"
+    Margin="0,0,0,0">
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+
+                                <mi:MauiIcon
+            Grid.Column="0"
+            Icon="{mi:Material CheckCircle}"
+            IconSize="18"
+            IconColor="#218838"
+            VerticalOptions="Start" />
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="1">
+
+                                    <Label
+                Text="Login concluído"
+                FontSize="13"
+                FontAttributes="Bold"
+                TextColor="#218838" />
+
+                                    <Label
+                Text="{Binding SuccessMessage}"
+                FontSize="12"
+                TextColor="#2F6B3C" />
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
 
                         <Label 
                             Text="Esqueceu sua senha?"

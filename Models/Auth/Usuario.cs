@@ -14,6 +14,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
         public string Id { get; set; } = string.Empty;
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string? Token { get; set; }
         public string Telefone { get; set; } = string.Empty;
 
         /// <summary>CNPJ (locador) — sem máscara ou com, conforme preenchido no cadastro/edição.</summary>
@@ -41,6 +42,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
         public Usuario CopiarCom(
             string? nome = null,
             string? email = null,
+
             string? telefone = null,
             string? documento = null,
             string? endereco = null,

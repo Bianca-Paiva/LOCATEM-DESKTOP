@@ -53,6 +53,11 @@ namespace LOCATEM_DESKTOP.Components.Shared
         /// <summary>Inverso de IsPasswordVisible — passado ao Entry.IsPassword.</summary>
         public bool IsPassword => !IsPasswordVisible;
 
+        // Novo: MaxLength para repassar ao Entry interno (0 = sem limite)
+        public static readonly BindableProperty MaxLengthProperty =
+            BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PasswordEntry), 0, propertyChanged: OnMaxLengthChanged);
+        public int MaxLength { get => (int)GetValue(MaxLengthProperty); set => SetValue(MaxLengthProperty, value); }
+
         private static void OnErrorTextChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((PasswordEntry)bindable).HasErrorText = !string.IsNullOrEmpty(newValue as string);
@@ -64,6 +69,16 @@ namespace LOCATEM_DESKTOP.Components.Shared
             view.InputBorder.Stroke = (FieldStatus)newValue == FieldStatus.Erro
                 ? (Brush)Application.Current!.Resources["ErrorBrush"]
                 : new SolidColorBrush((Color)Application.Current!.Resources["InputBorderColor"]);
+        }
+
+        private static void OnMaxLengthChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var view = (PasswordEntry)bindable;
+            // Se o XAML já vinculou InnerEntry.MaxLength, isso garante que mudanças via código também reflitam.
+            if (view.InnerEntry is not null)
+            {
+                view.InnerEntry.MaxLength = (int)newValue;
+            }
         }
 
         private void OnToggleVisibilityClicked(object? sender, TappedEventArgs e)
