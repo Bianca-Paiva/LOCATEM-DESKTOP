@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using MauiIcons.Material;
+using MauiIcons.Material.Outlined;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.Services.Locacoes;
@@ -19,6 +20,7 @@ namespace LOCATEM_DESKTOP
             builder
                 .UseMauiApp<App>()
                 .UseMaterialMauiIcons() // AathifMahir.Maui.MauiIcons.Material — usado nos ícones do fluxo de Auth
+                .UseMaterialOutlinedMauiIcons() // AathifMahir.Maui.MauiIcons.Material.Outlined — usado nos ícones do fluxo de Auth
                 .ConfigureFonts(fonts =>
                 {
 

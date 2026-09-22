@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <ContentPage
     x:Class="LOCATEM_DESKTOP.Views.Home.HomeLocadorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -19,12 +20,22 @@
     BackgroundColor="{StaticResource AuthBackgroundColor}">
 
     <ScrollView>
+
         <VerticalStackLayout Spacing="0">
+
+            <!-- =========================================================
+                 HEADER
+                 ========================================================= -->
 
             <layout:AppHeader
                 RotaAtual="homeLocador"
                 NomeUsuario="{Binding NomeUsuario}"
                 NavegarCommand="{Binding NavegarCommand}" />
+
+
+            <!-- =========================================================
+                 CONTEÚDO DA PÁGINA
+                 ========================================================= -->
 
             <VerticalStackLayout
                 Padding="24,20,24,48"
@@ -35,26 +46,39 @@
                     Titulo="{Binding Saudacao}"
                     Subtitulo="{Binding Subtitulo}" />
 
-                <!-- ── Cards de resumo ───────────────────────────────────── -->
+
+                <!-- =====================================================
+                     CARDS DE RESUMO
+                     ===================================================== -->
+
                 <FlexLayout
+                    Direction="Row"
                     Wrap="Wrap"
                     JustifyContent="Start"
                     AlignItems="Stretch">
 
-                    <!-- Ferramentas ativas -->
+
+                    <!-- =================================================
+                         FERRAMENTAS ATIVAS
+                         ================================================= -->
+
                     <Border
                         FlexLayout.Grow="1"
-                        FlexLayout.Basis="220"
-                        Margin="0,0,16,16"
+                        FlexLayout.Shrink="1"
+                        FlexLayout.Basis="230"
+                        MinimumWidthRequest="210"
+                        Margin="0,0,12,16"
                         Padding="20,18"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
                         BackgroundColor="{StaticResource AuthCardBackgroundColor}">
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="14">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
 
+                            <!-- Ícone -->
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="44"
@@ -70,8 +94,10 @@
                                     IconColor="{StaticResource InfoColor}"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center" />
+
                             </Border>
 
+                            <!-- Informações -->
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 Spacing="0">
@@ -79,41 +105,54 @@
                                 <Label
                                     Text="Ferramentas ativas"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     Margin="0,0,0,6"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                                 <Label
                                     Text="{Binding FerramentasAtivas}"
                                     FontSize="26"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
                                 <Label
                                     Text="{Binding FerramentasTendencia}"
                                     Margin="0,4,0,0"
                                     FontSize="12"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
+                                    LineBreakMode="WordWrap"
                                     TextColor="{StaticResource SuccessStrongColor}" />
 
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </Border>
 
-                    <!-- Locações em andamento -->
+
+                    <!-- =================================================
+                         LOCAÇÕES EM ANDAMENTO
+                         ================================================= -->
+
                     <Border
                         FlexLayout.Grow="1"
-                        FlexLayout.Basis="220"
-                        Margin="0,0,16,16"
+                        FlexLayout.Shrink="1"
+                        FlexLayout.Basis="230"
+                        MinimumWidthRequest="210"
+                        Margin="0,0,12,16"
                         Padding="20,18"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
                         BackgroundColor="{StaticResource AuthCardBackgroundColor}">
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="14">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
 
+                            <!-- Ícone -->
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="44"
@@ -129,8 +168,10 @@
                                     IconColor="{StaticResource InfoColor}"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center" />
+
                             </Border>
 
+                            <!-- Informações -->
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 Spacing="0">
@@ -138,40 +179,53 @@
                                 <Label
                                     Text="Locações em andamento"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     Margin="0,0,0,6"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                                 <Label
                                     Text="{Binding LocacoesEmAndamento}"
                                     FontSize="26"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
                                 <Label
                                     Text="{Binding LocacoesLegenda}"
                                     Margin="0,4,0,0"
                                     FontSize="12"
+                                    LineBreakMode="WordWrap"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </Border>
 
-                    <!-- Solicitações pendentes -->
+
+                    <!-- =================================================
+                         SOLICITAÇÕES PENDENTES
+                         ================================================= -->
+
                     <Border
                         FlexLayout.Grow="1"
-                        FlexLayout.Basis="220"
-                        Margin="0,0,16,16"
+                        FlexLayout.Shrink="1"
+                        FlexLayout.Basis="230"
+                        MinimumWidthRequest="210"
+                        Margin="0,0,12,16"
                         Padding="20,18"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
                         BackgroundColor="{StaticResource AuthCardBackgroundColor}">
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="14">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
 
+                            <!-- Ícone -->
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="44"
@@ -187,8 +241,10 @@
                                     IconColor="{StaticResource WarningColor}"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center" />
+
                             </Border>
 
+                            <!-- Informações -->
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 Spacing="0">
@@ -196,40 +252,53 @@
                                 <Label
                                     Text="Solicitações pendentes"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     Margin="0,0,0,6"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                                 <Label
                                     Text="{Binding SolicitacoesPendentes}"
                                     FontSize="26"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
                                 <Label
                                     Text="Aguardando sua resposta"
                                     Margin="0,4,0,0"
                                     FontSize="12"
+                                    LineBreakMode="WordWrap"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </Border>
 
-                    <!-- Faturamento do mês -->
+
+                    <!-- =================================================
+                         FATURAMENTO DO MÊS
+                         ================================================= -->
+
                     <Border
                         FlexLayout.Grow="1"
-                        FlexLayout.Basis="220"
-                        Margin="0,0,16,16"
+                        FlexLayout.Shrink="1"
+                        FlexLayout.Basis="230"
+                        MinimumWidthRequest="210"
+                        Margin="0,0,12,16"
                         Padding="20,18"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
                         BackgroundColor="{StaticResource AuthCardBackgroundColor}">
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="14">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
 
+                            <!-- Ícone -->
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="44"
@@ -245,8 +314,10 @@
                                     IconColor="{StaticResource SuccessStrongColor}"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center" />
+
                             </Border>
 
+                            <!-- Informações -->
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 Spacing="0">
@@ -254,41 +325,55 @@
                                 <Label
                                     Text="Faturamento do mês"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     Margin="0,0,0,6"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                                 <Label
                                     Text="{Binding FaturamentoMes}"
                                     FontSize="26"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
+                                    LineBreakMode="NoWrap"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
                                 <Label
                                     Text="{Binding FaturamentoTendencia}"
                                     Margin="0,4,0,0"
                                     FontSize="12"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
+                                    LineBreakMode="WordWrap"
                                     TextColor="{StaticResource SuccessStrongColor}" />
 
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </Border>
 
-                    <!-- Avaliação média -->
+
+                    <!-- =================================================
+                         AVALIAÇÃO MÉDIA
+                         ================================================= -->
+
                     <Border
                         FlexLayout.Grow="1"
-                        FlexLayout.Basis="220"
-                        Margin="0,0,16,16"
+                        FlexLayout.Shrink="1"
+                        FlexLayout.Basis="230"
+                        MinimumWidthRequest="210"
+                        Margin="0,0,12,16"
                         Padding="20,18"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
                         BackgroundColor="{StaticResource AuthCardBackgroundColor}">
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="14">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
 
+                            <!-- Ícone -->
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="44"
@@ -304,8 +389,10 @@
                                     IconColor="{StaticResource StarColor}"
                                     HorizontalOptions="Center"
                                     VerticalOptions="Center" />
+
                             </Border>
 
+                            <!-- Informações -->
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 Spacing="0">
@@ -313,45 +400,76 @@
                                 <Label
                                     Text="Avaliação média"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     Margin="0,0,0,6"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
                                     TextColor="{StaticResource TextMutedColor}" />
 
                                 <Label
                                     Text="{Binding AvaliacaoMedia}"
                                     FontSize="26"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
-                                <HorizontalStackLayout
-                                    Spacing="6"
+                                <!--
+                                    FlexLayout em vez de HorizontalStackLayout.
+                                    Se não houver espaço, o total de avaliações
+                                    vai automaticamente para baixo.
+                                -->
+                                <FlexLayout
+                                    Direction="Row"
+                                    Wrap="Wrap"
+                                    AlignItems="Center"
+                                    JustifyContent="Start"
                                     Margin="0,4,0,0">
 
                                     <avaliacoes:EstrelasAvaliacao
-                                        Nota="{Binding AvaliacaoNota}" />
+                                        Nota="{Binding AvaliacaoNota}"
+                                        Margin="0,0,6,4" />
 
                                     <Label
                                         Text="{Binding TotalAvaliacoes}"
                                         FontSize="12"
+                                        Margin="0,0,0,4"
                                         VerticalOptions="Center"
                                         TextColor="{StaticResource TextMutedColor}" />
 
-                                </HorizontalStackLayout>
+                                </FlexLayout>
 
                             </VerticalStackLayout>
+
                         </Grid>
+
                     </Border>
 
                 </FlexLayout>
 
-                <!-- ── Solicitações Recentes / Agenda da Semana ───────────── -->
-                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Start">
+
+                <!-- =====================================================
+                     SOLICITAÇÕES RECENTES / AGENDA DA SEMANA
+                     ===================================================== -->
+
+                <Grid
+                    x:Name="PainelOperacionalGrid"
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto,Auto"
+                    ColumnSpacing="20"
+                    RowSpacing="20"
+                    SizeChanged="PainelOperacionalGrid_SizeChanged">
+
+
+                    <!-- =================================================
+                         SOLICITAÇÕES RECENTES
+                         ================================================= -->
 
                     <Border
-                        FlexLayout.Grow="1"
-                        FlexLayout.Basis="360"
-                        Margin="0,0,20,20"
+                        x:Name="SolicitacoesRecentesCard"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         Padding="20"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
@@ -359,6 +477,7 @@
 
                         <VerticalStackLayout Spacing="0">
 
+                            <!-- Cabeçalho -->
                             <Grid
                                 ColumnDefinitions="*,Auto"
                                 ColumnSpacing="12"
@@ -371,12 +490,13 @@
                                     <Label
                                         Text="Solicitações Recentes"
                                         FontSize="15"
-                                        FontAttributes="Bold"
+                                        FontFamily="InterBold"
                                         TextColor="{StaticResource TextPrimaryColor}" />
 
                                     <Label
                                         Text="Confira as últimas solicitações de locação das suas ferramentas."
                                         FontSize="13"
+                                        LineBreakMode="WordWrap"
                                         TextColor="{StaticResource TextMutedColor}" />
 
                                 </VerticalStackLayout>
@@ -384,17 +504,21 @@
                                 <HorizontalStackLayout
                                     Grid.Column="1"
                                     Spacing="4"
+                                    HorizontalOptions="End"
                                     VerticalOptions="Start">
 
                                     <HorizontalStackLayout.GestureRecognizers>
+
                                         <TapGestureRecognizer
                                             Command="{Binding VerTodasSolicitacoesCommand}" />
+
                                     </HorizontalStackLayout.GestureRecognizers>
 
                                     <Label
                                         Text="Ver todas"
                                         FontSize="13"
-                                        FontAttributes="Bold"
+                                        FontFamily="InterBold"
+                                        LineBreakMode="NoWrap"
                                         TextColor="{StaticResource AuthSecondaryColor}"
                                         VerticalOptions="Center" />
 
@@ -405,8 +529,11 @@
                                         VerticalOptions="Center" />
 
                                 </HorizontalStackLayout>
+
                             </Grid>
 
+
+                            <!-- Estado vazio -->
                             <Label
                                 Text="Nenhuma solicitação por aqui ainda."
                                 IsVisible="{Binding SemSolicitacoes}"
@@ -415,32 +542,43 @@
                                 HorizontalTextAlignment="Center"
                                 TextColor="{StaticResource TextMutedColor}" />
 
+
+                            <!-- Lista -->
                             <VerticalStackLayout
                                 BindableLayout.ItemsSource="{Binding SolicitacoesRecentes}"
                                 IsVisible="{Binding TemSolicitacoes}">
 
                                 <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="modelsLocacoes:Locacao">
 
-                                        <!-- Agora declaramos explicitamente a imagem aqui (vinda do modelo Locacao) -->
+                                    <DataTemplate
+                                        x:DataType="modelsLocacoes:Locacao">
+
                                         <home:HomeLocadorSolicitacaoItem
                                             Imagem="{Binding Imagem}"
-                                            VerDetalhesCommand="{Binding BindingContext.VerDetalhesSolicitacaoCommand, Source={x:Reference Pagina}}" 
-                                        />
+                                            VerDetalhesCommand="{Binding BindingContext.VerDetalhesSolicitacaoCommand, Source={x:Reference Pagina}}" />
 
                                     </DataTemplate>
+
                                 </BindableLayout.ItemTemplate>
 
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>
+
                     </Border>
 
+
+                    <!-- =================================================
+                         AGENDA DA SEMANA
+                         ================================================= -->
+
                     <Border
-                        FlexLayout.Grow="1"
-                        FlexLayout.Basis="360"
-                        Margin="0,0,0,20"
+                        x:Name="AgendaSemanaCard"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Padding="20"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start"
                         StrokeThickness="1"
                         Stroke="{StaticResource CardBorderColor}"
                         StrokeShape="RoundRectangle 14"
@@ -448,6 +586,7 @@
 
                         <VerticalStackLayout Spacing="0">
 
+                            <!-- Cabeçalho -->
                             <Grid
                                 ColumnDefinitions="*,Auto"
                                 ColumnSpacing="12"
@@ -460,12 +599,13 @@
                                     <Label
                                         Text="Agenda da Semana"
                                         FontSize="15"
-                                        FontAttributes="Bold"
+                                        FontFamily="InterBold"
                                         TextColor="{StaticResource TextPrimaryColor}" />
 
                                     <Label
                                         Text="Próximos movimentos logísticos das suas ferramentas."
                                         FontSize="13"
+                                        LineBreakMode="WordWrap"
                                         TextColor="{StaticResource TextMutedColor}" />
 
                                 </VerticalStackLayout>
@@ -473,13 +613,14 @@
                                 <HorizontalStackLayout
                                     Grid.Column="1"
                                     Spacing="4"
-                                    Opacity="0.8"
+                                    HorizontalOptions="End"
                                     VerticalOptions="Start">
 
                                     <Label
                                         Text="Ver agenda completa"
                                         FontSize="13"
-                                        FontAttributes="Bold"
+                                        FontFamily="InterBold"
+                                        LineBreakMode="NoWrap"
                                         TextColor="{StaticResource AuthSecondaryColor}"
                                         VerticalOptions="Center" />
 
@@ -490,8 +631,11 @@
                                         VerticalOptions="Center" />
 
                                 </HorizontalStackLayout>
+
                             </Grid>
 
+
+                            <!-- Estado vazio -->
                             <Label
                                 Text="Nenhum movimento logístico previsto no momento."
                                 IsVisible="{Binding SemAgenda}"
@@ -500,26 +644,36 @@
                                 HorizontalTextAlignment="Center"
                                 TextColor="{StaticResource TextMutedColor}" />
 
+
+                            <!-- Lista -->
                             <VerticalStackLayout
                                 BindableLayout.ItemsSource="{Binding AgendaSemana}"
                                 IsVisible="{Binding TemAgenda}">
 
                                 <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="modelsHome:AgendaSemanaLocadorItem">
+
+                                    <DataTemplate
+                                        x:DataType="modelsHome:AgendaSemanaLocadorItem">
 
                                         <home:HomeLocadorAgendaItem />
 
                                     </DataTemplate>
+
                                 </BindableLayout.ItemTemplate>
 
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>
+
                     </Border>
 
-                </FlexLayout>
+                </Grid>
 
-                <!-- ── Minhas Ferramentas ────────────────────────────────── -->
+
+                <!-- =====================================================
+                     MINHAS FERRAMENTAS
+                     ===================================================== -->
+
                 <Border
                     Padding="20"
                     StrokeThickness="1"
@@ -529,6 +683,7 @@
 
                     <VerticalStackLayout Spacing="0">
 
+                        <!-- Cabeçalho -->
                         <Grid
                             ColumnDefinitions="*,Auto"
                             ColumnSpacing="12"
@@ -541,7 +696,7 @@
                                 <Label
                                     Text="Minhas Ferramentas"
                                     FontSize="15"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource TextPrimaryColor}" />
 
                                 <Label
@@ -557,14 +712,16 @@
                                 VerticalOptions="Start">
 
                                 <HorizontalStackLayout.GestureRecognizers>
+
                                     <TapGestureRecognizer
                                         Command="{Binding VerTodasFerramentasCommand}" />
+
                                 </HorizontalStackLayout.GestureRecognizers>
 
                                 <Label
                                     Text="Ver todas"
                                     FontSize="13"
-                                    FontAttributes="Bold"
+                                    FontFamily="InterBold"
                                     TextColor="{StaticResource AuthSecondaryColor}"
                                     VerticalOptions="Center" />
 
@@ -575,7 +732,9 @@
                                     VerticalOptions="Center" />
 
                             </HorizontalStackLayout>
+
                         </Grid>
+
 
                         <!-- Carrossel horizontal -->
                         <ScrollView
@@ -592,7 +751,9 @@
                                     BindableLayout.ItemsSource="{Binding MinhasFerramentas}">
 
                                     <BindableLayout.ItemTemplate>
-                                        <DataTemplate x:DataType="modelsFerramentas:ProdutoHome">
+
+                                        <DataTemplate
+                                            x:DataType="modelsFerramentas:ProdutoHome">
 
                                             <ferramentas:ProductCard
                                                 WidthRequest="210"
@@ -609,21 +770,29 @@
                                                 EditarCommand="{Binding BindingContext.EditarFerramentaCommand, Source={x:Reference Pagina}}" />
 
                                         </DataTemplate>
+
                                     </BindableLayout.ItemTemplate>
 
                                 </HorizontalStackLayout>
 
+
+                                <!-- Novo anúncio -->
                                 <home:HomeLocadorCardNovaFerramenta
                                     WidthRequest="210"
                                     CadastrarCommand="{Binding CadastrarFerramentaCommand}" />
 
                             </HorizontalStackLayout>
+
                         </ScrollView>
 
                     </VerticalStackLayout>
+
                 </Border>
 
             </VerticalStackLayout>
+
         </VerticalStackLayout>
+
     </ScrollView>
+
 </ContentPage>

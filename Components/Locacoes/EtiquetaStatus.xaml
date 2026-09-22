@@ -9,10 +9,16 @@
             Padding="9,4"
             StrokeThickness="1"
             StrokeShape="RoundRectangle 999"
-            HorizontalOptions="Start">
+            HorizontalOptions="Start"
+    >
         <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
             <mi:MauiIcon x:Name="Icone" IconSize="13" VerticalOptions="Center" />
-            <Label x:Name="Texto" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" />
+            <Label 
+                x:Name="Texto" 
+                FontSize="12" 
+                FontFamily="InterBold" 
+                VerticalOptions="Center" 
+            />
         </HorizontalStackLayout>
     </Border>
 </ContentView>

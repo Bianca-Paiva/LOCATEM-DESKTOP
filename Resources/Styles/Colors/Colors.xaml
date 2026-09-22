@@ -16,7 +16,7 @@
     <Color x:Key="AuthPrimaryHoverColor">#E6B800</Color>
     <Color x:Key="AuthPrimaryLightColor">#FFE97A</Color>
     <Color x:Key="AuthPrimarySoftColor">#FFF6C7</Color>
-    <Color x:Key="AuthSecondaryColor">#F0C000C0</Color>
+    <Color x:Key="AuthSecondaryColor">#D4AF00</Color>
 
     <!-- Fundos (equivalente a color-bg-*) -->
     <Color x:Key="AuthBackgroundColor">#F9FAFB</Color>

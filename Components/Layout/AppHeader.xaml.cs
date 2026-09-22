@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using MauiIcons.Core;
 using MauiIcons.Material;
+using MauiIcons.Material.Outlined;
 
 namespace LOCATEM_DESKTOP.Components.Layout
 {
@@ -13,44 +14,52 @@ namespace LOCATEM_DESKTOP.Components.Layout
         private record NavItem(
             string Label,
             string Rota,
-            MaterialIcons Icone);
+            Enum IconeOutlined,
+            Enum IconePreenchido);
 
         private static readonly NavItem[] Itens =
         {
             new(
                 "Início",
                 "homeLocador",
+                MaterialOutlinedIcons.Home,
                 MaterialIcons.Home),
 
             new(
                 "Minhas Ferramentas",
                 "minhasFerramentas",
-                MaterialIcons.Inventory),
+                MaterialOutlinedIcons.Inventory2,
+                MaterialIcons.Inventory2),
 
             new(
                 "Gerenciar Locações",
                 "gerenciarLocacoes",
+                MaterialOutlinedIcons.Assignment,
                 MaterialIcons.Assignment),
 
             new(
                 "Histórico",
                 "historicoLocacoes",
+                MaterialOutlinedIcons.History,
                 MaterialIcons.History),
 
             new(
                 "Avaliações",
                 "avaliacao",
+                MaterialOutlinedIcons.StarBorder,
                 MaterialIcons.Star),
 
             new(
                 "Notificações",
                 "notificacoes",
+                MaterialOutlinedIcons.Notifications,
                 MaterialIcons.Notifications),
 
             new(
                 "Suporte",
                 "suporte",
-                MaterialIcons.SupportAgent)
+                MaterialOutlinedIcons.HeadsetMic,
+                MaterialIcons.HeadsetMic)
         };
 
         public AppHeader()
@@ -148,12 +157,13 @@ namespace LOCATEM_DESKTOP.Components.Layout
 
                 var icone = new MauiIcon
                 {
-                    Icon = item.Icone,
+                    Icon = ativo
+                        ? item.IconePreenchido
+                        : item.IconeOutlined,
+
                     IconSize = 20,
                     IconColor = corTexto,
-
-                    VerticalOptions =
-                        LayoutOptions.Center
+                    VerticalOptions = LayoutOptions.Center
                 };
 
                 // -------------------------------------------------
@@ -163,13 +173,9 @@ namespace LOCATEM_DESKTOP.Components.Layout
                 var label = new Label
                 {
                     Text = item.Label,
-
                     FontSize = 13,
-
                     TextColor = corTexto,
-
-                    VerticalOptions =
-                        LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
 
                     // Ativo = negrito
                     FontAttributes =
@@ -209,16 +215,15 @@ namespace LOCATEM_DESKTOP.Components.Layout
 
                 var linhaAtiva = new BoxView
                 {
-                    HeightRequest = 2,
-                    WidthRequest = 66,
-
+                    HeightRequest = 2,        
+                    
                     BackgroundColor =
-                        ativo
-                            ? corTexto
-                            : Colors.Transparent,
+                    ativo
+                        ? corTexto
+                        : Colors.Transparent,
 
-                    HorizontalOptions =
-                        LayoutOptions.Fill
+                    HorizontalOptions = LayoutOptions.Fill,
+                    Margin = new Thickness(10, 0)
                 };
 
                 // -------------------------------------------------
