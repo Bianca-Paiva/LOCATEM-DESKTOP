@@ -94,6 +94,7 @@
                             />
 
                             <auth:PasswordStrengthMeter 
+                                IsVisible="{Binding MostrarMedidorSenha}"
                                 Visivel="{Binding MostrarMedidorSenha}" 
                                 Strength="{Binding StrengthResult.Strength}" 
                             />

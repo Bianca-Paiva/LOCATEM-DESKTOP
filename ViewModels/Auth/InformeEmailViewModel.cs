@@ -12,7 +12,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         {
             EnviarEmailCommand = new RelayCommand(EnviarEmail);
             IrParaLoginCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync("//login"));
-            IrParaCadastroCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync("//cadastro"));
+            IrParaCadastroCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync("cadastro"));
             ContatoSuporteCommand = new AsyncRelayCommand(async () =>
                 await Shell.Current.DisplayAlert("Suporte", "Esta funcionalidade está em desenvolvimento.", "OK"));
         }

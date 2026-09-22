@@ -55,7 +55,7 @@ namespace LOCATEM_DESKTOP.Components.Shared
 
         // Novo: MaxLength para repassar ao Entry interno (0 = sem limite)
         public static readonly BindableProperty MaxLengthProperty =
-            BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PasswordEntry), 0, propertyChanged: OnMaxLengthChanged);
+            BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PasswordEntry), int.MaxValue, propertyChanged: OnMaxLengthChanged);
         public int MaxLength { get => (int)GetValue(MaxLengthProperty); set => SetValue(MaxLengthProperty, value); }
 
         private static void OnErrorTextChanged(BindableObject bindable, object oldValue, object newValue)

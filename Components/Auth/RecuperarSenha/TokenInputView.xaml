@@ -13,23 +13,28 @@
 
         <Border x:Name="Box0" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
             <Entry x:Name="Entry0" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
-                   TextChanged="OnDigitTextChanged" />
+                   TextChanged="OnDigitTextChanged" 
+                   TextColor="{StaticResource TextPrimaryColor}"/>
         </Border>
         <Border x:Name="Box1" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
             <Entry x:Name="Entry1" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
-                   TextChanged="OnDigitTextChanged" />
+                   TextChanged="OnDigitTextChanged" 
+                   TextColor="{StaticResource TextPrimaryColor}"/>
         </Border>
         <Border x:Name="Box2" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
             <Entry x:Name="Entry2" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
-                   TextChanged="OnDigitTextChanged" />
+                   TextChanged="OnDigitTextChanged" 
+                   TextColor="{StaticResource TextPrimaryColor}"/>
         </Border>
         <Border x:Name="Box3" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
             <Entry x:Name="Entry3" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
-                   TextChanged="OnDigitTextChanged" />
+                   TextChanged="OnDigitTextChanged" 
+                   TextColor="{StaticResource TextPrimaryColor}"/>
         </Border>
         <Border x:Name="Box4" WidthRequest="80" HeightRequest="120" StrokeShape="RoundRectangle 10" Stroke="#D0D5DD">
             <Entry x:Name="Entry4" MaxLength="1" Keyboard="Numeric" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold"
-                   TextChanged="OnDigitTextChanged" />
+                   TextChanged="OnDigitTextChanged" 
+                   TextColor="{StaticResource TextPrimaryColor}"/>
         </Border>
     </HorizontalStackLayout>
 </ContentView>

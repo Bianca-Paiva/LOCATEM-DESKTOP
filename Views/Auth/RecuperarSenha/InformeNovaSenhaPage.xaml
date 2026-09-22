@@ -45,8 +45,11 @@
                                                    Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}" />
                         </VerticalStackLayout>
 
-                        <BoxView WidthRequest="300" HeightRequest="1" Opacity="0" />
-                        <recuperar:PasswordValidationList WidthRequest="300" Titulo="Dicas de segurança" Itens="{Binding PasswordValidationItems}" />
+                        <recuperar:PasswordValidationList
+                            WidthRequest="300"
+                            Margin="20,0,0,20"
+                            Titulo="Dicas de segurança"
+                            Itens="{Binding PasswordValidationItems}" />            
 
                     </FlexLayout>
 

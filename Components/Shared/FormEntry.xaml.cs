@@ -20,7 +20,8 @@ namespace LOCATEM_DESKTOP.Components.Shared
                 nameof(MaxLength),
                 typeof(int),
                 typeof(FormEntry),
-                0);
+                int.MaxValue,
+                propertyChanged: OnMaxLengthChanged);
 
         public int MaxLength
         {
