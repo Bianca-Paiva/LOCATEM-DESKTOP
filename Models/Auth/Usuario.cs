@@ -1,13 +1,11 @@
 namespace LOCATEM_DESKTOP.Models.Auth
 {
     /// <summary>
-    /// Usuário autenticado. Nesta versão do desktop, exclusiva para locadores, o usuário é
-    /// sempre tratado como Locador.
+    /// Usuário autenticado da aplicação. Suporta os perfis Locador e Locatario.
     /// Migrado de types/Auth/usuario.types.ts.
     ///
-    /// O projeto ainda não tem uma API real de autenticação (ver Services/Auth/AuthService.cs,
-    /// que possui os endpoints prontos porém não chamados no fluxo de Login), então esses dados
-    /// são preenchidos a partir do catálogo mockado em Services/Auth/UsuariosMock.cs.
+    /// O login aceita uma conta local de desenvolvimento do tipo Locador, definida em
+    /// Services/Auth/UsuariosMock.cs, e mantém o fluxo HTTP existente para os demais usuários.
     /// </summary>
     public class Usuario
     {

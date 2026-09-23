@@ -1,11 +1,9 @@
 using LOCATEM_DESKTOP.Helpers;
 using LOCATEM_DESKTOP.Helpers.Auth;
-using LOCATEM_DESKTOP.Models.Auth;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Validation.Auth;
 using LOCATEM_DESKTOP.ViewModels.Base;
 using LOCATEM_DESKTOP.Models.Auth;
-
 
 namespace LOCATEM_DESKTOP.ViewModels.Auth
 {
@@ -129,72 +127,89 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
             try
             {
-                var resultado = await _authService.LoginAsync(
-    new LoginPayload
-    {
-        Email = Email.Trim(),
-        Senha = Senha
-    }
-);
+                var emailNormalizado = Email.Trim();
+                Usuario usuario;
 
-                var perfil = await _authService.BuscarUsuarioLogadoAsync(
-                    resultado.Token
-                );
-
-                if (!Enum.TryParse<TipoUsuario>(
-                    perfil.TipoUsuario,
-                    true,
-                    out var tipoUsuario))
+                // João é o único usuário mockado e autentica 100% localmente como locador.
+                // Se o e-mail for da conta de teste, nunca tentamos acessar a API —
+                // inclusive quando a senha estiver incorreta.
+                if (UsuariosMock.EhUsuarioDeTeste(emailNormalizado))
                 {
-                    throw new InvalidOperationException(
-                        "Tipo de usuário retornado pela API é inválido."
-                    );
+                    usuario = UsuariosMock.AutenticarUsuarioTeste(emailNormalizado, Senha)
+                        ?? throw new InvalidOperationException("E-mail ou senha inválidos.");
                 }
-
-                var usuario = new Usuario
+                else
                 {
-                    Id = perfil.Id.ToString(),
-                    Nome = perfil.Nome,
-                    Email = perfil.Email,
-                    Telefone = perfil.Telefone,
-                    Documento = perfil.Documento,
-                    Endereco = perfil.Endereco ?? string.Empty,
-                    Tipo = tipoUsuario,
-                    FotoUrl = perfil.FotoUrl,
-                    EmailVerificado = false,
-                    Desde = perfil.Desde,
-                    Reputacao = new ReputacaoUsuario
+                    // Usuários reais continuam usando exatamente o fluxo existente da API.
+                    var resultado = await _authService.LoginAsync(
+                        new LoginPayload
+                        {
+                            Email = emailNormalizado,
+                            Senha = Senha
+                        }
+                    );
+
+                    var perfil = await _authService.BuscarUsuarioLogadoAsync(resultado.Token);
+
+                    if (!Enum.TryParse<TipoUsuario>(
+                        perfil.TipoUsuario,
+                        true,
+                        out var tipoUsuario))
                     {
-                        Rating = perfil.Reputacao.Rating,
-                        TotalAvaliacoes = perfil.Reputacao.TotalAvaliacoes,
-                        LocacoesConcluidas = perfil.Reputacao.LocacoesConcluidas,
-                        EntregasNoPrazoPercentual =
-                            perfil.Reputacao.EntregasNoPrazoPercentual
-                    },
-                    Token = resultado.Token
-                };
+                        throw new InvalidOperationException(
+                            "Tipo de usuário retornado pela API é inválido."
+                        );
+                    }
+
+                    usuario = new Usuario
+                    {
+                        Id = perfil.Id.ToString(),
+                        Nome = perfil.Nome,
+                        Email = perfil.Email,
+                        Telefone = perfil.Telefone,
+                        Documento = perfil.Documento,
+                        Endereco = perfil.Endereco ?? string.Empty,
+                        Tipo = tipoUsuario,
+                        FotoUrl = perfil.FotoUrl,
+                        EmailVerificado = false,
+                        Desde = perfil.Desde,
+                        Reputacao = new ReputacaoUsuario
+                        {
+                            Rating = perfil.Reputacao.Rating,
+                            TotalAvaliacoes = perfil.Reputacao.TotalAvaliacoes,
+                            LocacoesConcluidas = perfil.Reputacao.LocacoesConcluidas,
+                            EntregasNoPrazoPercentual =
+                                perfil.Reputacao.EntregasNoPrazoPercentual
+                        },
+                        Token = resultado.Token
+                    };
+                }
 
                 _authSession.DefinirUsuario(usuario);
 
                 SuccessMessage = "Login concluído com sucesso!";
                 await Task.Delay(1500);
 
-                var rotaRedirect = _redirectService.LerRedirect();
-
-                if (rotaRedirect is not null)
+                // A Home do Locador é a primeira tela da área autenticada.
+                if (usuario.Tipo == TipoUsuario.Locador)
                 {
                     _redirectService.LimparRedirect();
-                    await Shell.Current.GoToAsync($"//{rotaRedirect}");
-                }
-                else if (usuario.Tipo == TipoUsuario.Locador)
-                {
-                    // O locador tem dashboard próprio e nunca cai no marketplace do locatário —
-                    // mesma regra do Header/Home do React.
-                    await Shell.Current.GoToAsync("homeLocador");
+                    await Shell.Current.GoToAsync("//homeLocador");
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync("//login");
+                    // Mantém o comportamento anterior para outros perfis vindos da API.
+                    var rotaRedirect = _redirectService.LerRedirect();
+
+                    if (rotaRedirect is not null)
+                    {
+                        _redirectService.LimparRedirect();
+                        await Shell.Current.GoToAsync($"//{rotaRedirect}");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("//login");
+                    }
                 }
             }
             catch (Exception ex)

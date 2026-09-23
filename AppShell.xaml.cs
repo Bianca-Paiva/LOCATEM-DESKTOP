@@ -21,9 +21,8 @@ namespace LOCATEM_DESKTOP
             }
         }
 
-        // Rotas do fluxo de Login/Cadastro — não aparecem como itens de menu/flyout, só são
-        // navegáveis via Shell.Current.GoToAsync("rota"), da mesma forma que o roteador por hash
-        // do React (useRouter.ts) tratava essas telas.
+        // Rotas auxiliares do fluxo de autenticação. Login e HomeLocador são rotas raiz
+        // declaradas no AppShell.xaml para permitir navegação absoluta com //rota.
         private static void RegisterAuthRoutes()
         {
             Routing.RegisterRoute(
