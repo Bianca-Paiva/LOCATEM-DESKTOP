@@ -1,9 +1,11 @@
 using LOCATEM_DESKTOP.Helpers;
 using LOCATEM_DESKTOP.Helpers.Auth;
+using LOCATEM_DESKTOP.Models.Auth;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Validation.Auth;
 using LOCATEM_DESKTOP.ViewModels.Base;
 using LOCATEM_DESKTOP.Models.Auth;
+
 
 namespace LOCATEM_DESKTOP.ViewModels.Auth
 {
@@ -183,6 +185,12 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 {
                     _redirectService.LimparRedirect();
                     await Shell.Current.GoToAsync($"//{rotaRedirect}");
+                }
+                else if (usuario.Tipo == TipoUsuario.Locador)
+                {
+                    // O locador tem dashboard próprio e nunca cai no marketplace do locatário —
+                    // mesma regra do Header/Home do React.
+                    await Shell.Current.GoToAsync("homeLocador");
                 }
                 else
                 {

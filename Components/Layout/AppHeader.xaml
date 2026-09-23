@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Layout.AppHeader"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
+
+    <VerticalStackLayout Spacing="0">
+
+        <!-- Gradiente do header -->
+        <VerticalStackLayout.Background>
+            <LinearGradientBrush
+                StartPoint="0,0"
+                EndPoint="0,1"
+            >
+                <GradientStop Color="#FFCC00" Offset="0.0" />
+                <GradientStop Color="#FFE066" Offset="0.3" />
+                <GradientStop Color="#FFF1B3" Offset="0.65" />
+                <GradientStop Color="#F9FAFB" Offset="1.0" />
+            </LinearGradientBrush>
+        </VerticalStackLayout.Background>
+
+
+        <Grid 
+            ColumnDefinitions="Auto,*,Auto" 
+            Padding="24,14"
+        >
+
+            <!-- Logo -->
+            <HorizontalStackLayout 
+                Grid.Column="0" 
+                Spacing="7" 
+                VerticalOptions="Center"
+            >
+                <Image
+                    Source="logo_locatem.png"
+                    HeightRequest="32"
+                    Aspect="AspectFit" 
+                />
+
+                <VerticalStackLayout Spacing="-2" VerticalOptions="Center">
+                    <Label
+                        Text="LOCATEM"
+                        FontSize="22"
+                        FontFamily="InterExtraBold"
+                        TextColor="{StaticResource TextPrimaryColor}" 
+                    />  
+
+                    <Label
+                        Text="Portal do Locador"
+                        FontSize="12"
+                        FontFamily="InterMedium"
+                        TextColor="{StaticResource TextPrimaryColor}" 
+                    />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <!-- Avatar do usuário autenticado (iniciais do nome ou foto) -->
+            <Border
+                Grid.Column="2"
+                WidthRequest="38"
+                HeightRequest="38"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 19"
+                BackgroundColor="{StaticResource AuthPrimaryColor}"
+                VerticalOptions="Center" 
+            >
+                
+                <Label 
+                    x:Name="AvatarIniciais"
+                    FontSize="14"
+                    FontFamily="InterBold"  
+                    TextColor="{StaticResource TextPrimaryColor}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" 
+                />
+            </Border>
+        </Grid>
+
+        <!-- Navegação -->
+        <ScrollView 
+            Orientation="Horizontal" 
+            HorizontalScrollBarVisibility="Never"
+        >
+            <HorizontalStackLayout 
+                x:Name="Navegacao" 
+                Spacing="4" 
+                Padding="20,0,20,45" 
+                HorizontalOptions="Center"
+            />
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentView>

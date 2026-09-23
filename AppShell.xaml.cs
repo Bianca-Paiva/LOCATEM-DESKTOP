@@ -1,5 +1,6 @@
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
+using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
 {
@@ -42,6 +43,12 @@ namespace LOCATEM_DESKTOP
                 "informeNovaSenha",
                 typeof(InformeNovaSenhaPage)
             );
+        }
+
+        //Telas internas. Só a Home do Locador foi migrada; as demais rotas do locador, ficara aqui conforme forem migradas.
+        private static void RegisterHomeRoutes()
+        {
+            Routing.RegisterRoute("homeLocador", typeof(HomeLocadorPage));
         }
     }
 }

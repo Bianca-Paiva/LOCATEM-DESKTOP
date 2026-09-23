@@ -78,4 +78,30 @@
         <Setter Property="HorizontalOptions" Value="Fill" />
     </Style>
 
+    <!-- Botões compactos "Ver"/"Editar"/"Ver detalhes" dos cards (botaoAcao de MinhasFerramentas.module.css) -->
+    <Style x:Key="BtnAcaoCardStyle" TargetType="Button">
+        <Setter Property="HeightRequest" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="CornerRadius" Value="17" />
+        <Setter Property="BackgroundColor" Value="{StaticResource AuthCardBackgroundColor}" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource InputBorderColor}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="MinimumHeightRequest" Value="34" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="#F9FAFB" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -25,7 +25,7 @@
                 Source="logo_locatem.png"
                 HeightRequest="32"
                 Aspect="AspectFit" 
-            />   
+            />
 
             <VerticalStackLayout Spacing="-2" VerticalOptions="Center">
                 <Label
@@ -40,7 +40,7 @@
                     FontSize="12"
                     FontFamily="InterMedium"
                     TextColor="{StaticResource TextPrimaryColor}" 
-                />  
+                />
             </VerticalStackLayout>
 
         </HorizontalStackLayout>

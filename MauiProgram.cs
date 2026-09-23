@@ -1,7 +1,11 @@
 using Microsoft.Extensions.Logging;
 using MauiIcons.Material;
+using MauiIcons.Material.Outlined;
 using LOCATEM_DESKTOP.Services.Auth;
+using LOCATEM_DESKTOP.Services.Ferramentas;
+using LOCATEM_DESKTOP.Services.Locacoes;
 using LOCATEM_DESKTOP.ViewModels.Auth;
+using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using Microsoft.Maui.Handlers;
@@ -79,6 +83,10 @@ namespace LOCATEM_DESKTOP
 
             // Redirecionamento pós-login (utils/Auth/redirectAposLogin.ts).
             services.AddSingleton<IRedirectAposLoginService, RedirectAposLoginService>();
+            // Catálogo de ferramentas e locações — singletons
+            services.AddSingleton<ICatalogoService, CatalogoService>();
+            services.AddSingleton<ILocacaoService, LocacaoService>();
+
         }
 
         private static void RegisterViewModels(IServiceCollection services)
@@ -88,6 +96,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeEmailViewModel>();
             services.AddTransient<InformeTokenViewModel>();
             services.AddTransient<InformeNovaSenhaViewModel>();
+            services.AddTransient<HomeLocadorViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -97,6 +106,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeEmailPage>();
             services.AddTransient<InformeTokenPage>();
             services.AddTransient<InformeNovaSenhaPage>();
+            services.AddTransient<HomeLocadorPage>();
         }
     }
 }
