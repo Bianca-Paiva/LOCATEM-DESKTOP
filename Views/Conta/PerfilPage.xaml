@@ -374,9 +374,9 @@
                                     <DataTemplate x:DataType="vm:PainelPerfilItem">
                                         <Border
                                             FlexLayout.Grow="1"
-                                            FlexLayout.Shrink="1"
-                                            FlexLayout.Basis="300"
-                                            MinimumWidthRequest="250"
+                                            FlexLayout.Shrink="0"
+                                            FlexLayout.Basis="30%"
+                                            MinimumWidthRequest="280"
                                             Margin="0,0,12,12"
                                             Padding="14"
                                             BackgroundColor="{StaticResource AuthBackgroundColor}"
@@ -410,7 +410,9 @@
                                                         Text="{Binding Titulo}"
                                                         FontSize="14"
                                                         FontFamily="InterBold"
-                                                        TextColor="{StaticResource TextPrimaryColor}" />
+                                                        TextColor="{StaticResource TextPrimaryColor}"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="1" />
                                                     <Label
                                                         Text="{Binding Descricao}"
                                                         FontSize="12"

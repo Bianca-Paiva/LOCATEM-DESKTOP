@@ -99,5 +99,7 @@ namespace LOCATEM_DESKTOP.Views.Conta
                 EditarPerfilBotao.HorizontalOptions = LayoutOptions.Fill;
             }
         }
+
+
     }
 }
