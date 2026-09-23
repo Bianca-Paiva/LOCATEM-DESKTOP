@@ -27,11 +27,16 @@ namespace LOCATEM_DESKTOP.Components.Auth.RecuperarSenha
                 var atualPasso = passo == atual;
 
                 circulo.Stroke = new SolidColorBrush(atualPasso ? ativo : borderNeutro);
+
                 numero.TextColor = atualPasso ? ativo : neutro;
+
                 label.TextColor = atualPasso ? ativo : neutro;
+
                 label.FontAttributes = atualPasso ? FontAttributes.Bold : FontAttributes.None;
+
                 check.IsVisible = completo;
-                numero.IsVisible = !completo;
+
+                numero.IsVisible = true;
             }
 
             Aplicar(view.Circulo1, view.Numero1, view.Label1, view.Check1, 1);

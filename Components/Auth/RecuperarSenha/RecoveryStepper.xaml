@@ -17,7 +17,7 @@
             <mi:MauiIcon x:Name="Check1" Icon="{mi:Material Check}" IconSize="16" IconColor="{StaticResource StepCheckColor}" IsVisible="False" VerticalOptions="Center" />
         </HorizontalStackLayout>
 
-        <BoxView WidthRequest="48" HeightRequest="1" Color="{StaticResource StepBorderColor}" Margin="16,0" VerticalOptions="Center" />
+        <BoxView WidthRequest="200" HeightRequest="1" Color="{StaticResource StepBorderColor}" Margin="16,0" VerticalOptions="Center" />
 
         <!-- Etapa 2: Validação -->
         <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
@@ -28,7 +28,7 @@
             <mi:MauiIcon x:Name="Check2" Icon="{mi:Material Check}" IconSize="16" IconColor="{StaticResource StepCheckColor}" IsVisible="False" VerticalOptions="Center" />
         </HorizontalStackLayout>
 
-        <BoxView WidthRequest="48" HeightRequest="1" Color="{StaticResource StepBorderColor}" Margin="16,0" VerticalOptions="Center" />
+        <BoxView WidthRequest="200" HeightRequest="1" Color="{StaticResource StepBorderColor}" Margin="16,0" VerticalOptions="Center" />
 
         <!-- Etapa 3: Nova Senha -->
         <HorizontalStackLayout Spacing="8" VerticalOptions="Center">

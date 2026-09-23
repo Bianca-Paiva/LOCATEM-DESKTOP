@@ -18,89 +18,153 @@
 
                 <layout:AuthHeader />
 
-                <shared:PageHeader Title="Crie sua conta" Subtitle="Escolha como você deseja usar o site" />
+                <shared:PageHeader 
+                    Title="Crie sua conta de locador" 
+                    Subtitle="Cadastre-se para anunciar e gerenciar suas ferramentas" 
+                />
 
-                <Border Margin="20,10,20,20"
-                        MaximumWidthRequest="800"
-                        HorizontalOptions="Center"
-                        Padding="30,40"
-                        StrokeShape="RoundRectangle 20"
-                        Stroke="Transparent"
-                        BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+                <Border 
+                    Margin="40,10,40,40"
+                    MaximumWidthRequest="800"
+                    HorizontalOptions="Fill"
+                    Padding="40,40"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="Transparent"
+                    BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                >
                     <Border.Shadow>
                         <Shadow Brush="Black" Opacity="0.15" Radius="25" Offset="0,10" />
                     </Border.Shadow>
 
                     <VerticalStackLayout Spacing="25">
 
-                        <!-- TIPO DE CONTA -->
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="20">
-                            <auth:CardOpcaoConta Grid.Column="0"
-                                                  Titulo="Locatário" Descricao="Quero alugar ferramentas"
-                                                  Valor="Locatario"
-                                                  IsSelected="{Binding IsLocatarioSelecionado}"
-                                                  SelecionarCommand="{Binding SelecionarTipoCommand}" />
-                            <auth:CardOpcaoConta Grid.Column="1"
-                                                  Titulo="Locador" Descricao="Quero anunciar ferramentas"
-                                                  Valor="Locador"
-                                                  IsSelected="{Binding IsLocadorSelecionado}"
-                                                  SelecionarCommand="{Binding SelecionarTipoCommand}" />
-                        </Grid>
-
-                        <auth:AlertaBanner IsVisible="{Binding TemAlerta}"
-                                           Titulo="{Binding Alerta.Titulo}"
-                                           Mensagem="{Binding Alerta.Mensagem}"
-                                           CloseCommand="{Binding FecharAlertaCommand}" />
+                        <auth:AlertaBanner 
+                            IsVisible="{Binding TemAlerta}"
+                            Titulo="{Binding Alerta.Titulo}"
+                            Mensagem="{Binding Alerta.Mensagem}"
+                            CloseCommand="{Binding FecharAlertaCommand}" 
+                        />
 
                         <!-- CAMPOS -->
                         <VerticalStackLayout Spacing="25">
 
-                            <shared:FormEntry Label="Nome completo" Text="{Binding Nome}" Placeholder="Digite seu nome completo"
-                                               IsRequiredField="True" ErrorText="{Binding NomeErrorText}"
-                                               IsShaking="{Binding NomeError.Shake}"
-                                               Status="{Binding NomeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:FormEntry 
+                                Label="Nome completo" 
+                                Text="{Binding Nome}" 
+                                Placeholder="Digite seu nome completo"                                
+                                IsRequiredField="True" ErrorText="{Binding NomeErrorText}"
+                                IsShaking="{Binding NomeError.Shake}"
+                                Status="{Binding NomeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="100"
+                            />
 
-                            <shared:FormEntry Label="E-mail" Text="{Binding Email}" Placeholder="seu@email.com" EntryKeyboard="Email"
-                                               IsRequiredField="True" ErrorText="{Binding EmailErrorText}"
-                                               IsShaking="{Binding EmailError.Shake}"
-                                               Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:FormEntry 
+                                Label="E-mail" 
+                                Text="{Binding Email}" 
+                                Placeholder="seu@email.com"
+                                EntryKeyboard="Email"
+                                IsRequiredField="True" 
+                                ErrorText="{Binding EmailErrorText}"
+                                IsShaking="{Binding EmailError.Shake}"
+                                Status="{Binding EmailError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="254"
+                            />
 
-                            <shared:FormEntry Label="Telefone" Text="{Binding Telefone}" Placeholder="(11) 91234-5678" EntryKeyboard="Numeric"
-                                               IsRequiredField="True" ErrorText="{Binding TelefoneErrorText}"
-                                               IsShaking="{Binding TelefoneError.Shake}"
-                                               Status="{Binding TelefoneError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:FormEntry
+                                Label="Telefone" Text="{Binding Telefone}" 
+                                Placeholder="(11) 91234-5678" 
+                                EntryKeyboard="Numeric"
+                                IsRequiredField="True" 
+                                ErrorText="{Binding TelefoneErrorText}"
+                                IsShaking="{Binding TelefoneError.Shake}"
+                                Status="{Binding TelefoneError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="15"
+                            />
 
                             <!-- SENHA -->
-                            <shared:PasswordEntry Label="Senha" Text="{Binding Senha}" Placeholder="Crie uma senha segura"
-                                                   IsRequiredField="True" ErrorText="{Binding SenhaErrorText}"
-                                                   IsShaking="{Binding SenhaError.Shake}"
-                                                   Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:PasswordEntry
+                                Label="Senha" 
+                                Text="{Binding Senha}" 
+                                Placeholder="Crie uma senha segura"
+                                IsRequiredField="True" 
+                                ErrorText="{Binding SenhaErrorText}"
+                                IsShaking="{Binding SenhaError.Shake}"
+                                Status="{Binding SenhaError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="128"
+                            />
 
-                            <auth:PasswordStrengthMeter Visivel="{Binding MostrarMedidorSenha}" Strength="{Binding StrengthResult.Strength}" />
-                            <recuperar:PasswordValidationList IsVisible="{Binding MostrarMedidorSenha}" Titulo="Dicas de segurança" Itens="{Binding PasswordValidationItems}" />
+                            <auth:PasswordStrengthMeter 
+                                IsVisible="{Binding MostrarMedidorSenha}"
+                                Visivel="{Binding MostrarMedidorSenha}" 
+                                Strength="{Binding StrengthResult.Strength}" 
+                            />
+                            
+                            <recuperar:PasswordValidationList 
+                                IsVisible="{Binding MostrarMedidorSenha}" 
+                                Titulo="Dicas de segurança" 
+                                Itens="{Binding PasswordValidationItems}" 
+                            />
 
-                            <shared:PasswordEntry Label="Confirmar senha" Text="{Binding ConfirmarSenha}" Placeholder="Digite a senha novamente"
-                                                   IsRequiredField="True" ErrorText="{Binding ConfirmarSenhaErrorText}"
-                                                   IsShaking="{Binding ConfirmarSenhaError.Shake}"
-                                                   Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}" />
+                            <shared:PasswordEntry 
+                                Label="Confirmar senha" 
+                                Text="{Binding ConfirmarSenha}"
+                                Placeholder="Digite a senha novamente"
+                                IsRequiredField="True" 
+                                ErrorText="{Binding ConfirmarSenhaErrorText}"
+                                IsShaking="{Binding ConfirmarSenhaError.Shake}"
+                                Status="{Binding ConfirmarSenhaStatus, Converter={StaticResource NullableBoolToStatusConverter}}"
+                                MaxLength="128"
+                            />
 
-                            <shared:FormEntry Label="{Binding DocumentoLabel}" Text="{Binding Documento}" Placeholder="{Binding DocumentoPlaceholder}" EntryKeyboard="Numeric"
-                                               IsRequiredField="True" ErrorText="{Binding DocumentoErrorText}"
-                                               IsShaking="{Binding DocumentoError.Shake}"
-                                               Status="{Binding DocumentoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                            <shared:FormEntry 
+                                Label="CNPJ" 
+                                Text="{Binding Documento}" 
+                                Placeholder="00.000.000/0000-00" 
+                                EntryKeyboard="Numeric"
+                                IsRequiredField="True" 
+                                ErrorText="{Binding DocumentoErrorText}"
+                                IsShaking="{Binding DocumentoError.Shake}"
+                                Status="{Binding DocumentoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="18"
+                            />
 
                             <!-- ENDEREÇO -->
                             <VerticalStackLayout Spacing="16">
-                                <Label Text="Endereço" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource TextPrimaryColor}" />
+                                <Label 
+                                    Text="Endereço" 
+                                    FontSize="16" 
+                                    FontFamily="InterBold" 
+                                    TextColor="{StaticResource TextPrimaryColor}" 
+                                />
 
-                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" VerticalOptions="Start">
-                                    <shared:FormEntry Grid.Column="0" Label="CEP" Text="{Binding Cep}" Placeholder="00000-000" EntryKeyboard="Numeric"
-                                                       IsRequiredField="True" ErrorText="{Binding CepErrorText}"
-                                                       IsShaking="{Binding CepError.Shake}"
-                                                       Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                                <Grid 
+                                    ColumnDefinitions="*,Auto" 
+                                    ColumnSpacing="16" 
+                                    VerticalOptions="Start"
+                                >
+                                    <shared:FormEntry 
+                                        Grid.Column="0" 
+                                        Label="CEP" 
+                                        Text="{Binding Cep}" 
+                                        Placeholder="00000-000" 
+                                        EntryKeyboard="Numeric"
+                                        IsRequiredField="True" 
+                                        ErrorText="{Binding CepErrorText}"
+                                        IsShaking="{Binding CepError.Shake}"
+                                        Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="9"
+                                    />
 
-                                    <Label Grid.Column="1" Text="Não sei meu CEP" TextColor="#007BFF" FontSize="14" FontAttributes="Bold"
-                                           TextDecorations="Underline" VerticalOptions="Center" Margin="0,22,0,0">
+                                    <Label 
+                                        Grid.Column="1" 
+                                        Text="Não sei meu CEP" 
+                                        TextColor="#007BFF" 
+                                        FontSize="14" 
+                                        FontFamily="InterMedium"
+                                        TextDecorations="Underline" 
+                                        VerticalOptions="Center" 
+                                        Margin="0,22,0,0"
+                                    >
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding AbrirBuscaCepCommand}" />
                                         </Label.GestureRecognizers>
@@ -108,34 +172,61 @@
                                 </Grid>
 
                                 <Grid ColumnDefinitions="3*,1*" ColumnSpacing="16">
-                                    <shared:FormEntry Grid.Column="0" Label="Rua/Logradouro" Text="{Binding Logradouro}" Placeholder="Ex: Avenida Paulista"
-                                                       IsRequiredField="True" ErrorText="{Binding LogradouroErrorText}"
-                                                       IsShaking="{Binding LogradouroError.Shake}"
-                                                       Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                                    <shared:FormEntry 
+                                        Grid.Column="0" 
+                                        Label="Rua/Logradouro" 
+                                        Text="{Binding Logradouro}" 
+                                        Placeholder="Ex: Avenida Paulista"
+                                        IsRequiredField="True" 
+                                        ErrorText="{Binding LogradouroErrorText}"
+                                        IsShaking="{Binding LogradouroError.Shake}"
+                                        Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="100"
+                                    />
 
-                                    <shared:FormEntry Grid.Column="1" Label="Número" Text="{Binding Numero}" Placeholder="Ex: 123"
-                                                       IsRequiredField="True" ErrorText="{Binding NumeroErrorText}"
-                                                       IsShaking="{Binding NumeroError.Shake}"
-                                                       Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}" />
+                                    <shared:FormEntry 
+                                        Grid.Column="1" 
+                                        Label="Número" 
+                                        Text="{Binding Numero}" 
+                                        Placeholder="Ex: 123"
+                                        IsRequiredField="True" 
+                                        ErrorText="{Binding NumeroErrorText}"
+                                        IsShaking="{Binding NumeroError.Shake}"
+                                        Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="10"
+                                    />
                                 </Grid>
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>
 
-                        <Button Text="Criar conta" Style="{StaticResource BtnPrincipalStyle}" Command="{Binding SubmitCommand}" IsEnabled="{Binding IsNotBusy}" />
+                        <Button 
+                            Text="Criar conta" 
+                            Style="{StaticResource BtnPrincipalStyle}" 
+                            Command="{Binding SubmitCommand}" 
+                            IsEnabled="{Binding IsNotBusy}" 
+                        />
 
                     </VerticalStackLayout>
                 </Border>
 
-                <recuperar:FooterLink Text="Já tem uma conta?" LinkText="Entrar" Command="{Binding IrParaLoginCommand}" HorizontalOptions="Center" Margin="0,0,0,20" />
+                <recuperar:FooterLink 
+                    Text="Já tem uma conta?" 
+                    LinkText="Entrar" 
+                    Command="{Binding IrParaLoginCommand}" 
+                    HorizontalOptions="Center" 
+                    Margin="0,0,0,20" 
+                />
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <shared:SuccessModalView IsOpen="{Binding SuccessModalOpen}"
-                                  Title="Conta criada!"
-                                  Message="Sua conta foi criada com sucesso. Entre para continuar."
-                                  ButtonText="Entrar"
-                                  ConfirmCommand="{Binding ConfirmarSucessoCommand}" />
+        <shared:SuccessModalView 
+            IsOpen="{Binding SuccessModalOpen}"
+            Title="Conta criada!"
+            Message="Sua conta foi criada com sucesso. Entre para continuar."
+            ButtonText="Entrar"
+            ConfirmCommand="{Binding ConfirmarSucessoCommand}" 
+        />
     </Grid>
 </ContentPage>

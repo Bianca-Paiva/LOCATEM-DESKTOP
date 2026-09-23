@@ -8,7 +8,7 @@ using LOCATEM_DESKTOP.ViewModels.Auth;
 using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
-using LOCATEM_DESKTOP.Views.Home;
+using Microsoft.Maui.Handlers;
 
 namespace LOCATEM_DESKTOP
 {
@@ -17,15 +17,12 @@ namespace LOCATEM_DESKTOP
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
-                .UseMaterialMauiIcons() // AathifMahir.Maui.MauiIcons.Material — usado nos ícones do fluxo de Auth
-                .UseMaterialOutlinedMauiIcons() // AathifMahir.Maui.MauiIcons.Material.Outlined — usado nos ícones do fluxo de Auth
+                .UseMaterialMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
-
-                    // Fonte usada em todo o fluxo de Auth no React (styles/global.css: font-family 'Inter').
-                    // Os arquivos já existiam em Resources/Fonts mas ainda não estavam registrados.
                     fonts.AddFont("Inter-Regular.ttf", "InterRegular");
                     fonts.AddFont("Inter-Medium.ttf", "InterMedium");
                     fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
@@ -35,7 +32,38 @@ namespace LOCATEM_DESKTOP
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
+#endif
+
+            // Remove a borda/linha azul padrão dos Entry no Windows.
+#if WINDOWS
+            EntryHandler.Mapper.AppendToMapping(
+                "RemoveWindowsEntryBorder",
+                (handler, view) =>
+                {
+                    var transparentBrush =
+                        new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                            Microsoft.UI.Colors.Transparent
+                        );
+
+                    handler.PlatformView.BorderThickness =
+                        new Microsoft.UI.Xaml.Thickness(0);
+
+                    handler.PlatformView.BorderBrush =
+                        transparentBrush;
+
+                    handler.PlatformView.Background =
+                        transparentBrush;
+
+                    handler.PlatformView.Resources["TextControlBorderBrush"] =
+                        transparentBrush;
+
+                    handler.PlatformView.Resources["TextControlBorderBrushFocused"] =
+                        transparentBrush;
+
+                    handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] =
+                        transparentBrush;
+                });
 #endif
 
             RegisterServices(builder.Services);

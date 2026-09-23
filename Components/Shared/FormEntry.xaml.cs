@@ -15,9 +15,33 @@ namespace LOCATEM_DESKTOP.Components.Shared
             InitializeComponent();
         }
 
+        public static readonly BindableProperty MaxLengthProperty =
+            BindableProperty.Create(
+                nameof(MaxLength),
+                typeof(int),
+                typeof(FormEntry),
+                int.MaxValue,
+                propertyChanged: OnMaxLengthChanged);
+
+        public int MaxLength
+        {
+            get => (int)GetValue(MaxLengthProperty);
+            set => SetValue(MaxLengthProperty, value);
+        }
+
+        // Adicione esta propriedade BindableProperty para Label
         public static readonly BindableProperty LabelProperty =
-            BindableProperty.Create(nameof(Label), typeof(string), typeof(FormEntry), string.Empty);
-        public string Label { get => (string)GetValue(LabelProperty); set => SetValue(LabelProperty, value); }
+            BindableProperty.Create(
+                nameof(Label),
+                typeof(string),
+                typeof(FormEntry),
+                string.Empty);
+
+        public string Label
+        {
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
+        }
 
         public static readonly BindableProperty TextProperty =
             BindableProperty.Create(nameof(Text), typeof(string), typeof(FormEntry), string.Empty, BindingMode.TwoWay);
@@ -68,6 +92,16 @@ namespace LOCATEM_DESKTOP.Components.Shared
                 ? (Brush)Application.Current!.Resources["ErrorBrush"]
                 : new SolidColorBrush((Color)Application.Current!.Resources["InputBorderColor"]);
             view.InputBorder.StrokeThickness = (FieldStatus)newValue == FieldStatus.Erro ? 1.5 : 1.5;
+        }
+
+        private static void OnMaxLengthChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var view = (FormEntry)bindable;
+            // Se o XAML já criou o InnerEntry, aplica o valor; caso contrário será aplicado quando o controle for inicializado
+            if (view.InnerEntry is not null)
+            {
+                view.InnerEntry.MaxLength = (int)newValue;
+            }
         }
 
         // Wiring mínimo de evento -> comando, sem lógica de negócio no code-behind

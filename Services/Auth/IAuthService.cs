@@ -12,6 +12,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
     {
         Task CriarUsuarioAsync(CadastroPayload payload);
 
-        Task<string> LoginAsync(LoginPayload payload);
+        Task<LoginResponse> LoginAsync(LoginPayload payload);
+        Task<UsuarioMeResponse> BuscarUsuarioLogadoAsync(string token);
     }
 }

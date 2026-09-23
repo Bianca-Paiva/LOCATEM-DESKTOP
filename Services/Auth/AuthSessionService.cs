@@ -11,15 +11,10 @@ namespace LOCATEM_DESKTOP.Services.Auth
 
         public event EventHandler? SessaoAlterada;
 
-        public Usuario Login(string email)
+        public void DefinirUsuario(Usuario usuario)
         {
-            // O fluxo de Login ainda não está integrado a um backend real (ver AuthService,
-            // cuja chamada fica comentada/não usada no LoginViewModel), então resolvemos o
-            // usuário a partir do catálogo mockado, com fallback para um usuário novo.
-            var usuarioEncontrado = UsuariosMock.BuscarPorEmail(email) ?? UsuariosMock.CriarFallback(email);
-            UsuarioAtual = usuarioEncontrado;
+            UsuarioAtual = usuario;
             SessaoAlterada?.Invoke(this, EventArgs.Empty);
-            return usuarioEncontrado;
         }
 
         public void Logout()
