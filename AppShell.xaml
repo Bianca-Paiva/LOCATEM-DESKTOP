@@ -3,13 +3,21 @@
     x:Class="LOCATEM_DESKTOP.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:LOCATEM_DESKTOP.Views.Auth"
-    xmlns:views="clr-namespace:LOCATEM_DESKTOP.Views.Auth"
-    Title="LOCATEM_DESKTOP">
+    xmlns:auth="clr-namespace:LOCATEM_DESKTOP.Views.Auth"
+    xmlns:home="clr-namespace:LOCATEM_DESKTOP.Views.Home"
+    Title="LOCATEM_DESKTOP"
+    FlyoutBehavior="Disabled">
 
+    <!-- Tela inicial enquanto o usuário ainda não está autenticado. -->
     <ShellContent
         Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
+        ContentTemplate="{DataTemplate auth:LoginPage}"
         Route="login" />
+
+    <!-- Primeira tela da área autenticada do locador. -->
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate home:HomeLocadorPage}"
+        Route="homeLocador" />
 
 </Shell>

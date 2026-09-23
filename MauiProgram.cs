@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Logging;
+
+using MauiIcons.Core;
 using MauiIcons.Material;
 using MauiIcons.Material.Outlined;
+
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.Services.Locacoes;
@@ -9,6 +12,7 @@ using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using Microsoft.Maui.Handlers;
+using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
 {
@@ -20,7 +24,17 @@ namespace LOCATEM_DESKTOP
 
             builder
                 .UseMauiApp<App>()
+
+                .UseMauiIconsCore(options =>
+                {
+                    options.SetDefaultIconSize(30.0);
+                    options.SetDefaultIconAutoScaling(true);
+                    options.SetDefaultFontOverride(true);
+                })
+
                 .UseMaterialMauiIcons()
+                .UseMaterialOutlinedMauiIcons()
+
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Inter-Regular.ttf", "InterRegular");

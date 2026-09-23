@@ -1,6 +1,5 @@
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
-using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
 {
@@ -19,9 +18,8 @@ namespace LOCATEM_DESKTOP
             }
         }
 
-        // Rotas do fluxo de Login/Cadastro — não aparecem como itens de menu/flyout, só são
-        // navegáveis via Shell.Current.GoToAsync("rota"), da mesma forma que o roteador por hash
-        // do React (useRouter.ts) tratava essas telas.
+        // Rotas auxiliares do fluxo de autenticação. Login e HomeLocador são rotas raiz
+        // declaradas no AppShell.xaml para permitir navegação absoluta com //rota.
         private static void RegisterAuthRoutes()
         {
             Routing.RegisterRoute(
@@ -43,12 +41,6 @@ namespace LOCATEM_DESKTOP
                 "informeNovaSenha",
                 typeof(InformeNovaSenhaPage)
             );
-        }
-
-        //Telas internas. Só a Home do Locador foi migrada; as demais rotas do locador, ficara aqui conforme forem migradas.
-        private static void RegisterHomeRoutes()
-        {
-            Routing.RegisterRoute("homeLocador", typeof(HomeLocadorPage));
         }
     }
 }
