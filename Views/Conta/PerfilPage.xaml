@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Conta.PerfilPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:auth="clr-namespace:LOCATEM_DESKTOP.Components.Auth"
+    xmlns:avaliacoes="clr-namespace:LOCATEM_DESKTOP.Components.Avaliacoes"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Conta"
+    x:Name="Pagina"
+    x:DataType="vm:PerfilViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <ContentPage.Resources>
+        <Style x:Key="PerfilCardStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource AuthCardBackgroundColor}" />
+            <Setter Property="Stroke" Value="{StaticResource CardBorderColor}" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        </Style>
+
+        <Style x:Key="PerfilCardTitleStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="InterBold" />
+            <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        </Style>
+
+        <Style x:Key="InfoRotuloStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontFamily" Value="InterSemiBold" />
+            <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+        </Style>
+
+        <Style x:Key="InfoValorStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="InterSemiBold" />
+            <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <ScrollView ZIndex="0">
+            <VerticalStackLayout Spacing="0">
+                <layout:AppHeader
+                    RotaAtual="perfil"
+                    NomeUsuario="{Binding NomeUsuario}"
+                    FotoUsuario="{Binding FotoPerfilSource}"
+                    NavegarCommand="{Binding NavegarCommand}" />
+
+                <VerticalStackLayout
+                    x:Name="ConteudoPerfil"
+                    Padding="24,20,24,56"
+                    Spacing="20"
+                    MaximumWidthRequest="2000"
+                    HorizontalOptions="Fill"
+                    SizeChanged="ConteudoPerfil_SizeChanged">
+
+                    <!-- CABEÇALHO DO PERFIL -->
+                    <Border
+                        Style="{StaticResource PerfilCardStyle}"
+                        Padding="20">
+
+                        <Grid
+                            x:Name="PerfilHeaderGrid"
+                            ColumnDefinitions="Auto,*,Auto"
+                            RowDefinitions="Auto,Auto"
+                            ColumnSpacing="16"
+                            RowSpacing="14">
+
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                WidthRequest="72"
+                                HeightRequest="72"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 36"
+                                BackgroundColor="{StaticResource AuthPrimaryColor}"
+                                VerticalOptions="Center">
+                                <Grid>
+                                    <Image
+                                        Source="{Binding FotoPerfilSource}"
+                                        Aspect="AspectFill"
+                                        IsVisible="{Binding TemFotoPerfil}" />
+                                    <Label
+                                        Text="{Binding AvatarIniciais}"
+                                        IsVisible="{Binding SemFotoPerfil}"
+                                        FontSize="22"
+                                        FontFamily="InterExtraBold"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Spacing="8"
+                                VerticalOptions="Center">
+                                <Label
+                                    Text="{Binding NomeUsuario}"
+                                    FontSize="28"
+                                    FontFamily="InterExtraBold"
+                                    TextColor="{StaticResource TextPrimaryColor}"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1" />
+
+                                <Border
+                                    Padding="10,5"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 20"
+                                    BackgroundColor="{StaticResource AuthPrimarySoftColor}"
+                                    HorizontalOptions="Start">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Build}"
+                                            IconSize="13"
+                                            IconColor="#8A6D00"
+                                            IsVisible="{Binding EhLocador}" />
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Person}"
+                                            IconSize="13"
+                                            IconColor="#8A6D00"
+                                            IsVisible="{Binding EhLocatario}" />
+                                        <Label
+                                            Text="{Binding TipoBadgeTexto}"
+                                            FontSize="11"
+                                            FontFamily="InterBold"
+                                            TextColor="#8A6D00"
+                                            CharacterSpacing="0.4" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <Border
+                                x:Name="EditarPerfilBotao"
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Padding="16,10"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 20"
+                                BackgroundColor="{StaticResource AuthPrimaryColor}"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EditarPerfilCommand}" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Edit}"
+                                        IconSize="15"
+                                        IconColor="{StaticResource TextPrimaryColor}" />
+                                    <Label
+                                        Text="Editar Perfil"
+                                        FontSize="13"
+                                        FontFamily="InterBold"
+                                        TextColor="{StaticResource TextPrimaryColor}" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- COMPLETUDE DO PERFIL -->
+                    <Border
+                        IsVisible="{Binding MostrarCompletudePerfil}"
+                        Style="{StaticResource PerfilCardStyle}"
+                        Padding="24,22">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <Label
+                                    Text="Complete seu Perfil"
+                                    Style="{StaticResource PerfilCardTitleStyle}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding PercentualTexto}"
+                                    FontSize="13"
+                                    FontFamily="InterBold"
+                                    TextColor="{StaticResource AuthSecondaryColor}" />
+                            </Grid>
+
+                            <ProgressBar
+                                Progress="{Binding ProgressoPerfil}"
+                                ProgressColor="{StaticResource AuthPrimaryColor}"
+                                BackgroundColor="#EEF0F2"
+                                HeightRequest="8" />
+
+                            <Label
+                                Text="{Binding MensagemCompletude}"
+                                FontSize="13"
+                                TextColor="{StaticResource TextMutedColor}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- INFORMAÇÕES + REPUTAÇÃO -->
+                    <Grid
+                        x:Name="InformacoesGrid"
+                        ColumnDefinitions="2*,*"
+                        RowDefinitions="Auto,Auto"
+                        ColumnSpacing="20"
+                        RowSpacing="20">
+
+                        <!-- INFORMAÇÕES PESSOAIS -->
+                        <Border
+                            x:Name="InformacoesPessoaisCard"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Style="{StaticResource PerfilCardStyle}"
+                            Padding="20,18">
+                            <VerticalStackLayout Spacing="0">
+                                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,14">
+                                    <Label
+                                        Text="Informações Pessoais"
+                                        Style="{StaticResource PerfilCardTitleStyle}"
+                                        VerticalOptions="Center" />
+
+                                    <Border
+                                        Grid.Column="1"
+                                        WidthRequest="32"
+                                        HeightRequest="32"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 8"
+                                        BackgroundColor="{StaticResource AuthPrimarySoftColor}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EditarPerfilCommand}" />
+                                        </Border.GestureRecognizers>
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Edit}"
+                                            IconSize="16"
+                                            IconColor="#8A6D00"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+
+                                <!-- Nome -->
+                                <VerticalStackLayout Spacing="4" Padding="0,0,0,12">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon Icon="{mi:Material Person}" IconSize="16" IconColor="{StaticResource TextMutedColor}" />
+                                        <Label Text="NOME COMPLETO" Style="{StaticResource InfoRotuloStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding NomeUsuario}" Style="{StaticResource InfoValorStyle}" />
+                                </VerticalStackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+
+                                <!-- Documento -->
+                                <VerticalStackLayout Spacing="4" Padding="0,12">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon Icon="{mi:Material CreditCard}" IconSize="16" IconColor="{StaticResource TextMutedColor}" />
+                                        <Label Text="{Binding DocumentoRotulo}" Style="{StaticResource InfoRotuloStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding DocumentoExibicao}" Style="{StaticResource InfoValorStyle}" />
+                                </VerticalStackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+
+                                <!-- Email -->
+                                <VerticalStackLayout Spacing="4" Padding="0,12">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon Icon="{mi:Material Email}" IconSize="16" IconColor="{StaticResource TextMutedColor}" />
+                                        <Label Text="E-MAIL" Style="{StaticResource InfoRotuloStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding EmailExibicao}" Style="{StaticResource InfoValorStyle}" />
+                                </VerticalStackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+
+                                <!-- Telefone -->
+                                <VerticalStackLayout Spacing="4" Padding="0,12">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon Icon="{mi:Material Phone}" IconSize="16" IconColor="{StaticResource TextMutedColor}" />
+                                        <Label Text="TELEFONE" Style="{StaticResource InfoRotuloStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding TelefoneExibicao}" Style="{StaticResource InfoValorStyle}" />
+                                </VerticalStackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+
+                                <!-- Endereço -->
+                                <VerticalStackLayout Spacing="4" Padding="0,12,0,0">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon Icon="{mi:Material Home}" IconSize="16" IconColor="{StaticResource TextMutedColor}" />
+                                        <Label Text="ENDEREÇO PRINCIPAL" Style="{StaticResource InfoRotuloStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding EnderecoExibicao}" Style="{StaticResource InfoValorStyle}" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- REPUTAÇÃO -->
+                        <Border
+                            x:Name="ReputacaoCard"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource PerfilCardStyle}"
+                            Padding="20,18">
+                            <VerticalStackLayout Spacing="0" HorizontalOptions="Fill">
+                                <Label
+                                    Text="Reputação"
+                                    Style="{StaticResource PerfilCardTitleStyle}"
+                                    HorizontalOptions="Start"
+                                    Margin="0,0,0,16" />
+
+                                <Label
+                                    Text="{Binding ReputacaoNotaTexto}"
+                                    FontSize="46"
+                                    FontFamily="InterExtraBold"
+                                    TextColor="{StaticResource TextPrimaryColor}"
+                                    HorizontalOptions="Center" />
+
+                                <avaliacoes:EstrelasAvaliacao
+                                    Nota="{Binding ReputacaoNota}"
+                                    TamanhoEstrela="18"
+                                    HorizontalOptions="Center"
+                                    Margin="0,6,0,16" />
+
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+
+                                <VerticalStackLayout Spacing="3" Padding="0,14,0,0">
+                                    <Label
+                                        Text="Baseado em"
+                                        FontSize="12"
+                                        TextColor="{StaticResource TextMutedColor}"
+                                        HorizontalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding AvaliacoesTexto}"
+                                        FontSize="14"
+                                        FontFamily="InterBold"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        HorizontalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding LocacoesTexto}"
+                                        FontSize="14"
+                                        FontFamily="InterBold"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        HorizontalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding EntregasNoPrazoTexto}"
+                                        IsVisible="{Binding MostrarEntregasNoPrazo}"
+                                        FontSize="14"
+                                        FontFamily="InterBold"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+
+                                <Label
+                                    Text="Ver avaliações"
+                                    Margin="0,14,0,0"
+                                    FontSize="13"
+                                    FontFamily="InterSemiBold"
+                                    TextColor="{StaticResource AuthSecondaryColor}"
+                                    HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- PAINEL DE CONTROLE -->
+                    <Border
+                        Style="{StaticResource PerfilCardStyle}"
+                        Padding="20,18,20,20">
+                        <VerticalStackLayout Spacing="14">
+                            <Label
+                                Text="Painel de Controle"
+                                Style="{StaticResource PerfilCardTitleStyle}" />
+
+                            <FlexLayout
+                                Direction="Row"
+                                Wrap="Wrap"
+                                JustifyContent="Start"
+                                AlignItems="Stretch"
+                                BindableLayout.ItemsSource="{Binding OpcoesPainel}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PainelPerfilItem">
+                                        <Border
+                                            FlexLayout.Grow="1"
+                                            FlexLayout.Shrink="1"
+                                            FlexLayout.Basis="300"
+                                            MinimumWidthRequest="250"
+                                            Margin="0,0,12,12"
+                                            Padding="14"
+                                            BackgroundColor="{StaticResource AuthBackgroundColor}"
+                                            Stroke="{StaticResource CardBorderColor}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 12"
+                                            Opacity="{Binding Opacidade}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={x:Reference Pagina}, Path=BindingContext.AbrirOpcaoPainelCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                                <Border
+                                                    WidthRequest="40"
+                                                    HeightRequest="40"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    BackgroundColor="{StaticResource AuthPrimarySoftColor}">
+                                                    <mi:MauiIcon
+                                                        Icon="{Binding Icone}"
+                                                        IconSize="20"
+                                                        IconColor="#8A6D00"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center" />
+                                                </Border>
+
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                                    <Label
+                                                        Text="{Binding Titulo}"
+                                                        FontSize="14"
+                                                        FontFamily="InterBold"
+                                                        TextColor="{StaticResource TextPrimaryColor}" />
+                                                    <Label
+                                                        Text="{Binding Descricao}"
+                                                        FontSize="12"
+                                                        TextColor="{StaticResource TextMutedColor}"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="2" />
+                                                </VerticalStackLayout>
+
+                                                <mi:MauiIcon
+                                                    Grid.Column="2"
+                                                    Icon="{mi:Material ChevronRight}"
+                                                    IconSize="18"
+                                                    IconColor="{StaticResource TextMutedColor}"
+                                                    IsVisible="{Binding Disponivel}"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- SAIR -->
+                    <Border
+                        Padding="18,10"
+                        BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                        Stroke="{StaticResource ErrorBorderColor}"
+                        StrokeThickness="1.5"
+                        StrokeShape="RoundRectangle 22"
+                        HorizontalOptions="End">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SolicitarLogoutCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="8">
+                            <mi:MauiIcon
+                                Icon="{mi:Material Logout}"
+                                IconSize="16"
+                                IconColor="{StaticResource ErrorStrongColor}" />
+                            <Label
+                                Text="Sair da Conta"
+                                FontSize="14"
+                                FontFamily="InterBold"
+                                TextColor="{StaticResource ErrorStrongColor}" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- MODAL EDITAR PERFIL -->
+        <Grid
+            IsVisible="{Binding IsEditando}"
+            BackgroundColor="#73000000"
+            Padding="16"
+            ZIndex="20">
+
+            <Border
+                MaximumWidthRequest="560"
+                MaximumHeightRequest="780"
+                BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                Stroke="{StaticResource AuthPrimaryColor}"
+                StrokeThickness="1.5"
+                StrokeShape="RoundRectangle 16"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+                <ScrollView>
+                    <VerticalStackLayout Padding="24" Spacing="20">
+                        <!-- Cabeçalho modal -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                Text="Editar Perfil"
+                                FontSize="18"
+                                FontFamily="InterExtraBold"
+                                TextColor="{StaticResource TextPrimaryColor}"
+                                VerticalOptions="Center" />
+
+                            <Border
+                                Grid.Column="1"
+                                WidthRequest="32"
+                                HeightRequest="32"
+                                BackgroundColor="Transparent"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 16">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CancelarEdicaoCommand}" />
+                                </Border.GestureRecognizers>
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Close}"
+                                    IconSize="20"
+                                    IconColor="{StaticResource TextMutedColor}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </Grid>
+
+                        <!-- Foto -->
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <Border
+                                WidthRequest="72"
+                                HeightRequest="72"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 36"
+                                BackgroundColor="{StaticResource AuthPrimaryColor}">
+                                <Grid>
+                                    <Image
+                                        Source="{Binding FotoEdicaoSource}"
+                                        Aspect="AspectFill"
+                                        IsVisible="{Binding TemFotoEdicao}" />
+                                    <Label
+                                        Text="{Binding AvatarIniciais}"
+                                        IsVisible="{Binding SemFotoEdicao}"
+                                        FontSize="22"
+                                        FontFamily="InterExtraBold"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+
+                            <Border
+                                Padding="14,7"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 18"
+                                BackgroundColor="{StaticResource AuthPrimarySoftColor}"
+                                HorizontalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelecionarFotoCommand}" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <mi:MauiIcon Icon="{mi:Material PhotoCamera}" IconSize="14" IconColor="#8A6D00" />
+                                    <Label Text="Alterar foto" FontSize="12" FontFamily="InterBold" TextColor="#8A6D00" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <auth:AlertaBanner
+                            IsVisible="{Binding TemAlerta}"
+                            Titulo="{Binding AlertaTitulo}"
+                            Mensagem="{Binding AlertaMensagem}"
+                            CloseCommand="{Binding FecharAlertaCommand}" />
+
+                        <!-- Campos -->
+                        <VerticalStackLayout Spacing="22">
+                            <shared:FormEntry
+                                Label="Nome completo"
+                                Text="{Binding NomeEdicao}"
+                                Placeholder="Ex: João da Silva"
+                                IsRequiredField="True"
+                                ErrorText="{Binding NomeErrorText}"
+                                IsShaking="{Binding NomeError.Shake}"
+                                Status="{Binding NomeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="120" />
+
+                            <shared:FormEntry
+                                Label="Telefone"
+                                Text="{Binding TelefoneEdicao}"
+                                Placeholder="(00) 00000-0000"
+                                EntryKeyboard="Numeric"
+                                IsRequiredField="True"
+                                ErrorText="{Binding TelefoneErrorText}"
+                                IsShaking="{Binding TelefoneError.Shake}"
+                                Status="{Binding TelefoneError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="15" />
+
+                            <shared:FormEntry
+                                Label="{Binding DocumentoRotulo}"
+                                Text="{Binding DocumentoEdicao}"
+                                Placeholder="{Binding DocumentoPlaceholder}"
+                                EntryKeyboard="Numeric"
+                                IsRequiredField="True"
+                                ErrorText="{Binding DocumentoErrorText}"
+                                IsShaking="{Binding DocumentoError.Shake}"
+                                Status="{Binding DocumentoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                MaxLength="{Binding DocumentoMaxLength}" />
+
+                            <!-- ENDEREÇO -->
+                            <VerticalStackLayout Spacing="16">
+                                <Label
+                                    Text="Endereço"
+                                    FontSize="16"
+                                    FontFamily="InterBold"
+                                    TextColor="{StaticResource TextPrimaryColor}" />
+
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                                    <shared:FormEntry
+                                        Grid.Column="0"
+                                        Label="CEP"
+                                        Text="{Binding CepEdicao}"
+                                        Placeholder="00000-000"
+                                        EntryKeyboard="Numeric"
+                                        IsRequiredField="True"
+                                        ErrorText="{Binding CepErrorText}"
+                                        IsShaking="{Binding CepError.Shake}"
+                                        Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        UnfocusedCommand="{Binding BuscarCepCommand}"
+                                        MaxLength="9" />
+
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="Não sei meu CEP"
+                                        FontSize="13"
+                                        FontFamily="InterSemiBold"
+                                        TextColor="{StaticResource VerificadoColor}"
+                                        TextDecorations="Underline"
+                                        VerticalOptions="Center"
+                                        Margin="0,22,0,0">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AbrirBuscaCepCommand}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
+
+                                <HorizontalStackLayout
+                                    Spacing="6"
+                                    IsVisible="{Binding TemEnderecoResumo}">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material LocationOn}"
+                                        IconSize="14"
+                                        IconColor="{StaticResource TextMutedColor}" />
+                                    <Label
+                                        Text="{Binding EnderecoResumo}"
+                                        FontSize="12"
+                                        TextColor="{StaticResource TextMutedColor}"
+                                        LineBreakMode="WordWrap" />
+                                </HorizontalStackLayout>
+
+                                <Grid ColumnDefinitions="3*,*" ColumnSpacing="16">
+                                    <shared:FormEntry
+                                        Grid.Column="0"
+                                        Label="Rua/Logradouro"
+                                        Text="{Binding LogradouroEdicao}"
+                                        Placeholder="Ex: Avenida Paulista"
+                                        IsRequiredField="True"
+                                        ErrorText="{Binding LogradouroErrorText}"
+                                        IsShaking="{Binding LogradouroError.Shake}"
+                                        Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="180" />
+
+                                    <shared:FormEntry
+                                        Grid.Column="1"
+                                        Label="Número"
+                                        Text="{Binding NumeroEdicao}"
+                                        Placeholder="Ex: 123"
+                                        IsRequiredField="True"
+                                        ErrorText="{Binding NumeroErrorText}"
+                                        IsShaking="{Binding NumeroError.Shake}"
+                                        Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="20" />
+                                </Grid>
+                            </VerticalStackLayout>
+
+                            <Grid>
+                                <Button
+                                    Text="Salvar alterações"
+                                    Style="{StaticResource BtnPrincipalStyle}"
+                                    Command="{Binding SalvarPerfilCommand}"
+                                    IsEnabled="{Binding IsNotBusy}" />
+                                <ActivityIndicator
+                                    IsRunning="{Binding IsBusy}"
+                                    IsVisible="{Binding IsBusy}"
+                                    Color="{StaticResource TextPrimaryColor}"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center"
+                                    Margin="0,0,18,0" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+
+        <!-- CONFIRMAÇÃO DE LOGOUT -->
+        <shared:ConfirmModalView
+            ZIndex="30"
+            IsOpen="{Binding IsConfirmandoLogout}"
+            Title="Sair da conta"
+            Message="Tem certeza que deseja sair da sua conta?"
+            ConfirmText="Sair"
+            CancelText="Cancelar"
+            ConfirmCommand="{Binding ConfirmarLogoutCommand}"
+            CancelCommand="{Binding CancelarLogoutCommand}" />
+    </Grid>
+</ContentPage>

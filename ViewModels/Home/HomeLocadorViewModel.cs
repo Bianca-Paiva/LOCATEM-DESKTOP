@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LOCATEM_DESKTOP.Helpers;
+using LOCATEM_DESKTOP.Helpers.Conta;
 using LOCATEM_DESKTOP.Helpers.Formatacao;
 using LOCATEM_DESKTOP.Models.Auth;
 using LOCATEM_DESKTOP.Models.Ferramentas;
@@ -50,7 +51,8 @@ namespace LOCATEM_DESKTOP.ViewModels.Home
                 "informeEmail",
                 "informeToken",
                 "informeNovaSenha",
-                "homeLocador"
+                "homeLocador",
+                "perfil"
             };
 
         private readonly IAuthSessionService _authSession;
@@ -138,6 +140,16 @@ namespace LOCATEM_DESKTOP.ViewModels.Home
             get => _nomeUsuario;
             private set => SetProperty(
                 ref _nomeUsuario,
+                value);
+        }
+
+        private ImageSource? _fotoUsuario;
+
+        public ImageSource? FotoUsuario
+        {
+            get => _fotoUsuario;
+            private set => SetProperty(
+                ref _fotoUsuario,
                 value);
         }
 
@@ -367,6 +379,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Home
         {
             NomeUsuario =
                 usuario.Nome;
+
+            FotoUsuario =
+                AvatarHelper.CriarImageSource(usuario.FotoUrl);
 
             Saudacao =
                 $"Olá, {usuario.Nome.Split(' ').FirstOrDefault()}!";

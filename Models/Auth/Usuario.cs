@@ -54,6 +54,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
                 Id = Id,
                 Nome = nome ?? Nome,
                 Email = email ?? Email,
+                Token = Token,
                 Telefone = telefone ?? Telefone,
                 Documento = documento ?? Documento,
                 Endereco = endereco ?? Endereco,
