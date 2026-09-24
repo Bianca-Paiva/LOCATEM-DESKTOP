@@ -6,9 +6,14 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
 {
     /// <summary>
     /// Configuração visual/textual de cada status de ferramenta.
+    ///
+    /// Label    = texto do selo do card (ex.: "Disponível").
+    /// TabLabel = texto da aba de filtro em Minhas Ferramentas (ex.: "Disponíveis"),
+    ///            equivalente ao tabLabel de statusFerramentaConfig.ts.
     /// </summary>
     public record StatusFerramentaVisual(
         string Label,
+        string TabLabel,
         Enum Icone,
         string Cor,
         string Borda,
@@ -22,6 +27,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
             // ── Disponível para locação ────────────────────────────────
             [StatusFerramenta.Disponivel] = new(
                 "Disponível",
+                "Disponíveis",
                 MaterialIcons.CheckCircle,
                 "#137333",
                 "#40137333",
@@ -31,6 +37,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
             // ── Em uso ────────────────────────────────────────────────
             [StatusFerramenta.Locada] = new(
                 "Locada",
+                "Locadas",
                 MaterialOutlinedIcons.Inventory,
                 "#005D75",
                 "#40005D75",
@@ -39,6 +46,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
 
             // ── Temporariamente indisponível ───────────────────────────
             [StatusFerramenta.Manutencao] = new(
+                "Em manutenção",
                 "Em manutenção",
                 MaterialIcons.Build,
                 "#A74B00",
@@ -49,6 +57,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
             // ── Indisponível ──────────────────────────────────────────
             [StatusFerramenta.Indisponivel] = new(
                 "Indisponível",
+                "Indisponíveis",
                 MaterialIcons.Block,
                 "#546E7A",
                 "#B0BEC5",

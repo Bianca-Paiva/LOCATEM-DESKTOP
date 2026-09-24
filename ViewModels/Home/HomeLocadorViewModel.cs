@@ -52,6 +52,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Home
                 "informeToken",
                 "informeNovaSenha",
                 "homeLocador",
+                "minhasFerramentas",
                 "perfil"
             };
 

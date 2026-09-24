@@ -32,6 +32,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             {
                 "login",
                 "homeLocador",
+                "minhasFerramentas",
                 "perfil"
             };
 
@@ -899,8 +900,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             IsConfirmandoLogout = false;
             _authSession.Logout();
 
-            // O React volta para a Home pública. O Desktop atual é o Portal do Locador e ainda
-            // não possui marketplace público; por isso a saída volta para a rota raiz de Login.
+            //a saída volta para a rota raiz de Login.
             await Shell.Current.GoToAsync("//login");
         }
 
