@@ -4,11 +4,6 @@ using System.Text.RegularExpressions;
 namespace LOCATEM_DESKTOP.Helpers.Auth
 {
     /// <summary>
-    /// Máscaras de campos usadas em CadastroUsuario.tsx (maskCNPJ, maskPhone, maskCEP)
-    /// e as validações de formato que acompanhavam essas máscaras (validatePhone, validateCEP).
-    ///
-    /// NOTA DE MIGRAÇÃO: o arquivo original "utils/Formatacao/masks.ts" não fazia parte do ZIP
-    /// do projeto React enviado (apenas era importado por CadastroUsuario.tsx/cadastroSchema.ts).
     /// As implementações abaixo seguem o padrão-mercado de máscara progressiva brasileira
     /// (o mesmo formato de saída usado nos placeholders da tela: "000.000.000-00",
     /// "00.000.000/0000-00", "(11) 91234-5678", "00000-000") e a validação de telefone
@@ -18,6 +13,22 @@ namespace LOCATEM_DESKTOP.Helpers.Auth
     public static class MaskHelper
     {
         private static string OnlyDigits(string value) => Regex.Replace(value ?? string.Empty, @"\D", string.Empty);
+
+        /// <summary>000.000.000-00</summary>
+        public static string MaskCpf(string value)
+        {
+            var d = OnlyDigits(value);
+            if (d.Length > 11) d = d[..11];
+
+            var sb = new StringBuilder();
+            for (int i = 0; i < d.Length; i++)
+            {
+                if (i == 3 || i == 6) sb.Append('.');
+                if (i == 9) sb.Append('-');
+                sb.Append(d[i]);
+            }
+            return sb.ToString();
+        }
 
         /// <summary>00.000.000/0000-00</summary>
         public static string MaskCnpj(string value)

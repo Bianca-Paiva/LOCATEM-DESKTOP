@@ -30,6 +30,7 @@
             <layout:AppHeader
                 RotaAtual="homeLocador"
                 NomeUsuario="{Binding NomeUsuario}"
+                FotoUsuario="{Binding FotoUsuario}"
                 NavegarCommand="{Binding NavegarCommand}" />
 
 

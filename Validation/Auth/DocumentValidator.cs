@@ -9,6 +9,18 @@ namespace LOCATEM_DESKTOP.Validation.Auth
     /// </summary>
     public static class DocumentValidator
     {
+        public static bool IsValidCpf(string? cpf)
+        {
+            var d = OnlyDigits(cpf);
+            if (d.Length != 11 || AllDigitsEqual(d)) return false;
+
+            var numeros = d[..9].Select(c => c - '0').ToArray();
+            var dv1 = CalcularDigitoCpf(numeros, 10);
+            var dv2 = CalcularDigitoCpf(numeros.Append(dv1).ToArray(), 11);
+
+            return d[9] - '0' == dv1 && d[10] - '0' == dv2;
+        }
+
         public static bool IsValidCnpj(string? cnpj)
         {
             var d = OnlyDigits(cnpj);
@@ -19,6 +31,13 @@ namespace LOCATEM_DESKTOP.Validation.Auth
             var dv2 = CalcularDigito(numeros.Append(dv1).ToArray(), new[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 });
 
             return d[12] - '0' == dv1 && d[13] - '0' == dv2;
+        }
+
+        private static int CalcularDigitoCpf(int[] numeros, int pesoInicial)
+        {
+            var soma = numeros.Select((n, i) => n * (pesoInicial - i)).Sum();
+            var resto = soma % 11;
+            return resto < 2 ? 0 : 11 - resto;
         }
 
         private static int CalcularDigito(int[] numeros, int[] pesos)

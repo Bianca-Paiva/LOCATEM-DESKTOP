@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using LOCATEM_DESKTOP.Helpers.Conta;
 using MauiIcons.Core;
 using MauiIcons.Material;
 using MauiIcons.Material.Outlined;
@@ -121,13 +122,38 @@ namespace LOCATEM_DESKTOP.Components.Layout
                     var header = (AppHeader)bindable;
 
                     header.AvatarIniciais.Text =
-                        ExtrairIniciais(novoValor as string);
+                        AvatarHelper.ExtrairIniciais(novoValor as string);
                 });
 
         public string NomeUsuario
         {
             get => (string)GetValue(NomeUsuarioProperty);
             set => SetValue(NomeUsuarioProperty, value);
+        }
+
+        // =========================================================
+        // FOTO DO USUÁRIO
+        // =========================================================
+
+        public static readonly BindableProperty FotoUsuarioProperty =
+            BindableProperty.Create(
+                nameof(FotoUsuario),
+                typeof(ImageSource),
+                typeof(AppHeader),
+                default(ImageSource),
+                propertyChanged: (bindable, _, novoValor) =>
+                {
+                    var header = (AppHeader)bindable;
+                    var temFoto = novoValor is ImageSource;
+
+                    header.AvatarFoto.IsVisible = temFoto;
+                    header.AvatarIniciais.IsVisible = !temFoto;
+                });
+
+        public ImageSource? FotoUsuario
+        {
+            get => (ImageSource?)GetValue(FotoUsuarioProperty);
+            set => SetValue(FotoUsuarioProperty, value);
         }
 
         // =========================================================
@@ -215,8 +241,8 @@ namespace LOCATEM_DESKTOP.Components.Layout
 
                 var linhaAtiva = new BoxView
                 {
-                    HeightRequest = 2,        
-                    
+                    HeightRequest = 2,
+
                     BackgroundColor =
                     ativo
                         ? corTexto
@@ -267,28 +293,9 @@ namespace LOCATEM_DESKTOP.Components.Layout
         // AVATAR
         // =========================================================
 
-        private static string ExtrairIniciais(
-            string? nome)
+        private void OnAvatarTapped(object? sender, TappedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nome))
-                return "?";
-
-            var partes =
-                nome
-                    .Trim()
-                    .Split(
-                        ' ',
-                        StringSplitOptions.RemoveEmptyEntries);
-
-            if (partes.Length == 1)
-            {
-                return partes[0][..1]
-                    .ToUpperInvariant();
-            }
-
-            return
-                $"{partes[0][0]}{partes[^1][0]}"
-                    .ToUpperInvariant();
+            NavegarCommand?.Execute("perfil");
         }
     }
 }
