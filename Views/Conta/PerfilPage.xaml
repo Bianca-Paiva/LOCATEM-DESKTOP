@@ -417,8 +417,8 @@
                                                         Text="{Binding Descricao}"
                                                         FontSize="12"
                                                         TextColor="{StaticResource TextMutedColor}"
-                                                        LineBreakMode="TailTruncation"
-                                                        MaxLines="2" />
+                                                        LineBreakMode="WordWrap"
+                                                        HorizontalOptions="Fill" />
                                                 </VerticalStackLayout>
 
                                                 <mi:MauiIcon
