@@ -21,6 +21,22 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 .ToList();
         }
 
+        public void Adicionar(Produto produto)
+        {
+            produto.Id = _produtos.Count == 0 ? 1 : _produtos.Max(p => p.Id) + 1;
+            _produtos.Add(produto);
+            NotificarAlteracao();
+        }
+
+        public void Atualizar(int id, Produto produto)
+        {
+            var indice = _produtos.FindIndex(p => p.Id == id);
+            if (indice < 0) throw new InvalidOperationException("Ferramenta não encontrada.");
+            produto.Id = id;
+            _produtos[indice] = produto;
+            NotificarAlteracao();
+        }
+
         /// Notifica as telas abertas — usado pelas operações de escrita do catálogo.
         protected void NotificarAlteracao() => CatalogoAlterado?.Invoke(this, EventArgs.Empty);
     }

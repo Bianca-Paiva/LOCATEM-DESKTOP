@@ -19,7 +19,8 @@
             AlignItems="Center">
 
             <Label Text="{Binding Titulo, Source={x:Reference Root}}"
-                   FontSize="28"
+                   FontSize="{Binding TamanhoTitulo, Source={x:Reference Root}}"
+                   FontFamily="{Binding FonteTitulo, Source={x:Reference Root}}"
                    FontAttributes="Bold"
                    Margin="0,0,16,0"
                    TextColor="{StaticResource TextPrimaryColor}" />

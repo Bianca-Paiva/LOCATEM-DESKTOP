@@ -83,6 +83,18 @@ namespace LOCATEM_DESKTOP
                     handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] =
                         transparentBrush;
                 });
+                EditorHandler.Mapper.AppendToMapping(
+                    "RemoveWindowsEditorBorder",
+                    (handler, view) =>
+                    {
+                        var textBox = handler.PlatformView;
+                        var semBorda = new Microsoft.UI.Xaml.Thickness(0);
+
+                        textBox.BorderThickness = semBorda;
+
+                        textBox.Resources["TextControlBorderThemeThickness"] = semBorda;
+                        textBox.Resources["TextControlBorderThemeThicknessFocused"] = semBorda;
+                    });
 #endif
 
             RegisterServices(builder.Services);
@@ -104,6 +116,7 @@ namespace LOCATEM_DESKTOP
             services.AddSingleton<IRedirectAposLoginService, RedirectAposLoginService>();
             // Catálogo de ferramentas e locações — singletons
             services.AddSingleton<ICatalogoService, CatalogoService>();
+            services.AddSingleton<ICadastroFerramentaService, CadastroFerramentaService>();
             services.AddSingleton<ILocacaoService, LocacaoService>();
 
         }
@@ -118,6 +131,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<HomeLocadorViewModel>();
             services.AddTransient<PerfilViewModel>();
             services.AddTransient<MinhasFerramentasViewModel>();
+            services.AddTransient<CadastroFerramentaViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -130,6 +144,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<HomeLocadorPage>();
             services.AddTransient<PerfilPage>();
             services.AddTransient<MinhasFerramentasPage>();
+            services.AddTransient<CadastroFerramentaPage>();
         }
     }
 }

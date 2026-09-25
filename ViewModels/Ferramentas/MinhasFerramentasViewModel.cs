@@ -37,15 +37,14 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
             StatusFerramenta.Manutencao
         };
 
-        // Rotas já migradas para o MAUI. "ferramentaDetalhe" e "cadastroFerramenta" ainda não
-        // existem no Desktop: assim que as páginas forem criadas e registradas (AppShell), basta
-        // incluí-las aqui para que "Ver", "Editar" e "Cadastrar Ferramenta" passem a navegar.
+        // Rotas disponíveis no Desktop. O detalhe ainda não foi migrado.
         private static readonly HashSet<string> RotasMigradas =
             new(StringComparer.OrdinalIgnoreCase)
             {
                 "homeLocador",
                 "minhasFerramentas",
-                "perfil"
+                "perfil",
+                "cadastroFerramenta"
             };
 
         private readonly IAuthSessionService _authSession;

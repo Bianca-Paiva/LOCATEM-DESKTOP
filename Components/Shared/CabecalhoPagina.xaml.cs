@@ -10,6 +10,23 @@ namespace LOCATEM_DESKTOP.Components.Shared
             InitializeComponent();
         }
 
+        // Propriedades opcionais: outras páginas preservam a aparência anterior.
+        public static readonly BindableProperty TamanhoTituloProperty =
+            BindableProperty.Create(nameof(TamanhoTitulo), typeof(double), typeof(CabecalhoPagina), 28d);
+        public double TamanhoTitulo
+        {
+            get => (double)GetValue(TamanhoTituloProperty);
+            set => SetValue(TamanhoTituloProperty, value);
+        }
+
+        public static readonly BindableProperty FonteTituloProperty =
+            BindableProperty.Create(nameof(FonteTitulo), typeof(string), typeof(CabecalhoPagina), default(string));
+        public string? FonteTitulo
+        {
+            get => (string?)GetValue(FonteTituloProperty);
+            set => SetValue(FonteTituloProperty, value);
+        }
+
         public static readonly BindableProperty TituloProperty =
             BindableProperty.Create(nameof(Titulo), typeof(string), typeof(CabecalhoPagina), string.Empty);
         public string Titulo { get => (string)GetValue(TituloProperty); set => SetValue(TituloProperty, value); }

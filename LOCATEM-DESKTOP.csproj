@@ -147,13 +147,15 @@
 	  <MauiXaml Update="Views\Conta\PerfilPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Ferramentas\CadastroFerramentaPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Ferramentas\MinhasFerramentasPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Home\HomeLocadorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
