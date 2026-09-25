@@ -37,14 +37,15 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
             StatusFerramenta.Manutencao
         };
 
-        // Rotas disponíveis no Desktop. O detalhe ainda não foi migrado.
+        // Rotas disponíveis no Desktop, incluindo o detalhe aberto pelo botão Ver.
         private static readonly HashSet<string> RotasMigradas =
             new(StringComparer.OrdinalIgnoreCase)
             {
                 "homeLocador",
                 "minhasFerramentas",
                 "perfil",
-                "cadastroFerramenta"
+                "cadastroFerramenta",
+                "ferramentaDetalhe"
             };
 
         private readonly IAuthSessionService _authSession;

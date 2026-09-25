@@ -448,7 +448,7 @@
                                             </Border>
                                             <VerticalStackLayout Grid.Column="1" Spacing="3">
                                                 <HorizontalStackLayout Spacing="8">
-                                                    <Label Text="Aprovação manual" FontFamily="InterBold" FontSize="14"/>
+                                                    <Label Text="Aprovação manual" FontFamily="InterBold" FontSize="14" TextColor="{StaticResource TextPrimaryColor}"/>
                                                     <Border BackgroundColor="{StaticResource AuthPrimaryColor}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="8,2">
                                                         <Label Text="Recomendado" FontFamily="InterBold" FontSize="11" TextColor="{StaticResource TextPrimaryColor}"/>
                                                     </Border>
@@ -478,7 +478,7 @@
                                                 </BoxView>
                                             </Border>
                                             <VerticalStackLayout Grid.Column="1" Spacing="3">
-                                                <Label Text="Aprovação automática" FontFamily="InterBold" FontSize="14"/>
+                                                <Label Text="Aprovação automática" FontFamily="InterBold" FontSize="14" TextColor="{StaticResource TextPrimaryColor}"/>
                                                 <Label Text="As locações são confirmadas automaticamente quando houver disponibilidade." Style="{StaticResource TextoAjuda}"/>
                                             </VerticalStackLayout>
                                         </Grid>

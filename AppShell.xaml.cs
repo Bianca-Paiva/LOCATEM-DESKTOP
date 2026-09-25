@@ -51,10 +51,10 @@ namespace LOCATEM_DESKTOP
         // forem implementadas, sem expô-las no Flyout do Shell.
         private static void RegisterInternalRoutes()
         {
-            Routing.RegisterRoute("homeLocador", typeof(HomeLocadorPage));
             Routing.RegisterRoute("perfil", typeof(PerfilPage));
             Routing.RegisterRoute("minhasFerramentas", typeof(MinhasFerramentasPage));
             Routing.RegisterRoute("cadastroFerramenta", typeof(CadastroFerramentaPage));
+            Routing.RegisterRoute("ferramentaDetalhe", typeof(FerramentaDetalhePage));
         }
     }
 }

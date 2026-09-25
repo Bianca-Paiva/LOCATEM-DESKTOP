@@ -24,5 +24,6 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
         IReadOnlyList<Produto> ObterPorLocador(string? locadorId);
         void Adicionar(Produto produto);
         void Atualizar(int id, Produto produto);
+        void Remover(int id);
     }
 }

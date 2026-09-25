@@ -37,6 +37,12 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
             NotificarAlteracao();
         }
 
+        public void Remover(int id)
+        {
+            var removidos = _produtos.RemoveAll(p => p.Id == id);
+            if (removidos > 0) NotificarAlteracao();
+        }
+
         /// Notifica as telas abertas — usado pelas operações de escrita do catálogo.
         protected void NotificarAlteracao() => CatalogoAlterado?.Invoke(this, EventArgs.Empty);
     }

@@ -150,6 +150,9 @@
 	  <MauiXaml Update="Views\Ferramentas\CadastroFerramentaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Ferramentas\FerramentaDetalhePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Ferramentas\MinhasFerramentasPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
