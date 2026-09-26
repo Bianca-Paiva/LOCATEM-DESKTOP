@@ -45,6 +45,8 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
                 "minhasFerramentas",
                 "gerenciarLocacoes",
                 "historicoLocacoes",
+                // Permite que o item Avaliações do AppHeader navegue para a tela recém-migrada.
+                "avaliacao",
                 "perfil",
                 "cadastroFerramenta",
                 "ferramentaDetalhe"

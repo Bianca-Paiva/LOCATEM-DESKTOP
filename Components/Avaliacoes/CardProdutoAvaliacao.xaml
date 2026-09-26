@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Avaliacoes.CardProdutoAvaliacao"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:avaliacoes="clr-namespace:LOCATEM_DESKTOP.Components.Avaliacoes"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Avaliacoes"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root"
+    x:DataType="models:ProdutoAvaliacao">
+
+    <!-- O grupo mantém a identificação da loja acima do card, seguindo a hierarquia visual da versão Web. -->
+    <VerticalStackLayout Spacing="8">
+
+        <!-- Badge simples da loja oficial, com logo quando disponível e fallback quando não houver asset. -->
+        <HorizontalStackLayout Spacing="7" VerticalOptions="Center">
+            <Border
+                WidthRequest="28"
+                HeightRequest="28"
+                Padding="2"
+                BackgroundColor="#F3F4F6"
+                Stroke="{StaticResource InputBorderColor}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 5">
+
+                <!-- A grade permite alternar imagem e fallback ocupando exatamente o mesmo espaço. -->
+                <Grid>
+                    <!-- A imagem só aparece quando o locador possui logo mapeada no Desktop. -->
+                    <Image
+                        Source="{Binding LojaLogo}"
+                        Aspect="AspectFit"
+                        IsVisible="{Binding TemLogo}" />
+
+                    <!-- O fallback evita espaço vazio quando a loja ainda não possui logo. -->
+                    <mi:MauiIcon
+                        Icon="{mi:Material ImageNotSupported}"
+                        IconSize="16"
+                        IconColor="{StaticResource TextMutedColor}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                        <mi:MauiIcon.Triggers>
+                            <DataTrigger
+                                TargetType="mi:MauiIcon"
+                                Binding="{Binding TemLogo}"
+                                Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </mi:MauiIcon.Triggers>
+                    </mi:MauiIcon>
+                </Grid>
+            </Border>
+
+            <!-- Texto equivalente ao badge 'Loja oficial' do Web. -->
+            <Label
+                FontSize="12"
+                FontFamily="InterSemiBold"
+                TextColor="{StaticResource TextPrimaryColor}"
+                VerticalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Loja oficial " />
+                        <Span Text="{Binding LojaNome}" TextColor="#1554F0" FontFamily="InterBold" />
+                        <Span Text="  ✓" TextColor="#1554F0" FontFamily="InterBold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </HorizontalStackLayout>
+
+        <!-- O card completo é clicável e abre a avaliação selecionada. -->
+        <Border
+            Padding="20"
+            BackgroundColor="White"
+            Stroke="{StaticResource InputBorderColor}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12">
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding AbrirCommand, Source={x:Reference Root}}"
+                    CommandParameter="{Binding .}" />
+            </Border.GestureRecognizers>
+
+            <!-- Grade horizontal preserva a imagem à esquerda e libera o restante da largura para informações e estrelas. -->
+            <Grid
+                x:Name="ConteudoCard"
+                ColumnDefinitions="90,*"
+                ColumnSpacing="20"
+                RowDefinitions="Auto">
+
+                <!-- Imagem da ferramenta com o mesmo tamanho-base do card Web. -->
+                <Image
+                    Grid.Column="0"
+                    Source="{Binding Imagem}"
+                    WidthRequest="90"
+                    HeightRequest="90"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+                <!-- Informações da locação e controle de estrelas. -->
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="4"
+                    VerticalOptions="Center">
+
+                    <!-- Nome da ferramenta em destaque. -->
+                    <Label
+                        Text="{Binding Nome}"
+                        FontSize="15"
+                        FontFamily="InterSemiBold"
+                        TextColor="{StaticResource TextPrimaryColor}"
+                        LineBreakMode="TailTruncation"
+                        MaxLines="2" />
+
+                    <!-- Período da locação finalizada. -->
+                    <Label
+                        Text="{Binding DataLocacao}"
+                        FontSize="12"
+                        FontFamily="InterRegular"
+                        TextColor="{StaticResource TextMutedColor}" />
+
+                    <!-- No portal do locador, deixa explícito quem está sendo avaliado. -->
+                    <Label
+                        Text="{Binding Locatario, StringFormat='Locatário: {0}'}"
+                        FontSize="12"
+                        FontFamily="InterMedium"
+                        TextColor="{StaticResource TextSecondaryColor}"
+                        Margin="0,0,0,5" />
+
+                    <!-- Pendentes permitem clique direto na estrela; realizadas ficam somente leitura. -->
+                    <avaliacoes:EstrelasAvaliacao
+                        Nota="{Binding NotaGlobal}"
+                        TamanhoEstrela="22"
+                        Interativa="{Binding PodeAvaliar}"
+                        Contexto="{Binding .}"
+                        SelecionarNotaCommand="{Binding SelecionarNotaCommand, Source={x:Reference Root}}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

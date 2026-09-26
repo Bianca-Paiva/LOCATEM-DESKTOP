@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LOCATEM_DESKTOP.Models.Avaliacoes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,5 +45,11 @@ namespace LOCATEM_DESKTOP.Models.Locacoes
 
         public string? MotivoRecusa { get; set; }
         public string? MotivoCancelamento { get; set; }
+
+        /// <summary>Avaliação enviada pelo locatário quando a locação é finalizada.</summary>
+        public RegistroAvaliacao? AvaliacaoDoLocatario { get; set; }
+
+        /// <summary>Avaliação enviada pelo locador quando a locação é finalizada.</summary>
+        public RegistroAvaliacao? AvaliacaoDoLocador { get; set; }
     }
 }

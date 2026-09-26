@@ -102,7 +102,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\Avaliacoes\CardProdutoAvaliacao.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\Avaliacoes\EstrelasAvaliacao.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Avaliacoes\ModalAvaliacao.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Ferramentas\ProductCard.xaml">
@@ -151,6 +157,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\Colors.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Avaliacoes\AvaliacaoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Conta\PerfilPage.xaml">

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Avaliacoes.AvaliacaoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:avaliacoes="clr-namespace:LOCATEM_DESKTOP.Components.Avaliacoes"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Avaliacoes"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Avaliacoes"
+    x:Name="Pagina"
+    x:DataType="vm:AvaliacaoViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <!-- A grade deixa a página rolável no fundo e mantém modal/toast em camadas superiores. -->
+    <Grid>
+
+        <!-- Conteúdo principal da tela. -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+
+                <!-- AppHeader existente com Avaliações marcada como rota ativa. -->
+                <layout:AppHeader
+                    RotaAtual="avaliacao"
+                    NomeUsuario="{Binding NomeUsuario}"
+                    FotoUsuario="{Binding FotoUsuario}"
+                    NavegarCommand="{Binding NavegarCommand}" />
+
+                <!-- Container responsivo controlado pelo code-behind, seguindo o padrão das páginas anteriores. -->
+                <VerticalStackLayout
+                    x:Name="ConteudoPagina"
+                    Padding="24,20,24,48"
+                    Spacing="0">
+
+                    <!-- Título e subtítulo copiados da intenção da página Web. -->
+                    <shared:CabecalhoPagina
+                        Titulo="Minhas Avaliações"
+                        Subtitulo="Avalie os produtos que você locou e ajude outros locatários."
+                        Margin="0,0,0,24" />
+
+                    <!-- Abas simples, sem contadores, para ficar mais próxima da implementação Web de Avaliações. -->
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        RowDefinitions="Auto,2"
+                        Margin="0,0,0,24">
+
+                        <!-- Aba Pendentes. -->
+                        <Button
+                            Grid.Column="0"
+                            Text="Pendentes"
+                            Command="{Binding SelecionarAbaCommand}"
+                            CommandParameter="pendentes"
+                            BackgroundColor="Transparent"
+                            FontFamily="InterSemiBold"
+                            FontSize="14"
+                            Padding="12"
+                            CornerRadius="0">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding PendentesAtiva}" Value="True">
+                                    <Setter Property="TextColor" Value="#1554F0" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding PendentesAtiva}" Value="False">
+                                    <Setter Property="TextColor" Value="{StaticResource TextSecondaryColor}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+
+                        <!-- Aba Realizadas. -->
+                        <Button
+                            Grid.Column="1"
+                            Text="Realizadas"
+                            Command="{Binding SelecionarAbaCommand}"
+                            CommandParameter="realizadas"
+                            BackgroundColor="Transparent"
+                            FontFamily="InterSemiBold"
+                            FontSize="14"
+                            Padding="12"
+                            CornerRadius="0">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding RealizadasAtiva}" Value="True">
+                                    <Setter Property="TextColor" Value="#1554F0" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding RealizadasAtiva}" Value="False">
+                                    <Setter Property="TextColor" Value="{StaticResource TextSecondaryColor}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+
+                        <!-- Linha-base das abas. -->
+                        <BoxView
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            HeightRequest="2"
+                            Color="{StaticResource InputBorderColor}" />
+
+                        <!-- Indicador azul acompanha a aba Pendentes. -->
+                        <BoxView
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            HeightRequest="2"
+                            Color="#1554F0"
+                            IsVisible="{Binding PendentesAtiva}" />
+
+                        <!-- Indicador azul acompanha a aba Realizadas. -->
+                        <BoxView
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HeightRequest="2"
+                            Color="#1554F0"
+                            IsVisible="{Binding RealizadasAtiva}" />
+                    </Grid>
+
+                    <!-- Estado vazio reutiliza o componente compartilhado já existente no Desktop. -->
+                    <shared:EstadoVazio
+                        Titulo="{Binding EstadoVazioTitulo}"
+                        Descricao="{Binding EstadoVazioDescricao}"
+                        IsVisible="{Binding SemProdutos}" />
+
+                    <!-- Lista de cards da aba atual. -->
+                    <VerticalStackLayout
+                        Spacing="16"
+                        IsVisible="{Binding TemProdutos}"
+                        BindableLayout.ItemsSource="{Binding Produtos}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:ProdutoAvaliacao">
+                                <avaliacoes:CardProdutoAvaliacao
+                                    AbrirCommand="{Binding BindingContext.AbrirModalCommand, Source={x:Reference Pagina}}"
+                                    SelecionarNotaCommand="{Binding BindingContext.SelecionarNotaGlobalCommand, Source={x:Reference Pagina}}" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Modal de avaliação fica acima do conteúdo principal sem criar uma segunda Window. -->
+        <avaliacoes:ModalAvaliacao ZIndex="100" />
+
+        <!-- Toast de confirmação aparece no rodapé da janela e some automaticamente pelo ViewModel. -->
+        <Border
+            IsVisible="{Binding ToastVisivel}"
+            ZIndex="110"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Margin="20,0,20,28"
+            Padding="18,12"
+            BackgroundColor="#1F2937"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 10">
+            <Label
+                Text="Avaliação enviada com sucesso!"
+                TextColor="White"
+                FontFamily="InterSemiBold"
+                FontSize="13" />
+        </Border>
+    </Grid>
+</ContentPage>

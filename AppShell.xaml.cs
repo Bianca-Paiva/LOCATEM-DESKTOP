@@ -1,3 +1,4 @@
+using LOCATEM_DESKTOP.Views.Avaliacoes;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
@@ -58,6 +59,8 @@ namespace LOCATEM_DESKTOP
             Routing.RegisterRoute("ferramentaDetalhe", typeof(FerramentaDetalhePage));
             Routing.RegisterRoute("gerenciarLocacoes", typeof(GerenciarLocacoesPage));
             Routing.RegisterRoute("historicoLocacoes", typeof(HistoricoLocacoesPage));
+            // Rota da tela Minhas Avaliações usada pelo AppHeader do Portal do Locador.
+            Routing.RegisterRoute("avaliacao", typeof(AvaliacaoPage));
         }
     }
 }
