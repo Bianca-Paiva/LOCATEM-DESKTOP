@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Locacoes.Historico.LocacaoHistoricoCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:locacoes="clr-namespace:LOCATEM_DESKTOP.Components.Locacoes"
+    x:Name="Root">
+
+    <Border
+        x:Name="CardBorder"
+        BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+        Stroke="#E9EAEC"
+        StrokeThickness="1"
+        StrokeShape="RoundRectangle 16">
+
+        <VerticalStackLayout Spacing="0">
+            <!-- Resumo clicável. O card mantém sua própria expansão para permitir vários abertos. -->
+            <Grid
+                x:Name="CabecalhoGrid"
+                Padding="18,16"
+                ColumnDefinitions="52,*,150,Auto"
+                ColumnSpacing="18">
+
+                <Border
+                    x:Name="MiniaturaContainer"
+                    Grid.Column="0"
+                    WidthRequest="52"
+                    HeightRequest="52"
+                    Stroke="#E7E7E7"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10"
+                    BackgroundColor="White"
+                    VerticalOptions="Center">
+                    <Image
+                        Source="{Binding Locacao.Imagem, Source={x:Reference Root}}"
+                        Aspect="AspectFit" />
+                </Border>
+
+                <Label
+                    x:Name="NomeFerramentaLabel"
+                    Grid.Column="1"
+                    Text="{Binding Locacao.Produto, Source={x:Reference Root}}"
+                    FontFamily="InterBold"
+                    FontSize="15"
+                    MaxLines="2"
+                    LineBreakMode="TailTruncation"
+                    VerticalTextAlignment="Center"
+                    TextColor="{StaticResource TextPrimaryColor}" />
+
+                <HorizontalStackLayout
+                    x:Name="LocatarioContainer"
+                    Grid.Column="2"
+                    Spacing="6"
+                    VerticalOptions="Center">
+                    <mi:MauiIcon
+                        Icon="{mi:Material Person}"
+                        IconSize="15"
+                        IconColor="{StaticResource TextMutedColor}" />
+                    <Label
+                        Text="{Binding Locacao.Locatario, Source={x:Reference Root}}"
+                        FontFamily="InterRegular"
+                        FontSize="13"
+                        MaxLines="1"
+                        LineBreakMode="TailTruncation"
+                        VerticalTextAlignment="Center"
+                        TextColor="{StaticResource TextPrimaryColor}" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout
+                    x:Name="Aside"
+                    Grid.Column="3"
+                    Spacing="12"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End">
+                    <locacoes:EtiquetaStatus Status="{Binding Locacao.Status, Source={x:Reference Root}}" />
+                    <Label
+                        x:Name="ValorLabel"
+                        FontFamily="InterExtraBold"
+                        FontSize="14"
+                        LineBreakMode="NoWrap"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        x:Name="ExpandirGlyph"
+                        Text="⌄"
+                        FontFamily="InterBold"
+                        FontSize="18"
+                        WidthRequest="22"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center"
+                        TextColor="#9AA0A6" />
+                </HorizontalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCardTapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <VerticalStackLayout
+                x:Name="PainelExpandido"
+                IsVisible="False"
+                Spacing="16"
+                Padding="18,16,18,20"
+                BackgroundColor="#F9FAFB">
+
+                <!-- Período, quantidade e motivo seguem os três blocos exibidos no Web. -->
+                <Grid
+                    x:Name="DetalhesGrid"
+                    ColumnDefinitions="2*,1*,2*"
+                    ColumnSpacing="24"
+                    RowSpacing="14">
+
+                    <HorizontalStackLayout
+                        x:Name="PeriodoItem"
+                        Grid.Column="0"
+                        Spacing="10"
+                        VerticalOptions="Start">
+                        <mi:MauiIcon
+                            Icon="{mi:Material CalendarToday}"
+                            IconSize="18"
+                            IconColor="{StaticResource TextMutedColor}"
+                            VerticalOptions="Start" />
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="PERÍODO" FontFamily="InterBold" FontSize="11" CharacterSpacing="0.3" TextColor="{StaticResource TextMutedColor}" />
+                            <Label Text="{Binding Locacao.Periodo, Source={x:Reference Root}}" FontFamily="InterSemiBold" FontSize="13" TextColor="{StaticResource TextPrimaryColor}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        x:Name="QuantidadeItem"
+                        Grid.Column="1"
+                        Spacing="10"
+                        VerticalOptions="Start">
+                        <mi:MauiIcon
+                            Icon="{mi:Material Inventory2}"
+                            IconSize="18"
+                            IconColor="{StaticResource TextMutedColor}"
+                            VerticalOptions="Start" />
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="QUANTIDADE" FontFamily="InterBold" FontSize="11" CharacterSpacing="0.3" TextColor="{StaticResource TextMutedColor}" />
+                            <Label x:Name="QuantidadeLabel" FontFamily="InterSemiBold" FontSize="13" TextColor="{StaticResource TextPrimaryColor}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        x:Name="MotivoItem"
+                        Grid.Column="2"
+                        Spacing="10"
+                        VerticalOptions="Start">
+                        <Border
+                            x:Name="MotivoCirculo"
+                            WidthRequest="26"
+                            HeightRequest="26"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 13"
+                            VerticalOptions="Start">
+                            <mi:MauiIcon
+                                x:Name="MotivoIcone"
+                                IconSize="14"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="MOTIVO DO STATUS" FontFamily="InterBold" FontSize="11" CharacterSpacing="0.3" TextColor="{StaticResource TextMutedColor}" />
+                            <Label
+                                x:Name="MotivoLabel"
+                                FontFamily="InterSemiBold"
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+                                TextColor="{StaticResource TextPrimaryColor}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <BoxView HeightRequest="1" BackgroundColor="#E9EAEC" />
+
+                <Grid
+                    x:Name="RodapeGrid"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="18"
+                    RowSpacing="12">
+                    <HorizontalStackLayout x:Name="DescricaoDetalhes" Grid.Column="0" Spacing="10" VerticalOptions="Center">
+                        <mi:MauiIcon
+                            Icon="{mi:Material Assignment}"
+                            IconSize="18"
+                            IconColor="{StaticResource TextMutedColor}"
+                            VerticalOptions="Start" />
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Ver detalhes da locação" FontFamily="InterBold" FontSize="13" TextColor="{StaticResource TextPrimaryColor}" />
+                            <Label
+                                Text="Confira todas as informações, mensagens e comprovantes."
+                                FontFamily="InterRegular"
+                                FontSize="12"
+                                TextColor="{StaticResource TextMutedColor}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <!-- O Web ainda não possui ação ligada ao botão; o Desktop preserva esse comportamento. -->
+                    <Border
+                        x:Name="BotaoDetalhes"
+                        Grid.Column="1"
+                        Padding="16,10"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999"
+                        BackgroundColor="{StaticResource AuthPrimaryColor}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start">
+                        <HorizontalStackLayout Spacing="6">
+                            <Label Text="Ver detalhes" FontFamily="InterBold" FontSize="13" TextColor="{StaticResource TextPrimaryColor}" />
+                            <mi:MauiIcon Icon="{mi:Material ChevronRight}" IconSize="16" IconColor="{StaticResource TextPrimaryColor}" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

@@ -68,6 +68,7 @@ public class FerramentaDetalheViewModel : BaseViewModel
             if (rota == "homeLocador") await Shell.Current.GoToAsync("//homeLocador");
             else if (rota == "minhasFerramentas") await VoltarAsync();
             else if (rota == "gerenciarLocacoes") await Shell.Current.GoToAsync("gerenciarLocacoes");
+            else if (rota == "historicoLocacoes") await Shell.Current.GoToAsync("historicoLocacoes");
             else if (rota == "perfil") await Shell.Current.GoToAsync("perfil");
         });
         FotoAnteriorCommand = new RelayCommand(() => SelecionarFoto(_indiceFoto - 1));

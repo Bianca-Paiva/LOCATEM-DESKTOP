@@ -57,6 +57,7 @@ namespace LOCATEM_DESKTOP
             Routing.RegisterRoute("cadastroFerramenta", typeof(CadastroFerramentaPage));
             Routing.RegisterRoute("ferramentaDetalhe", typeof(FerramentaDetalhePage));
             Routing.RegisterRoute("gerenciarLocacoes", typeof(GerenciarLocacoesPage));
+            Routing.RegisterRoute("historicoLocacoes", typeof(HistoricoLocacoesPage));
         }
     }
 }

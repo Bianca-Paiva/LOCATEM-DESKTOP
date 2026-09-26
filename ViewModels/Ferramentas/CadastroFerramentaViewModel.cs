@@ -62,6 +62,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
             if (p is string rota && rota == "homeLocador") await Shell.Current.GoToAsync("//homeLocador");
             else if (p is string destino && destino == "minhasFerramentas") await VoltarAsync();
             else if (p is string gerenciar && gerenciar == "gerenciarLocacoes") await Shell.Current.GoToAsync("gerenciarLocacoes");
+            else if (p is string historico && historico == "historicoLocacoes") await Shell.Current.GoToAsync("historicoLocacoes");
             else if (p is string perfil && perfil == "perfil") await Shell.Current.GoToAsync("perfil");
         });
         // Comandos ligados aos controles de fotos e especificações da página.
