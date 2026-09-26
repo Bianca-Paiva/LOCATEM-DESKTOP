@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Ferramentas.MinhasFerramentasPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:ferramentas="clr-namespace:LOCATEM_DESKTOP.Components.Ferramentas"
+    xmlns:modelsFerramentas="clr-namespace:LOCATEM_DESKTOP.Models.Ferramentas"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Ferramentas"
+    x:Name="Pagina"
+    x:DataType="vm:MinhasFerramentasViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <!--
+        Minhas Ferramentas (Locador) — migrada de
+        pages/Ferramentas/MinhasFerramentas/MinhasFerramentas.tsx.
+
+        Estrutura (igual à versão Web):
+          Header  →  CabecalhoPagina (+ botão "Cadastrar Ferramenta")  →  Abas com contador
+                  →  grade de ProductCard  |  estado vazio
+    -->
+
+    <ScrollView>
+
+        <VerticalStackLayout Spacing="0">
+
+            <!-- =========================================================
+                 HEADER (item "Minhas Ferramentas" ativo)
+                 ========================================================= -->
+
+            <layout:AppHeader
+                RotaAtual="minhasFerramentas"
+                NomeUsuario="{Binding NomeUsuario}"
+                FotoUsuario="{Binding FotoUsuario}"
+                NavegarCommand="{Binding NavegarCommand}" />
+
+
+            <!-- =========================================================
+                 CONTEÚDO DA PÁGINA
+                 (largura máxima de 2000 aplicada no code-behind, centralizada)
+                 ========================================================= -->
+
+            <VerticalStackLayout
+                x:Name="ConteudoPagina"
+                Padding="24,20,24,48"
+                Spacing="0">
+
+                <!-- Título + subtítulo + ação à direita -->
+                <shared:CabecalhoPagina
+                    Titulo="Minhas Ferramentas"
+                    Subtitulo="Gerencie as ferramentas que você anuncia para locação."
+                    Margin="0,0,0,30">
+
+                    <shared:CabecalhoPagina.Acao>
+
+                        <!-- botaoNovaFerramenta -->
+                        <Border
+                            HeightRequest="40"
+                            Padding="16,0"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{StaticResource AuthPrimaryColor}">
+
+                            <Border.GestureRecognizers>
+
+                                <TapGestureRecognizer
+                                    Command="{Binding CadastrarFerramentaCommand}" />
+
+                                <PointerGestureRecognizer
+                                    PointerEntered="BotaoCadastrar_PointerEntered"
+                                    PointerExited="BotaoCadastrar_PointerExited" />
+
+                            </Border.GestureRecognizers>
+
+                            <HorizontalStackLayout
+                                Spacing="6"
+                                VerticalOptions="Center">
+
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Add}"
+                                    IconSize="18"
+                                    IconColor="{StaticResource TextPrimaryColor}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Text="Cadastrar Ferramenta"
+                                    FontSize="13"
+                                    FontFamily="InterBold"
+                                    LineBreakMode="NoWrap"
+                                    VerticalOptions="Center"
+                                    TextColor="{StaticResource TextPrimaryColor}" />
+
+                            </HorizontalStackLayout>
+
+                        </Border>
+
+                    </shared:CabecalhoPagina.Acao>
+
+                </shared:CabecalhoPagina>
+
+
+                <!-- Abas de filtro: Todas / Disponíveis / Locadas / Indisponíveis / Em manutenção -->
+                <shared:Abas
+                    ItemsSource="{Binding Abas}"
+                    SelecionarCommand="{Binding SelecionarAbaCommand}"
+                    Margin="0,0,0,20" />
+
+
+                <!-- Estado vazio (nenhuma ferramenta para o filtro atual) -->
+                <shared:EstadoVazio
+                    Titulo="{Binding EstadoVazioTitulo}"
+                    Descricao="{Binding EstadoVazioDescricao}"
+                    IsVisible="{Binding SemFerramentas}" />
+
+
+                <!--
+                    Grade de cards: equivalente a repeat(auto-fill, minmax(210px, 1fr)) com gap de 20.
+                    O número de colunas se ajusta sozinho à largura da janela.
+                -->
+                <shared:GradeResponsiva
+                    ItemsSource="{Binding Ferramentas}"
+                    IsVisible="{Binding TemFerramentas}"
+                    LarguraMinimaItem="210"
+                    Espacamento="20"
+                    Margin="0,24,0,0">
+
+                    <shared:GradeResponsiva.ItemTemplate>
+
+                        <DataTemplate
+                            x:DataType="modelsFerramentas:ProdutoHome">
+
+                            <ferramentas:ProductCard
+                                Title="{Binding Title}"
+                                Brand="{Binding Locador}"
+                                Price="{Binding Price}"
+                                Imagem="{Binding Imagem}"
+                                Rating="{Binding RatingTexto}"
+                                ReviewCount="{Binding ReviewCount}"
+                                Status="{Binding Status}"
+                                MostrarAcoes="True"
+                                CommandParameter="{Binding Id}"
+                                VerCommand="{Binding BindingContext.VerFerramentaCommand, Source={x:Reference Pagina}}"
+                                EditarCommand="{Binding BindingContext.EditarFerramentaCommand, Source={x:Reference Pagina}}" />
+
+                        </DataTemplate>
+
+                    </shared:GradeResponsiva.ItemTemplate>
+
+                </shared:GradeResponsiva>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

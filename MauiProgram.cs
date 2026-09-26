@@ -9,10 +9,12 @@ using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.Services.Locacoes;
 using LOCATEM_DESKTOP.ViewModels.Auth;
 using LOCATEM_DESKTOP.ViewModels.Conta;
+using LOCATEM_DESKTOP.ViewModels.Ferramentas;
 using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
+using LOCATEM_DESKTOP.Views.Ferramentas;
 using LOCATEM_DESKTOP.Views.Home;
 using Microsoft.Maui.Handlers;
 using LOCATEM_DESKTOP.Views.Home;
@@ -81,6 +83,27 @@ namespace LOCATEM_DESKTOP
                     handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] =
                         transparentBrush;
                 });
+
+                // Mantém apenas a borda externa definida no XAML para os Editor no Windows.
+                EditorHandler.Mapper.AppendToMapping(
+                    "RemoveWindowsEditorBorder",
+                    (handler, view) =>
+                    {
+                        var transparente = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                            Microsoft.UI.Colors.Transparent);
+
+                        handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                        handler.PlatformView.BorderBrush = transparente;
+                        handler.PlatformView.Background = transparente;
+
+                        handler.PlatformView.Resources["TextControlBorderBrush"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderBrushFocused"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderThemeThickness"] =
+                            new Microsoft.UI.Xaml.Thickness(0);
+                        handler.PlatformView.Resources["TextControlBorderThemeThicknessFocused"] =
+                            new Microsoft.UI.Xaml.Thickness(0);
+                });
 #endif
 
             RegisterServices(builder.Services);
@@ -102,6 +125,7 @@ namespace LOCATEM_DESKTOP
             services.AddSingleton<IRedirectAposLoginService, RedirectAposLoginService>();
             // Catálogo de ferramentas e locações — singletons
             services.AddSingleton<ICatalogoService, CatalogoService>();
+            services.AddSingleton<ICadastroFerramentaService, CadastroFerramentaService>();
             services.AddSingleton<ILocacaoService, LocacaoService>();
 
         }
@@ -115,6 +139,9 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeNovaSenhaViewModel>();
             services.AddTransient<HomeLocadorViewModel>();
             services.AddTransient<PerfilViewModel>();
+            services.AddTransient<MinhasFerramentasViewModel>();
+            services.AddTransient<CadastroFerramentaViewModel>();
+            services.AddTransient<FerramentaDetalheViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -126,6 +153,9 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<InformeNovaSenhaPage>();
             services.AddTransient<HomeLocadorPage>();
             services.AddTransient<PerfilPage>();
+            services.AddTransient<MinhasFerramentasPage>();
+            services.AddTransient<CadastroFerramentaPage>();
+            services.AddTransient<FerramentaDetalhePage>();
         }
     }
 }

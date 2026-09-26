@@ -6,10 +6,30 @@
     x:Name="Root">
 
     <VerticalStackLayout Spacing="4">
-        <Label Text="{Binding Titulo, Source={x:Reference Root}}"
-               FontSize="28"
-               FontAttributes="Bold"
-               TextColor="{StaticResource TextPrimaryColor}" />
+
+        <!--
+            Linha do título. O conteúdo opcional "Acao" (ex.: botão "Cadastrar Ferramenta") fica à
+            direita e, se a janela ficar estreita, quebra para baixo do título — mesmo
+            comportamento do flex-wrap de CabecalhoPagina.module.css (.linhaTitulo).
+        -->
+        <FlexLayout
+            Direction="Row"
+            Wrap="Wrap"
+            JustifyContent="SpaceBetween"
+            AlignItems="Center">
+
+            <Label Text="{Binding Titulo, Source={x:Reference Root}}"
+                   FontSize="{Binding TamanhoTitulo, Source={x:Reference Root}}"
+                   FontFamily="{Binding FonteTitulo, Source={x:Reference Root}}"
+                   FontAttributes="Bold"
+                   Margin="0,0,16,0"
+                   TextColor="{StaticResource TextPrimaryColor}" />
+
+            <ContentView x:Name="AcaoHost"
+                         IsVisible="False" />
+
+        </FlexLayout>
+
         <Label Text="{Binding Subtitulo, Source={x:Reference Root}}"
                FontSize="14"
                TextColor="{StaticResource TextMutedColor}"

@@ -14,13 +14,16 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
         // Disparado quando o catálogo muda (cadastro, edição, remoção de ferramenta).
         event EventHandler? CatalogoAlterado;
 
-        
+
         // Id da ferramenta escolhida em "Minhas Ferramentas"/Home (via "Ver"/"Editar") — lido pelas
         // telas de Detalhe e Cadastro da Ferramenta. Null = cadastro de uma ferramenta nova.
-        
+
         int? FerramentaSelecionadaId { get; set; }
 
         // Ferramentas de um locador específico (sempre pelo identificador, nunca pelo nome).
         IReadOnlyList<Produto> ObterPorLocador(string? locadorId);
+        void Adicionar(Produto produto);
+        void Atualizar(int id, Produto produto);
+        void Remover(int id);
     }
 }

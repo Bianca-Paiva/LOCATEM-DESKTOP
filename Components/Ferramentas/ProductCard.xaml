@@ -61,11 +61,15 @@
                   IsVisible="{Binding MostrarAcoes, Source={x:Reference Root}}">
                 <Button Grid.Column="0"
                         Text="Ver"
+                        ImageSource="{mi:Material Icon=Visibility, IconSize=14, IconColor={StaticResource TextPrimaryColor}}"
+                        ContentLayout="Left,5"
                         Style="{StaticResource BtnAcaoCardStyle}"
                         Command="{Binding VerCommand, Source={x:Reference Root}}"
                         CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />
                 <Button Grid.Column="1"
                         Text="Editar"
+                        ImageSource="{mi:Material Icon=Edit, IconSize=14, IconColor={StaticResource TextPrimaryColor}}"
+                        ContentLayout="Left,5"
                         Style="{StaticResource BtnAcaoCardStyle}"
                         Command="{Binding EditarCommand, Source={x:Reference Root}}"
                         CommandParameter="{Binding CommandParameter, Source={x:Reference Root}}" />

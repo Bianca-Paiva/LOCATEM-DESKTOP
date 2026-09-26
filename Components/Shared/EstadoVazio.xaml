@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Shared.EstadoVazio"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root">
+
+    <!--
+        Estado vazio de listas. Migrado de
+        components/Locacoes/MinhasLocacoes/EstadoVazio/EstadoVazio.tsx + EstadoVazio.module.css.
+    -->
+    <Border
+        Padding="24,56"
+        StrokeThickness="1.5"
+        Stroke="{StaticResource InputBorderColor}"
+        StrokeDashArray="6,4"
+        StrokeShape="RoundRectangle 16"
+        BackgroundColor="Transparent">
+
+        <VerticalStackLayout
+            Spacing="0"
+            HorizontalOptions="Center">
+
+            <mi:MauiIcon
+                Icon="{mi:Material CalendarToday}"
+                IconSize="40"
+                IconColor="{StaticResource TextMutedColor}"
+                Opacity="0.3"
+                HorizontalOptions="Center"
+                Margin="0,0,0,12" />
+
+            <Label
+                Text="{Binding Titulo, Source={x:Reference Root}}"
+                FontSize="16"
+                FontFamily="InterBold"
+                HorizontalTextAlignment="Center"
+                LineBreakMode="WordWrap"
+                Margin="0,0,0,4"
+                TextColor="{StaticResource TextPrimaryColor}" />
+
+            <Label
+                Text="{Binding Descricao, Source={x:Reference Root}}"
+                FontSize="14"
+                MaximumWidthRequest="320"
+                HorizontalTextAlignment="Center"
+                LineBreakMode="WordWrap"
+                TextColor="{StaticResource TextMutedColor}" />
+
+        </VerticalStackLayout>
+
+    </Border>
+
+</ContentView>

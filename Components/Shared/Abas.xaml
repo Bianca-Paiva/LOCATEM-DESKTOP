@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Shared.Abas"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    x:Name="Root">
+
+    <!--
+        Barra de abas de filtro com contador (ex.: "Todas 5", "Disponíveis 2").
+        Migrada de components/Ferramentas/MinhasFerramentas/Abas/Abas.tsx + Abas.module.css.
+        Em janelas estreitas a barra rola na horizontal, como o overflow-x do CSS.
+    -->
+    <Border
+        Padding="10"
+        StrokeThickness="1"
+        Stroke="{StaticResource CardBorderColor}"
+        StrokeShape="RoundRectangle 18"
+        BackgroundColor="{StaticResource AuthCardBackgroundColor}">
+
+        <ScrollView
+            Orientation="Horizontal"
+            HorizontalScrollBarVisibility="Never">
+
+            <HorizontalStackLayout
+                Spacing="4"
+                BindableLayout.ItemsSource="{Binding ItemsSource, Source={x:Reference Root}}">
+
+                <BindableLayout.ItemTemplate>
+
+                    <DataTemplate x:DataType="shared:AbaItem">
+
+                        <!--
+                            Aba. As cores dependem de "Ativa" e são definidas só pelos DataTriggers
+                            (True/False), sem valor local, para o estado sempre refletir a aba selecionada.
+                        -->
+                        <Border
+                            Padding="18,12"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12">
+
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding Ativa}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryColor}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Border" Binding="{Binding Ativa}" Value="False">
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </DataTrigger>
+                            </Border.Triggers>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnAbaTapped" />
+                            </Border.GestureRecognizers>
+
+                            <HorizontalStackLayout Spacing="8">
+
+                                <Label
+                                    Text="{Binding Label}"
+                                    FontSize="14"
+                                    FontFamily="InterBold"
+                                    LineBreakMode="NoWrap"
+                                    VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Ativa}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Ativa}" Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                                <!-- Pílula do contador -->
+                                <Border
+                                    MinimumWidthRequest="20"
+                                    HeightRequest="20"
+                                    Padding="6,0"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    VerticalOptions="Center">
+
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Ativa}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryHoverColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Ativa}" Value="False">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource CardBorderColor}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+
+                                    <Label
+                                        Text="{Binding Contagem}"
+                                        FontSize="11"
+                                        FontFamily="InterExtraBold"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Ativa}" Value="True">
+                                                <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Ativa}" Value="False">
+                                                <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                </Border>
+
+                            </HorizontalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </BindableLayout.ItemTemplate>
+
+            </HorizontalStackLayout>
+
+        </ScrollView>
+
+    </Border>
+
+</ContentView>

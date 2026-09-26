@@ -1,6 +1,7 @@
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
+using LOCATEM_DESKTOP.Views.Ferramentas;
 using LOCATEM_DESKTOP.Views.Home;
 
 namespace LOCATEM_DESKTOP
@@ -50,8 +51,10 @@ namespace LOCATEM_DESKTOP
         // forem implementadas, sem expô-las no Flyout do Shell.
         private static void RegisterInternalRoutes()
         {
-            Routing.RegisterRoute("homeLocador", typeof(HomeLocadorPage));
             Routing.RegisterRoute("perfil", typeof(PerfilPage));
+            Routing.RegisterRoute("minhasFerramentas", typeof(MinhasFerramentasPage));
+            Routing.RegisterRoute("cadastroFerramenta", typeof(CadastroFerramentaPage));
+            Routing.RegisterRoute("ferramentaDetalhe", typeof(FerramentaDetalhePage));
         }
     }
 }

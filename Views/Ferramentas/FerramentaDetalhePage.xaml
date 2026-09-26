@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:ferramentas="clr-namespace:LOCATEM_DESKTOP.Components.Ferramentas"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Ferramentas"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Class="LOCATEM_DESKTOP.Views.Ferramentas.FerramentaDetalhePage"
+    x:Name="Pagina"
+    x:DataType="vm:FerramentaDetalheViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <ContentPage.Resources>
+        <!-- Valores dos cards de FerramentaDetalhe.module.css e InfoListCard.module.css. -->
+        <Style x:Key="CardInfo" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource AuthCardBackgroundColor}" />
+            <Setter Property="Stroke" Value="#EEEEEE" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+        <Style x:Key="CardConteudo" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource AuthCardBackgroundColor}" />
+            <Setter Property="Stroke" Value="{StaticResource CardBorderColor}" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+        <Style x:Key="TituloCardInfo" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="InterExtraBold" />
+            <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        </Style>
+        <Style x:Key="RotuloInfo" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontFamily" Value="InterRegular" />
+            <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+        </Style>
+        <Style x:Key="ValorInfo" TargetType="Label">
+            <Setter Property="FontSize" Value="13.5" />
+            <Setter Property="FontFamily" Value="InterBold" />
+            <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+            <Setter Property="HorizontalTextAlignment" Value="End" />
+        </Style>
+        <Style x:Key="LinhaInfo" TargetType="Grid">
+            <Setter Property="ColumnDefinitions" Value="*,Auto" />
+            <Setter Property="ColumnSpacing" Value="12" />
+            <Setter Property="Padding" Value="0,0,0,10" />
+        </Style>
+        <Style x:Key="BotaoAcao" TargetType="Border">
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 25" />
+            <Setter Property="Padding" Value="20,0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+                <layout:AppHeader RotaAtual="minhasFerramentas"
+                                  NomeUsuario="{Binding NomeUsuario}"
+                                  FotoUsuario="{Binding FotoUsuario}"
+                                  NavegarCommand="{Binding NavegarCommand}" />
+
+                <VerticalStackLayout x:Name="Conteudo" MaximumWidthRequest="1320"
+                                     Padding="32,32,32,72" Spacing="24">
+                    <shared:CabecalhoPagina x:Name="CabecalhoDetalhe" Margin="0,0,0,30"
+                                           Titulo="{Binding Titulo}"
+                                           Subtitulo="{Binding Subtitulo}"
+                                           FonteTitulo="InterExtraBold" TamanhoTitulo="28">
+                        <shared:CabecalhoPagina.Acao>
+                            <ferramentas:StatusFerramentaBadge Status="{Binding Status}" />
+                        </shared:CabecalhoPagina.Acao>
+                    </shared:CabecalhoPagina>
+
+                    <!-- Coluna esquerda: carrossel, especificações e descrição. -->
+                    <Grid x:Name="Colunas" ColumnDefinitions="1.3*,0.7*"
+                          RowDefinitions="Auto,Auto" ColumnSpacing="24">
+                        <VerticalStackLayout Grid.Column="0" Spacing="20">
+                            <VerticalStackLayout Spacing="12">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 12"
+                                        BackgroundColor="White" HorizontalOptions="Fill">
+                                    <Grid x:Name="AreaImagem" HeightRequest="420">
+                                        <Image Source="{Binding FotoAtual}" Aspect="AspectFit" Margin="12" />
+                                        <Label Text="Nenhuma foto cadastrada" IsVisible="{Binding SemFotos}"
+                                               TextColor="{StaticResource TextMutedColor}"
+                                               HorizontalOptions="Center" VerticalOptions="Center" />
+                                        <Button Text="‹" Command="{Binding FotoAnteriorCommand}"
+                                                IsVisible="{Binding TemVariasFotos}"
+                                                WidthRequest="34" HeightRequest="34" CornerRadius="17"
+                                                Padding="0" BackgroundColor="White" TextColor="#333333"
+                                                FontSize="22" HorizontalOptions="Start"
+                                                VerticalOptions="Center" Margin="8,0,0,0" />
+                                        <Button Text="›" Command="{Binding ProximaFotoCommand}"
+                                                IsVisible="{Binding TemVariasFotos}"
+                                                WidthRequest="34" HeightRequest="34" CornerRadius="17"
+                                                Padding="0" BackgroundColor="White" TextColor="#333333"
+                                                FontSize="22" HorizontalOptions="End"
+                                                VerticalOptions="Center" Margin="0,0,8,0" />
+                                    </Grid>
+                                </Border>
+                                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Fotos}"
+                                                       Spacing="6" HorizontalOptions="Center">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Null}">
+                                            <Border WidthRequest="8" HeightRequest="8"
+                                                    StrokeThickness="0" StrokeShape="RoundRectangle 4"
+                                                    BackgroundColor="#DDDDDD">
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Selecionada}" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryColor}" />
+                                                        <Setter Property="WidthRequest" Value="20" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.SelecionarFotoCommand, Source={x:Reference Pagina}}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Fotos}" Spacing="10">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="{x:Null}">
+                                                <Border WidthRequest="68" HeightRequest="68"
+                                                        Stroke="#E5E7EB" StrokeThickness="2"
+                                                        StrokeShape="RoundRectangle 8" BackgroundColor="White">
+                                                    <Border.Triggers>
+                                                        <DataTrigger TargetType="Border" Binding="{Binding Selecionada}" Value="True">
+                                                            <Setter Property="Stroke" Value="{StaticResource AuthPrimaryColor}" />
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding BindingContext.SelecionarFotoCommand, Source={x:Reference Pagina}}"
+                                                                              CommandParameter="{Binding .}" />
+                                                    </Border.GestureRecognizers>
+                                                    <Image Source="{Binding Imagem}" Aspect="AspectFit" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                            </VerticalStackLayout>
+
+                            <Border Style="{StaticResource CardConteudo}">
+                                <VerticalStackLayout Spacing="14">
+                                    <Label Text="Especificações Técnicas" FontSize="18" FontFamily="InterBold"
+                                           TextColor="{StaticResource TextPrimaryColor}" />
+                                    <Border Stroke="{StaticResource CardBorderColor}" StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 8" Padding="0">
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Especificacoes}" Spacing="0">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="{x:Null}">
+                                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" Padding="16,11"
+                                                          BackgroundColor="{Binding Fundo}">
+                                                        <Label Grid.Column="0" Text="{Binding Label}" FontSize="13"
+                                                               TextColor="{StaticResource TextMutedColor}" />
+                                                        <Label Grid.Column="1" Text="{Binding Valor}" FontSize="13"
+                                                               FontFamily="InterMedium" HorizontalTextAlignment="End"
+                                                               TextColor="{StaticResource TextPrimaryColor}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Style="{StaticResource CardConteudo}" Padding="16">
+                                <VerticalStackLayout Spacing="12">
+                                    <Label Text="Descrição" FontSize="18" FontFamily="InterBold"
+                                           TextColor="{StaticResource TextPrimaryColor}" />
+                                    <Label Text="{Binding Descricao}" FontSize="14.5" FontFamily="InterRegular"
+                                           LineBreakMode="WordWrap" TextColor="#4B5563" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!-- Coluna direita: os números são calculados pelo ViewModel a partir dos dados reais. -->
+                        <VerticalStackLayout x:Name="ColunaDireita" Grid.Column="1" Spacing="20">
+                            <Border Style="{StaticResource CardInfo}">
+                                <VerticalStackLayout Spacing="14">
+                                    <Label Text="Preços e condições" Style="{StaticResource TituloCardInfo}" />
+                                    <VerticalStackLayout Spacing="10">
+                                        <Grid Style="{StaticResource LinhaInfo}">
+                                            <Label Text="Diária" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding Diaria}" FontSize="14.5"
+                                                   FontFamily="InterExtraBold" TextColor="{StaticResource TextPrimaryColor}" />
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+                                        <Grid Style="{StaticResource LinhaInfo}">
+                                            <Label Text="Caução" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding Caucao}" Style="{StaticResource ValorInfo}" />
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+                                        <Grid Style="{StaticResource LinhaInfo}">
+                                            <Label Text="Estoque disponível" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding Estoque}" Style="{StaticResource ValorInfo}" />
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                            <Label Text="Aprovação" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding Aprovacao}" Style="{StaticResource ValorInfo}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Style="{StaticResource CardInfo}">
+                                <VerticalStackLayout Spacing="14">
+                                    <Label Text="Desempenho desta ferramenta" Style="{StaticResource TituloCardInfo}" />
+                                    <VerticalStackLayout Spacing="10">
+                                        <Grid Style="{StaticResource LinhaInfo}">
+                                            <Label Text="Locações realizadas" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding LocacoesRealizadas}" Style="{StaticResource ValorInfo}" />
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+                                        <Grid Style="{StaticResource LinhaInfo}">
+                                            <Label Text="Receita gerada (total)" Style="{StaticResource RotuloInfo}" />
+                                            <Label Grid.Column="1" Text="{Binding Receita}" Style="{StaticResource ValorInfo}" />
+                                        </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource CardBorderColor}" />
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                            <Label Text="Avaliação média" Style="{StaticResource RotuloInfo}" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="4">
+                                                <mi:MauiIcon Icon="{mi:Material Star}" IconSize="14"
+                                                             IconColor="{StaticResource AuthPrimaryColor}" VerticalOptions="Center" />
+                                                <Label Text="{Binding Avaliacao}" Style="{StaticResource ValorInfo}" />
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <VerticalStackLayout Spacing="12" Margin="0,4,0,0">
+                                <Border Style="{StaticResource BotaoAcao}" StrokeThickness="0"
+                                        BackgroundColor="{StaticResource AuthPrimaryColor}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding EditarCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <mi:MauiIcon Icon="{mi:Material Edit}" IconSize="17"
+                                                     IconColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center" />
+                                        <Label Text="Editar ferramenta" FontSize="14.5" FontFamily="InterBold"
+                                               TextColor="{StaticResource TextPrimaryColor}" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <Border Style="{StaticResource BotaoAcao}" IsVisible="{Binding PodePausar}"
+                                        Stroke="{StaticResource InputBorderColor}" StrokeThickness="1.5"
+                                        BackgroundColor="White">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PausarOuReativarCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid>
+                                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center"
+                                                               IsVisible="{Binding Pausado}">
+                                            <mi:MauiIcon Icon="{mi:Material PlayArrow}" IconSize="17"
+                                                         IconColor="{StaticResource TextPrimaryColor}" />
+                                            <Label Text="Reativar anúncio" FontSize="14.5" FontFamily="InterBold"
+                                                   TextColor="{StaticResource TextPrimaryColor}" />
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center"
+                                                               IsVisible="True">
+                                            <HorizontalStackLayout.Triggers>
+                                                <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding Pausado}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </HorizontalStackLayout.Triggers>
+                                            <mi:MauiIcon Icon="{mi:Material Pause}" IconSize="17"
+                                                         IconColor="{StaticResource TextPrimaryColor}" />
+                                            <Label Text="Pausar anúncio" FontSize="14.5" FontFamily="InterBold"
+                                                   TextColor="{StaticResource TextPrimaryColor}" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource BotaoAcao}" Stroke="#F6C9CE"
+                                        StrokeThickness="1.5" BackgroundColor="White">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PedirRemocaoCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <mi:MauiIcon Icon="{mi:Material DeleteOutline}" IconSize="17"
+                                                     IconColor="{StaticResource ErrorColor}" VerticalOptions="Center" />
+                                        <Label Text="Remover ferramenta" FontSize="14.5" FontFamily="InterBold"
+                                               TextColor="{StaticResource ErrorColor}" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Reutiliza o modal de confirmação já presente no Desktop. -->
+        <shared:ConfirmModalView ZIndex="30" IsOpen="{Binding ConfirmandoRemocao}"
+                                 Title="Remover ferramenta?" Message="{Binding MensagemRemocao}"
+                                 ConfirmText="Remover" CancelText="Cancelar"
+                                 ConfirmCommand="{Binding ConfirmarRemocaoCommand}"
+                                 CancelCommand="{Binding CancelarRemocaoCommand}" />
+    </Grid>
+</ContentPage>
