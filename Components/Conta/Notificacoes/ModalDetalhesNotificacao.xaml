@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Conta.Notificacoes.ModalDetalhesNotificacao"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Notificacoes"
+    x:Name="Root"
+    IsVisible="{Binding Aberto, Source={x:Reference Root}}"
+    HorizontalOptions="Fill"
+    VerticalOptions="Fill">
+
+    <!-- Overlay escurece a página mantendo o modal centralizado, equivalente ao React. -->
+    <Grid
+        Padding="16"
+        BackgroundColor="#731A1A1A"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+
+        <!-- Caixa principal limitada a 540px, como a largura máxima do modal Web. -->
+        <Border
+            x:Name="ModalContainer"
+            MaximumWidthRequest="540"
+            MaximumHeightRequest="720"
+            Padding="24"
+            BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+            Stroke="{StaticResource AuthPrimaryColor}"
+            StrokeThickness="1.5"
+            StrokeShape="RoundRectangle 16"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <!-- ScrollView protege o conteúdo em janelas com pouca altura. -->
+            <ScrollView>
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Cabeçalho do modal com ícone, título, descrição e fechamento. -->
+                    <Grid ColumnDefinitions="40,*,32" ColumnSpacing="14">
+
+                        <!-- Ícone usa o mesmo helper visual aplicado no card. -->
+                        <Border
+                            x:Name="IconeContainer"
+                            Grid.Column="0"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 20"
+                            VerticalOptions="Start">
+                            <mi:MauiIcon
+                                x:Name="IconeNotificacao"
+                                IconSize="20"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+
+                        <!-- Textos principais da notificação selecionada. -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="4">
+                            <Label
+                                Text="{Binding Notificacao.Titulo, Source={x:Reference Root}}"
+                                FontFamily="InterBold"
+                                FontSize="17"
+                                TextColor="{StaticResource TextPrimaryColor}"
+                                LineBreakMode="WordWrap" />
+                            <Label
+                                Text="{Binding Notificacao.Descricao, Source={x:Reference Root}}"
+                                FontFamily="InterRegular"
+                                FontSize="14"
+                                TextColor="{StaticResource TextMutedColor}"
+                                LineHeight="1.25"
+                                LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+
+                        <!-- Botão circular de fechamento no canto superior direito. -->
+                        <Border
+                            Grid.Column="2"
+                            WidthRequest="32"
+                            HeightRequest="32"
+                            StrokeThickness="0"
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 16"
+                            VerticalOptions="Start">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FecharCommand, Source={x:Reference Root}}" />
+                            </Border.GestureRecognizers>
+                            <mi:MauiIcon
+                                Icon="{mi:Material Close}"
+                                IconSize="18"
+                                IconColor="#9A9A9A"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+
+                    <!-- Bloco cinza reúne os detalhes específicos de cada categoria. -->
+                    <Border
+                        Padding="16"
+                        BackgroundColor="#FAFAFA"
+                        Stroke="#F0F0F0"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12">
+                        <VerticalStackLayout
+                            Spacing="20"
+                            BindableLayout.ItemsSource="{Binding LinhasDetalhes, Source={x:Reference Root}}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:LinhaDetalheNotificacao">
+                                    <!-- Cada linha mantém rótulo à esquerda e valor em destaque à direita. -->
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label
+                                            Grid.Column="0"
+                                            Text="{Binding Rotulo}"
+                                            FontFamily="InterRegular"
+                                            FontSize="13"
+                                            TextColor="#4B4B4B"
+                                            VerticalOptions="Start" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Text="{Binding Valor}"
+                                            FontFamily="InterSemiBold"
+                                            FontSize="14"
+                                            TextColor="{StaticResource TextPrimaryColor}"
+                                            HorizontalTextAlignment="End"
+                                            LineBreakMode="WordWrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Rodapé só aparece quando há Renovar ou alguma ação contextual disponível. -->
+                    <HorizontalStackLayout
+                        x:Name="RodapeAcoes"
+                        Spacing="10"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding MostrarRodape, Source={x:Reference Root}}">
+
+                        <!-- Renovar permanece exclusivo das categorias de devolução configuradas no Web. -->
+                        <Border
+                            IsVisible="{Binding MostrarRenovar, Source={x:Reference Root}}"
+                            Padding="17,10"
+                            BackgroundColor="{StaticResource AuthPrimaryColor}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 22">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding RenovarCommand, Source={x:Reference Root}}"
+                                    CommandParameter="{Binding Notificacao, Source={x:Reference Root}}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="6">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Undo}"
+                                    IconSize="14"
+                                    IconColor="{StaticResource TextPrimaryColor}" />
+                                <Label
+                                    Text="Renovar locação"
+                                    FontFamily="InterSemiBold"
+                                    FontSize="14"
+                                    TextColor="{StaticResource TextPrimaryColor}" />
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!-- Ação contextual muda conforme a categoria da notificação. -->
+                        <Border
+                            IsVisible="{Binding MostrarAcao, Source={x:Reference Root}}"
+                            Padding="17,10"
+                            BackgroundColor="{StaticResource AuthPrimaryColor}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 22">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AcaoCommand, Source={x:Reference Root}}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="6">
+                                <mi:MauiIcon
+                                    x:Name="IconeAcao"
+                                    IconSize="14"
+                                    IconColor="{StaticResource TextPrimaryColor}" />
+                                <Label
+                                    Text="{Binding TextoAcao, Source={x:Reference Root}}"
+                                    FontFamily="InterSemiBold"
+                                    FontSize="14"
+                                    TextColor="{StaticResource TextPrimaryColor}" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+    </Grid>
+</ContentView>
