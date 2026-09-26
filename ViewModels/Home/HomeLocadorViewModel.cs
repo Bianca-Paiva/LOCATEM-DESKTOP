@@ -54,6 +54,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Home
                 "homeLocador",
                 "minhasFerramentas",
                 "gerenciarLocacoes",
+                "historicoLocacoes",
                 "perfil",
                 "cadastroFerramenta"
             };

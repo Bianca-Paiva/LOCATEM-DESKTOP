@@ -145,6 +145,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<CadastroFerramentaViewModel>();
             services.AddTransient<FerramentaDetalheViewModel>();
             services.AddTransient<GerenciarLocacoesViewModel>();
+            services.AddTransient<HistoricoLocacoesViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -160,6 +161,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<CadastroFerramentaPage>();
             services.AddTransient<FerramentaDetalhePage>();
             services.AddTransient<GerenciarLocacoesPage>();
+            services.AddTransient<HistoricoLocacoesPage>();
         }
     }
 }

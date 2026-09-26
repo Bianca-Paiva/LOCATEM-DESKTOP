@@ -34,6 +34,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
                 "homeLocador",
                 "minhasFerramentas",
                 "gerenciarLocacoes",
+                "historicoLocacoes",
                 "perfil"
             };
 
@@ -485,6 +486,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
         private void AtualizarDadosExibidos(Usuario usuario)
         {
             EhLocador = usuario.Tipo == TipoUsuario.Locador;
+            MontarPainelControle();
             OnPropertyChanged(nameof(DocumentoPlaceholder));
             OnPropertyChanged(nameof(DocumentoMaxLength));
 
@@ -930,7 +932,11 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             OpcoesPainel.Clear();
 
             AdicionarOpcao("Aluguéis Ativos", "Visualize seus equipamentos alugados atualmente.", MaterialIcons.CalendarToday, "minhasLocacoes");
-            AdicionarOpcao("Histórico de Locações", "Consulte todas as suas locações anteriores.", MaterialIcons.History, null);
+            AdicionarOpcao(
+                "Histórico de Locações",
+                "Consulte todas as suas locações anteriores.",
+                MaterialIcons.History,
+                EhLocador ? "historicoLocacoes" : null);
             AdicionarOpcao("Favoritos", "Ferramentas e equipamentos salvos.", MaterialIcons.Star, null);
             AdicionarOpcao("Pagamentos", "Visualize pagamentos, cauções e reembolsos.", MaterialIcons.Payments, null);
             AdicionarOpcao("Contratos", "Acesse todos os contratos digitais.", MaterialIcons.Assignment, null);
