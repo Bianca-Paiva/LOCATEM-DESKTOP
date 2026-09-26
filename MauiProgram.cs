@@ -5,11 +5,14 @@ using MauiIcons.Material;
 using MauiIcons.Material.Outlined;
 
 using LOCATEM_DESKTOP.Services.Auth;
+using LOCATEM_DESKTOP.Services.Cep;
 using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.Services.Locacoes;
+using LOCATEM_DESKTOP.Services.Notificacoes;
 using LOCATEM_DESKTOP.ViewModels.Avaliacoes;
 using LOCATEM_DESKTOP.ViewModels.Auth;
 using LOCATEM_DESKTOP.ViewModels.Conta;
+using LOCATEM_DESKTOP.ViewModels.Conta.Notificacoes;
 using LOCATEM_DESKTOP.ViewModels.Ferramentas;
 using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.ViewModels.Locacoes;
@@ -17,6 +20,7 @@ using LOCATEM_DESKTOP.Views.Avaliacoes;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
+using LOCATEM_DESKTOP.Views.Conta.Notificacoes;
 using LOCATEM_DESKTOP.Views.Ferramentas;
 using LOCATEM_DESKTOP.Views.Home;
 using LOCATEM_DESKTOP.Views.Locacoes;
@@ -108,6 +112,15 @@ namespace LOCATEM_DESKTOP
                         handler.PlatformView.Resources["TextControlBorderThemeThicknessFocused"] =
                             new Microsoft.UI.Xaml.Thickness(0);
                 });
+                PickerHandler.Mapper.AppendToMapping("RemovePickerBorder", (handler, view) =>
+{
+                    handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                    handler.PlatformView.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Microsoft.UI.Colors.Transparent);
+
+                    handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Microsoft.UI.Colors.Transparent);
+                });
 #endif
 
             RegisterServices(builder.Services);
@@ -124,14 +137,18 @@ namespace LOCATEM_DESKTOP
 
             // Chamadas HTTP de autenticação (Cadastro/Login) — migrado de services/authService.ts.
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<ICepService, CepService>();
 
             // Redirecionamento pós-login (utils/Auth/redirectAposLogin.ts).
             services.AddSingleton<IRedirectAposLoginService, RedirectAposLoginService>();
-            // Catálogo de ferramentas e locações — singletons
+
+            // Catálogo de ferramentas e locações — singletons.
             services.AddSingleton<ICatalogoService, CatalogoService>();
             services.AddSingleton<ICadastroFerramentaService, CadastroFerramentaService>();
             services.AddSingleton<ILocacaoService, LocacaoService>();
 
+            // Mantém o estado das notificações enquanto o aplicativo estiver aberto.
+            services.AddSingleton<INotificacaoService, NotificacaoService>();
         }
 
         private static void RegisterViewModels(IServiceCollection services)
@@ -150,6 +167,8 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<HistoricoLocacoesViewModel>();
             // ViewModel da tela de Avaliações, derivada das locações finalizadas do locador.
             services.AddTransient<AvaliacaoViewModel>();
+            // ViewModel da tela de Notificações, com filtro, paginação e modal de detalhes.
+            services.AddTransient<NotificacoesViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -168,6 +187,8 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<HistoricoLocacoesPage>();
             // Página de Avaliações registrada no mesmo ciclo transient das demais telas internas.
             services.AddTransient<AvaliacaoPage>();
+            // Página de Notificações registrada no mesmo ciclo transient das telas internas.
+            services.AddTransient<NotificacoesPage>();
         }
     }
 }

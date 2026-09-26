@@ -50,9 +50,15 @@ namespace LOCATEM_DESKTOP.Validation.Auth
             else if (!Helpers.Auth.MaskHelper.ValidateCep(data.Cep))
                 errors.Cep = "Digite um CEP válido";
 
-            // logradouro / numero
+            // endereço completo
             if (string.IsNullOrWhiteSpace(data.Logradouro)) errors.Logradouro = "O endereço é obrigatório";
             if (string.IsNullOrWhiteSpace(data.Numero)) errors.Numero = "O número é obrigatório";
+            if (string.IsNullOrWhiteSpace(data.Bairro)) errors.Bairro = "O bairro é obrigatório";
+            if (string.IsNullOrWhiteSpace(data.Cidade)) errors.Cidade = "A cidade é obrigatória";
+            if (string.IsNullOrWhiteSpace(data.Estado))
+                errors.Estado = "O estado é obrigatório";
+            else if (data.Estado.Trim().Length != 2)
+                errors.Estado = "Informe a UF com 2 letras";
 
             // senha: 8+ caracteres, minúscula, maiúscula, número e caractere especial
             if (string.IsNullOrEmpty(data.Senha))

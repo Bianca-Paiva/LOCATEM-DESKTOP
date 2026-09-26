@@ -276,8 +276,23 @@ namespace LOCATEM_DESKTOP.Components.Layout
                 var toque =
                     new TapGestureRecognizer();
 
-                toque.Tapped += (_, _) =>
+                toque.Tapped += async (_, _) =>
                 {
+                    // Notificacoes foi migrada depois dos ViewModels das telas anteriores.
+                    // O header resolve essa rota diretamente para evitar repetir a alteracao em cada ViewModel.
+                    if (string.Equals(rota, "notificacoes", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!Shell.Current.CurrentState.Location.OriginalString.EndsWith(
+                                rota,
+                                StringComparison.OrdinalIgnoreCase))
+                        {
+                            await Shell.Current.GoToAsync("notificacoes");
+                        }
+
+                        return;
+                    }
+
+                    // As demais rotas continuam usando o comando fornecido pela pagina atual.
                     NavegarCommand?.Execute(rota);
                 };
 

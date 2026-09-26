@@ -9,6 +9,9 @@ namespace LOCATEM_DESKTOP.Validation.Auth
         public static readonly AlertaMessage InvalidPhone = new("Telefone inválido", "Digite um telefone válido com DDD.");
         public static readonly AlertaMessage InvalidCnpj = new("CNPJ inválido", "Digite seu CNPJ completo.");
         public static readonly AlertaMessage InvalidCep = new("CEP inválido", "Digite um CEP válido.");
+        public static readonly AlertaMessage CepNotFound = new("CEP não encontrado", "Verifique o CEP informado e tente novamente.");
+        public static readonly AlertaMessage CepError = new("Erro ao buscar CEP", "Não foi possível consultar o CEP. Tente novamente.");
+        public static readonly AlertaMessage InvalidAddress = new("Endereço inválido", "Confira bairro, cidade e estado antes de continuar.");
         public static readonly AlertaMessage Success = new("Sucesso", "Conta criada com sucesso!");
         public static readonly AlertaMessage ApiError = new("Erro", "Erro ao conectar com a API.");
     }

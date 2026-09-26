@@ -128,74 +128,109 @@
                                 MaxLength="18"
                             />
 
-                            <!-- ENDEREÇO -->
+                            <!-- ENDEREÇO COMPLETO -->
                             <VerticalStackLayout Spacing="16">
-                                <Label 
-                                    Text="Endereço" 
-                                    FontSize="16" 
-                                    FontFamily="InterBold" 
-                                    TextColor="{StaticResource TextPrimaryColor}" 
-                                />
+                                <Label
+                                    Text="Endereço"
+                                    FontSize="16"
+                                    FontFamily="InterBold"
+                                    TextColor="{StaticResource TextPrimaryColor}" />
 
-                                <Grid 
-                                    ColumnDefinitions="*,Auto" 
-                                    ColumnSpacing="16" 
-                                    VerticalOptions="Start"
-                                >
-                                    <shared:FormEntry 
-                                        Grid.Column="0" 
-                                        Label="CEP" 
-                                        Text="{Binding Cep}" 
-                                        Placeholder="00000-000" 
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="16"
+                                    VerticalOptions="Start">
+                                    <shared:FormEntry
+                                        Grid.Column="0"
+                                        Label="CEP"
+                                        Text="{Binding Cep}"
+                                        Placeholder="00000-000"
                                         EntryKeyboard="Numeric"
-                                        IsRequiredField="True" 
+                                        IsRequiredField="True"
                                         ErrorText="{Binding CepErrorText}"
                                         IsShaking="{Binding CepError.Shake}"
                                         Status="{Binding CepError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
-                                        MaxLength="9"
-                                    />
+                                        UnfocusedCommand="{Binding BuscarCepCommand}"
+                                        MaxLength="9" />
 
-                                    <Label 
-                                        Grid.Column="1" 
-                                        Text="Não sei meu CEP" 
-                                        TextColor="#007BFF" 
-                                        FontSize="14" 
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="Não sei meu CEP"
+                                        TextColor="#007BFF"
+                                        FontSize="14"
                                         FontFamily="InterMedium"
-                                        TextDecorations="Underline" 
-                                        VerticalOptions="Center" 
-                                        Margin="0,22,0,0"
-                                    >
+                                        TextDecorations="Underline"
+                                        VerticalOptions="Center"
+                                        Margin="0,22,0,0">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding AbrirBuscaCepCommand}" />
                                         </Label.GestureRecognizers>
                                     </Label>
                                 </Grid>
 
-                                <Grid ColumnDefinitions="3*,1*" ColumnSpacing="16">
-                                    <shared:FormEntry 
-                                        Grid.Column="0" 
-                                        Label="Rua/Logradouro" 
-                                        Text="{Binding Logradouro}" 
+                                <Grid ColumnDefinitions="3*,*" ColumnSpacing="16">
+                                    <shared:FormEntry
+                                        Grid.Column="0"
+                                        Label="Rua/Logradouro"
+                                        Text="{Binding Logradouro}"
                                         Placeholder="Ex: Avenida Paulista"
-                                        IsRequiredField="True" 
+                                        IsRequiredField="True"
                                         ErrorText="{Binding LogradouroErrorText}"
                                         IsShaking="{Binding LogradouroError.Shake}"
                                         Status="{Binding LogradouroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
-                                        MaxLength="100"
-                                    />
+                                        MaxLength="100" />
 
-                                    <shared:FormEntry 
-                                        Grid.Column="1" 
-                                        Label="Número" 
-                                        Text="{Binding Numero}" 
+                                    <shared:FormEntry
+                                        Grid.Column="1"
+                                        Label="Número"
+                                        Text="{Binding Numero}"
                                         Placeholder="Ex: 123"
-                                        IsRequiredField="True" 
+                                        IsRequiredField="True"
                                         ErrorText="{Binding NumeroErrorText}"
                                         IsShaking="{Binding NumeroError.Shake}"
                                         Status="{Binding NumeroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
-                                        MaxLength="10"
-                                    />
+                                        MaxLength="10" />
                                 </Grid>
+
+                                <shared:FormEntry
+                                    Label="Complemento"
+                                    Text="{Binding Complemento}"
+                                    Placeholder="Ex: Apto 12, bloco B (opcional)"
+                                    MaxLength="150" />
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                                    <shared:FormEntry
+                                        Grid.Column="0"
+                                        Label="Bairro"
+                                        Text="{Binding Bairro}"
+                                        Placeholder="Ex: Centro"
+                                        IsRequiredField="True"
+                                        ErrorText="{Binding BairroErrorText}"
+                                        IsShaking="{Binding BairroError.Shake}"
+                                        Status="{Binding BairroError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="100" />
+
+                                    <shared:FormEntry
+                                        Grid.Column="1"
+                                        Label="Cidade"
+                                        Text="{Binding Cidade}"
+                                        Placeholder="Ex: São Paulo"
+                                        IsRequiredField="True"
+                                        ErrorText="{Binding CidadeErrorText}"
+                                        IsShaking="{Binding CidadeError.Shake}"
+                                        Status="{Binding CidadeError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                        MaxLength="100" />
+                                </Grid>
+
+                                <shared:FormEntry
+                                    Label="Estado (UF)"
+                                    Text="{Binding Estado}"
+                                    Placeholder="Ex: SP"
+                                    IsRequiredField="True"
+                                    ErrorText="{Binding EstadoErrorText}"
+                                    IsShaking="{Binding EstadoError.Shake}"
+                                    Status="{Binding EstadoError.Active, Converter={StaticResource ErrorActiveToStatusConverter}}"
+                                    MaxLength="2" />
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>

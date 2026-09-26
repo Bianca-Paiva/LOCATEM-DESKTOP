@@ -37,6 +37,8 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
                 "historicoLocacoes",
                 // Permite que o item Avaliações do AppHeader navegue para a tela recém-migrada.
                 "avaliacao",
+                // Habilita o item Notificações do AppHeader e do Painel de Controle.
+                "notificacoes",
                 "perfil"
             };
 

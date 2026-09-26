@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Conta.Notificacoes.NotificacaoCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root">
+
+    <!-- Card principal equivalente ao NotificationCard do Web. -->
+    <Border
+        Padding="20,18"
+        BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+        Stroke="#97F6CA45"
+        StrokeThickness="1.5"
+        StrokeShape="RoundRectangle 16">
+
+        <!-- Organiza conteúdo principal e rodapé com o mesmo espaçamento vertical do React. -->
+        <VerticalStackLayout Spacing="14">
+
+            <!-- Cabeçalho do card: ícone circular à esquerda e textos à direita. -->
+            <Grid ColumnDefinitions="38,*" ColumnSpacing="14">
+
+                <!-- Fundo e cor deste ícone são resolvidos no code-behind para reutilizar StatusLocacaoConfig. -->
+                <Border
+                    x:Name="IconeContainer"
+                    Grid.Column="0"
+                    WidthRequest="38"
+                    HeightRequest="38"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 19"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start">
+                    <mi:MauiIcon
+                        x:Name="IconeNotificacao"
+                        IconSize="18"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!-- Bloco textual principal da notificação. -->
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="4"
+                    VerticalOptions="Start">
+
+                    <!-- Título em destaque. -->
+                    <Label
+                        Text="{Binding Notificacao.Titulo, Source={x:Reference Root}}"
+                        FontFamily="InterBold"
+                        FontSize="16"
+                        TextColor="{StaticResource TextPrimaryColor}"
+                        LineBreakMode="WordWrap" />
+
+                    <!-- Descrição resumida da ocorrência. -->
+                    <Label
+                        Text="{Binding Notificacao.Descricao, Source={x:Reference Root}}"
+                        FontFamily="InterRegular"
+                        FontSize="14"
+                        TextColor="{StaticResource TextMutedColor}"
+                        LineHeight="1.25"
+                        LineBreakMode="WordWrap" />
+
+                    <!-- Linha opcional usada pelas notificações que possuem informação complementar. -->
+                    <HorizontalStackLayout
+                        Margin="0,4,0,0"
+                        Spacing="6"
+                        IsVisible="{Binding Notificacao.TemInformacaoExtra, Source={x:Reference Root}}">
+
+                        <!-- Ponto amarelo reproduz o marcador visual do Web. -->
+                        <BoxView
+                            WidthRequest="6"
+                            HeightRequest="6"
+                            CornerRadius="3"
+                            Color="{StaticResource AuthPrimaryColor}"
+                            VerticalOptions="Center" />
+
+                        <!-- Texto complementar, por exemplo a previsão de chegada. -->
+                        <Label
+                            Text="{Binding Notificacao.InformacaoExtra, Source={x:Reference Root}}"
+                            FontFamily="InterRegular"
+                            FontSize="13"
+                            TextColor="{StaticResource TextMutedColor}"
+                            LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Rodapé com horário à esquerda e ações à direita. -->
+            <Grid
+                x:Name="Rodape"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12"
+                Margin="52,0,0,0">
+
+                <!-- Timestamp só aparece quando o Web também recebe um valor não vazio. -->
+                <HorizontalStackLayout
+                    Grid.Column="0"
+                    Spacing="6"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding Notificacao.TemTimestamp, Source={x:Reference Root}}">
+                    <mi:MauiIcon
+                        Icon="{mi:Material Schedule}"
+                        IconSize="14"
+                        IconColor="#9A9A9A"
+                        VerticalOptions="Center" />
+                    <Label
+                        Text="{Binding Notificacao.Timestamp, Source={x:Reference Root}}"
+                        FontFamily="InterRegular"
+                        FontSize="13"
+                        TextColor="#9A9A9A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Agrupa os botões de ação do card. -->
+                <HorizontalStackLayout
+                    Grid.Column="1"
+                    Spacing="10"
+                    HorizontalOptions="End">
+
+                    <!-- Botão Renovar existe somente nas notificações marcadas pelo mock. -->
+                    <Border
+                        IsVisible="{Binding Notificacao.MostrarRenovar, Source={x:Reference Root}}"
+                        Padding="15,8"
+                        BackgroundColor="{StaticResource AuthPrimaryColor}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 20">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding RenovarCommand, Source={x:Reference Root}}"
+                                CommandParameter="{Binding Notificacao, Source={x:Reference Root}}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="6">
+                            <mi:MauiIcon
+                                Icon="{mi:Material Undo}"
+                                IconSize="14"
+                                IconColor="{StaticResource TextPrimaryColor}" />
+                            <Label
+                                Text="Renovar"
+                                FontFamily="InterSemiBold"
+                                FontSize="13"
+                                TextColor="{StaticResource TextPrimaryColor}" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Abre o modal completo da notificação selecionada. -->
+                    <Border
+                        Padding="15,8"
+                        BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                        Stroke="{StaticResource InputBorderColor}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding AbrirDetalhesCommand, Source={x:Reference Root}}"
+                                CommandParameter="{Binding Notificacao, Source={x:Reference Root}}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="6">
+                            <mi:MauiIcon
+                                Icon="{mi:Material Assignment}"
+                                IconSize="14"
+                                IconColor="#333333" />
+                            <Label
+                                Text="Ver detalhes"
+                                FontFamily="InterSemiBold"
+                                FontSize="13"
+                                TextColor="#333333" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

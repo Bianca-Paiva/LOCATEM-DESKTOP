@@ -3,6 +3,7 @@ using System.Windows.Input;
 using LOCATEM_DESKTOP.Helpers;
 using LOCATEM_DESKTOP.Helpers.Auth;
 using LOCATEM_DESKTOP.Models.Auth;
+using LOCATEM_DESKTOP.Services.Cep;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Validation.Auth;
 using LOCATEM_DESKTOP.ViewModels.Base;
@@ -17,13 +18,16 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
     public class CadastroViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
+        private readonly ICepService _cepService;
 
-        public CadastroViewModel(IAuthService authService)
+        public CadastroViewModel(IAuthService authService, ICepService cepService)
         {
             _authService = authService;
+            _cepService = cepService;
 
             SubmitCommand = new AsyncRelayCommand(SubmitAsync, () => IsNotBusy);
             IrParaLoginCommand = new AsyncRelayCommand(async () => await Shell.Current.GoToAsync(".."));
+            BuscarCepCommand = new AsyncRelayCommand(BuscarCepAsync);
             AbrirBuscaCepCommand = new AsyncRelayCommand(async () =>
                 await Launcher.Default.OpenAsync("https://buscacepinter.correios.com.br/app/endereco/index.php"));
             FecharAlertaCommand = new RelayCommand(() => Alerta = null);
@@ -130,6 +134,39 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             set { if (SetProperty(ref _numero, value)) NumeroError.Clear(); }
         }
 
+        private string _complemento = string.Empty;
+        public string Complemento
+        {
+            get => _complemento;
+            set => SetProperty(ref _complemento, value ?? string.Empty);
+        }
+
+        private string _bairro = string.Empty;
+        public string Bairro
+        {
+            get => _bairro;
+            set { if (SetProperty(ref _bairro, value)) BairroError.Clear(); }
+        }
+
+        private string _cidade = string.Empty;
+        public string Cidade
+        {
+            get => _cidade;
+            set { if (SetProperty(ref _cidade, value)) CidadeError.Clear(); }
+        }
+
+        private string _estado = string.Empty;
+        public string Estado
+        {
+            get => _estado;
+            set
+            {
+                var uf = (value ?? string.Empty).Trim().ToUpperInvariant();
+                if (uf.Length > 2) uf = uf[..2];
+                if (SetProperty(ref _estado, uf)) EstadoError.Clear();
+            }
+        }
+
         private string _senha = string.Empty;
         public string Senha
         {
@@ -168,6 +205,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public FieldErrorState CepError { get; } = new();
         public FieldErrorState LogradouroError { get; } = new();
         public FieldErrorState NumeroError { get; } = new();
+        public FieldErrorState BairroError { get; } = new();
+        public FieldErrorState CidadeError { get; } = new();
+        public FieldErrorState EstadoError { get; } = new();
         public FieldErrorState SenhaError { get; } = new();
         public FieldErrorState ConfirmarSenhaError { get; } = new();
 
@@ -181,6 +221,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public string CepErrorText => _campoErros.Cep ?? string.Empty;
         public string LogradouroErrorText => _campoErros.Logradouro ?? string.Empty;
         public string NumeroErrorText => _campoErros.Numero ?? string.Empty;
+        public string BairroErrorText => _campoErros.Bairro ?? string.Empty;
+        public string CidadeErrorText => _campoErros.Cidade ?? string.Empty;
+        public string EstadoErrorText => _campoErros.Estado ?? string.Empty;
         public string SenhaErrorText => _campoErros.Senha ?? string.Empty;
         public string ConfirmarSenhaErrorText => _campoErros.ConfirmarSenha ?? string.Empty;
 
@@ -238,6 +281,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
         public ICommand SubmitCommand { get; }
         public ICommand IrParaLoginCommand { get; }
+        public ICommand BuscarCepCommand { get; }
         public ICommand AbrirBuscaCepCommand { get; }
         public ICommand FecharAlertaCommand { get; }
         public ICommand ConfirmarSucessoCommand { get; }
@@ -257,6 +301,10 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 Cep = Cep,
                 Logradouro = Logradouro,
                 Numero = Numero,
+                Complemento = Complemento,
+                Bairro = Bairro,
+                Cidade = Cidade,
+                Estado = Estado,
                 Senha = Senha,
                 ConfirmarSenha = ConfirmarSenha
             };
@@ -293,6 +341,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             Checar(data.Cep, CepError, _campoErros.Cep);
             Checar(data.Logradouro, LogradouroError, _campoErros.Logradouro);
             Checar(data.Numero, NumeroError, _campoErros.Numero);
+            Checar(data.Bairro, BairroError, _campoErros.Bairro);
+            Checar(data.Cidade, CidadeError, _campoErros.Cidade);
+            Checar(data.Estado, EstadoError, _campoErros.Estado);
             Checar(data.Senha, SenhaError, _campoErros.Senha);
             Checar(data.ConfirmarSenha, ConfirmarSenhaError, _campoErros.ConfirmarSenha);
 
@@ -307,6 +358,11 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             if (_campoErros.Telefone is not null) { Alerta = CadastroMessages.InvalidPhone; return true; }
             if (_campoErros.Documento is not null) { Alerta = CadastroMessages.InvalidCnpj; return true; }
             if (_campoErros.Cep is not null) { Alerta = CadastroMessages.InvalidCep; return true; }
+            if (_campoErros.Bairro is not null || _campoErros.Cidade is not null || _campoErros.Estado is not null)
+            {
+                Alerta = CadastroMessages.InvalidAddress;
+                return true;
+            }
 
             if (_campoErros.ConfirmarSenha == "As senhas não coincidem")
             {
@@ -336,6 +392,13 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                     ConfirmarSenha = data.ConfirmarSenha,
                     Telefone = System.Text.RegularExpressions.Regex.Replace(data.Telefone, @"\D", string.Empty),
                     Documento = System.Text.RegularExpressions.Regex.Replace(data.Documento, @"\D", string.Empty),
+                    Cep = System.Text.RegularExpressions.Regex.Replace(data.Cep, @"\D", string.Empty),
+                    Logradouro = data.Logradouro.Trim(),
+                    Numero = data.Numero.Trim(),
+                    Complemento = data.Complemento.Trim(),
+                    Bairro = data.Bairro.Trim(),
+                    Cidade = data.Cidade.Trim(),
+                    Estado = data.Estado.Trim().ToUpperInvariant(),
                     TipoUsuario = 2 // Locador — este desktop é exclusivo para locadores.
                 });
 
@@ -354,6 +417,51 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             }
         }
 
+        private async Task BuscarCepAsync()
+        {
+            if (!MaskHelper.ValidateCep(Cep))
+            {
+                return;
+            }
+
+            try
+            {
+                var resultado = await _cepService.ConsultarAsync(Cep);
+
+                if (resultado is null)
+                {
+                    Alerta = CadastroMessages.CepNotFound;
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(resultado.Logradouro))
+                    Logradouro = resultado.Logradouro;
+
+                if (!string.IsNullOrWhiteSpace(resultado.Bairro))
+                    Bairro = resultado.Bairro;
+
+                if (!string.IsNullOrWhiteSpace(resultado.Cidade))
+                    Cidade = resultado.Cidade;
+
+                if (!string.IsNullOrWhiteSpace(resultado.Estado))
+                    Estado = resultado.Estado;
+            }
+            catch (HttpRequestException)
+            {
+                Alerta = CadastroMessages.CepError;
+            }
+            catch (TaskCanceledException)
+            {
+                Alerta = CadastroMessages.CepError;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("ERRO AO CONSULTAR CEP MAUI:");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Alerta = CadastroMessages.CepError;
+            }
+        }
+
         private void NotificarErrosDeCampo()
         {
             OnPropertyChanged(nameof(NomeErrorText));
@@ -363,6 +471,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             OnPropertyChanged(nameof(CepErrorText));
             OnPropertyChanged(nameof(LogradouroErrorText));
             OnPropertyChanged(nameof(NumeroErrorText));
+            OnPropertyChanged(nameof(BairroErrorText));
+            OnPropertyChanged(nameof(CidadeErrorText));
+            OnPropertyChanged(nameof(EstadoErrorText));
             OnPropertyChanged(nameof(SenhaErrorText));
             OnPropertyChanged(nameof(ConfirmarSenhaErrorText));
         }

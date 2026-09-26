@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Conta.Notificacoes.NotificacoesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:notificacoes="clr-namespace:LOCATEM_DESKTOP.Components.Conta.Notificacoes"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Notificacoes"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Conta.Notificacoes"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Pagina"
+    x:DataType="vm:NotificacoesViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <!-- A grade permite manter conteúdo, modal de detalhes e confirmação na mesma página. -->
+    <Grid>
+
+        <!-- Conteúdo principal rolável da tela. -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+
+                <!-- Cabeçalho compartilhado do Portal do Locador com Notificações marcada como ativa. -->
+                <layout:AppHeader
+                    RotaAtual="notificacoes"
+                    NomeUsuario="{Binding NomeUsuario}"
+                    FotoUsuario="{Binding FotoUsuario}"
+                    NavegarCommand="{Binding NavegarCommand}" />
+
+                <!-- Container responsivo equivalente ao main da implementação Web. -->
+                <VerticalStackLayout
+                    x:Name="ConteudoPagina"
+                    Padding="24,20,24,48"
+                    Spacing="0">
+
+                    <!-- Título da página e controles posicionados na mesma linha quando houver espaço. -->
+                    <shared:CabecalhoPagina
+                        Titulo="Notificações"
+                        Margin="0,0,0,24">
+                        <shared:CabecalhoPagina.Acao>
+
+                            <!-- Ações podem quebrar naturalmente em larguras menores. -->
+                            <HorizontalStackLayout Spacing="12">
+
+                                <!-- Dropdown de período equivalente ao FilterDropdown do React. -->
+                                <Border
+                                    MinimumWidthRequest="118"
+                                    HeightRequest="40"
+                                    Padding="8,0"
+                                    BackgroundColor="{StaticResource AuthCardBackgroundColor}"
+                                    Stroke="{StaticResource InputBorderColor}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Picker
+                                        ItemsSource="{Binding OpcoesFiltro}"
+                                        SelectedItem="{Binding FiltroSelecionado, Mode=TwoWay}"
+                                        FontFamily="InterMedium"
+                                        FontSize="14"
+                                        TextColor="{StaticResource TextPrimaryColor}"
+                                        BackgroundColor="Transparent"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <!-- Limpa todas as notificações após confirmação explícita. -->
+                                <Border
+                                    Padding="6,4"
+                                    BackgroundColor="Transparent"
+                                    StrokeThickness="0"
+                                    IsEnabled="{Binding PodeLimpar}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AbrirConfirmacaoLimparCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material DeleteOutline}"
+                                            IconSize="16"
+                                            VerticalOptions="Center">
+                                            <mi:MauiIcon.Triggers>
+                                                <!-- Mantém o visual desabilitado usado pelo botão do Web. -->
+                                                <DataTrigger
+                                                    TargetType="mi:MauiIcon"
+                                                    Binding="{Binding PodeLimpar}"
+                                                    Value="True">
+                                                    <Setter Property="IconColor" Value="{StaticResource TextMutedColor}" />
+                                                    <Setter Property="Opacity" Value="1" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    TargetType="mi:MauiIcon"
+                                                    Binding="{Binding PodeLimpar}"
+                                                    Value="False">
+                                                    <Setter Property="IconColor" Value="{StaticResource TextMutedColor}" />
+                                                    <Setter Property="Opacity" Value="0.4" />
+                                                </DataTrigger>
+                                            </mi:MauiIcon.Triggers>
+                                        </mi:MauiIcon>
+                                        <Label
+                                            Text="Limpar tudo"
+                                            FontFamily="InterRegular"
+                                            FontSize="14"
+                                            VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <!-- Texto acompanha a opacidade do ícone quando não há itens no filtro. -->
+                                                <DataTrigger
+                                                    TargetType="Label"
+                                                    Binding="{Binding PodeLimpar}"
+                                                    Value="True">
+                                                    <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+                                                    <Setter Property="Opacity" Value="1" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    TargetType="Label"
+                                                    Binding="{Binding PodeLimpar}"
+                                                    Value="False">
+                                                    <Setter Property="TextColor" Value="{StaticResource TextMutedColor}" />
+                                                    <Setter Property="Opacity" Value="0.4" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </HorizontalStackLayout>
+                        </shared:CabecalhoPagina.Acao>
+                    </shared:CabecalhoPagina>
+
+                    <!-- Estado vazio específico desta tela, mantendo borda tracejada e mensagem do Web. -->
+                    <Border
+                        IsVisible="{Binding SemNotificacoes}"
+                        Padding="24,64"
+                        BackgroundColor="Transparent"
+                        Stroke="#E5E5E5"
+                        StrokeThickness="1.5"
+                        StrokeDashArray="6,4"
+                        StrokeShape="RoundRectangle 16">
+                        <VerticalStackLayout
+                            Spacing="0"
+                            HorizontalOptions="Center">
+
+                            <!-- Ícone neutro representa ausência de notificações. -->
+                            <mi:MauiIcon
+                                Icon="{mi:Material Notifications}"
+                                IconSize="40"
+                                IconColor="#D0D0D0"
+                                HorizontalOptions="Center"
+                                Margin="0,0,0,12" />
+
+                            <!-- Título idêntico ao estado vazio do React. -->
+                            <Label
+                                Text="Nenhuma notificação por aqui"
+                                FontFamily="InterBold"
+                                FontSize="16"
+                                TextColor="{StaticResource TextPrimaryColor}"
+                                HorizontalTextAlignment="Center"
+                                Margin="0,0,0,4" />
+
+                            <!-- Explicação idêntica ao conteúdo da página Web. -->
+                            <Label
+                                Text="Assim que houver novidades sobre suas locações e entregas, elas aparecem nesta tela."
+                                MaximumWidthRequest="320"
+                                FontFamily="InterRegular"
+                                FontSize="14"
+                                TextColor="{StaticResource TextMutedColor}"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Lista da página atual; cada item reutiliza o componente NotificacaoCard. -->
+                    <VerticalStackLayout
+                        Spacing="16"
+                        Margin="0,0,0,24"
+                        IsVisible="{Binding TemNotificacoes}"
+                        BindableLayout.ItemsSource="{Binding NotificacoesPagina}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Notificacao">
+                                <notificacoes:NotificacaoCard
+                                    Notificacao="{Binding .}"
+                                    RenovarCommand="{Binding BindingContext.RenovarCommand, Source={x:Reference Pagina}}"
+                                    AbrirDetalhesCommand="{Binding BindingContext.AbrirDetalhesCommand, Source={x:Reference Pagina}}" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <!-- Paginação aparece somente quando o filtro produz duas páginas ou mais. -->
+                    <HorizontalStackLayout
+                        IsVisible="{Binding MostrarPaginacao}"
+                        Spacing="8"
+                        HorizontalOptions="Center"
+                        Margin="0,8,0,0">
+
+                        <!-- Seta para página anterior. -->
+                        <Border
+                            WidthRequest="32"
+                            HeightRequest="32"
+                            StrokeThickness="0"
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 16"
+                            IsEnabled="{Binding PaginaAnteriorDisponivel}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PaginaAnteriorCommand}" />
+                            </Border.GestureRecognizers>
+                            <mi:MauiIcon
+                                Icon="{mi:Material ChevronRight}"
+                                Rotation="180"
+                                IconSize="16"
+                                IconColor="#9A9A9A"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+
+                        <!-- Números das páginas são gerados dinamicamente pelo ViewModel. -->
+                        <HorizontalStackLayout
+                            Spacing="8"
+                            BindableLayout.ItemsSource="{Binding Paginas}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:PaginaNotificacao">
+                                    <Border
+                                        WidthRequest="32"
+                                        HeightRequest="32"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 16">
+                                        <Border.Triggers>
+                                            <!-- Página ativa recebe o amarelo principal do LOCATEM. -->
+                                            <DataTrigger
+                                                TargetType="Border"
+                                                Binding="{Binding Ativa}"
+                                                Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource AuthPrimaryColor}" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                TargetType="Border"
+                                                Binding="{Binding Ativa}"
+                                                Value="False">
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding BindingContext.IrParaPaginaCommand, Source={x:Reference Pagina}}"
+                                                CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            Text="{Binding Numero}"
+                                            FontFamily="InterSemiBold"
+                                            FontSize="14"
+                                            TextColor="{StaticResource TextPrimaryColor}"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center" />
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+
+                        <!-- Seta para próxima página. -->
+                        <Border
+                            WidthRequest="32"
+                            HeightRequest="32"
+                            StrokeThickness="0"
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 16"
+                            IsEnabled="{Binding ProximaPaginaDisponivel}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ProximaPaginaCommand}" />
+                            </Border.GestureRecognizers>
+                            <mi:MauiIcon
+                                Icon="{mi:Material ChevronRight}"
+                                IconSize="16"
+                                IconColor="#9A9A9A"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Modal detalhado fica acima do conteúdo sem criar uma segunda janela. -->
+        <notificacoes:ModalDetalhesNotificacao
+            ZIndex="100"
+            Aberto="{Binding ModalDetalhesAberto}"
+            Notificacao="{Binding NotificacaoSelecionada}"
+            LinhasDetalhes="{Binding LinhasDetalhes}"
+            MostrarRenovar="{Binding MostrarRenovarModal}"
+            MostrarAcao="{Binding MostrarAcaoModal}"
+            TextoAcao="{Binding TextoAcaoModal}"
+            FecharCommand="{Binding FecharDetalhesCommand}"
+            RenovarCommand="{Binding RenovarCommand}"
+            AcaoCommand="{Binding AcaoModalCommand}" />
+
+        <!-- Confirmação reaproveita o componente compartilhado usado pelas outras telas do Desktop. -->
+        <shared:ConfirmModalView
+            ZIndex="110"
+            IsOpen="{Binding ConfirmacaoLimparAberta}"
+            Title="Limpar notificações"
+            Message="Tem certeza que deseja apagar todas as notificações? Esta ação não pode ser desfeita."
+            ConfirmText="Limpar tudo"
+            CancelText="Cancelar"
+            ConfirmCommand="{Binding ConfirmarLimparCommand}"
+            CancelCommand="{Binding CancelarLimparCommand}" />
+    </Grid>
+</ContentPage>
