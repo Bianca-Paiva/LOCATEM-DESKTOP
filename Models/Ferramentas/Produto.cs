@@ -42,11 +42,18 @@ namespace LOCATEM_DESKTOP.Models.Ferramentas
         public string RuaAvenida { get; set; } = string.Empty;
         public string Numero { get; set; } = string.Empty;
         public string Complemento { get; set; } = string.Empty;
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
 
         //Data de cadastro do anúncio, formato "dd/mm/aaaa".
         public string? CadastradoEm { get; set; }
 
         public List<AvaliacaoProduto> Avaliacoes { get; set; } = new();
+
+        // Resumo vindo da API quando o anúncio é carregado do backend.
+        public double AvaliacaoMedia { get; set; }
+        public int TotalAvaliacoes { get; set; }
     }
 
     public class EspecificacaoFerramenta

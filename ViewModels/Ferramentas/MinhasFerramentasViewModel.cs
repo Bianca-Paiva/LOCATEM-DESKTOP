@@ -54,6 +54,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
 
         private readonly IAuthSessionService _authSession;
         private readonly ICatalogoService _catalogo;
+        private readonly ICadastroFerramentaService _api;
 
         // Ferramentas do locador autenticado (sem filtro de aba aplicado).
         private IReadOnlyList<Produto> _minhasFerramentas = Array.Empty<Produto>();
@@ -63,10 +64,12 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
 
         public MinhasFerramentasViewModel(
             IAuthSessionService authSession,
-            ICatalogoService catalogo)
+            ICatalogoService catalogo,
+            ICadastroFerramentaService api)
         {
             _authSession = authSession;
             _catalogo = catalogo;
+            _api = api;
 
             NavegarCommand =
                 new AsyncRelayCommand(
@@ -231,27 +234,43 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
         /// <summary>
         /// Recarrega as ferramentas do locador autenticado e recalcula abas e lista.
         /// </summary>
-        public void Carregar()
+        public async Task CarregarAsync()
         {
-            var usuario =
-                _authSession.UsuarioAtual;
+            var usuario = _authSession.UsuarioAtual;
 
             if (usuario is null)
                 return;
 
-            NomeUsuario =
-                usuario.Nome;
+            NomeUsuario = usuario.Nome;
+            FotoUsuario = AvatarHelper.CriarImageSource(usuario.FotoUrl);
 
-            FotoUsuario =
-                AvatarHelper.CriarImageSource(usuario.FotoUrl);
+            // A fonte de verdade da listagem é o backend. O catálogo local continua sendo
+            // usado para navegação/edição, mas é atualizado com os dados reais da API.
+            if (!string.IsNullOrWhiteSpace(usuario.Token) &&
+                !usuario.Token.StartsWith("mock-token-", StringComparison.Ordinal))
+            {
+                try
+                {
+                    var ferramentasRemotas = await _api.ObterMinhasAsync(usuario.Token);
+                    _catalogo.SubstituirTodos(ferramentasRemotas);
+                }
+                catch (Exception ex)
+                {
+                    Erro = "Não foi possível carregar suas ferramentas do servidor.";
+                    System.Diagnostics.Debug.WriteLine($"ERRO AO CARREGAR MINHAS FERRAMENTAS: {ex}");
+                }
+            }
 
-            // Somente as ferramentas do locador logado — sempre pelo identificador único
-            // (Usuario.LocadorId <-> Produto.LocadorId), nunca pelo nome exibido.
-            _minhasFerramentas =
-                _catalogo.ObterPorLocador(
-                    usuario.LocadorId);
-
+            var locadorId = usuario.LocadorId ?? usuario.Id;
+            _minhasFerramentas = _catalogo.ObterPorLocador(locadorId);
             AtualizarTela();
+        }
+
+        private string _erro = string.Empty;
+        public string Erro
+        {
+            get => _erro;
+            private set => SetProperty(ref _erro, value);
         }
 
         // ===================== FILTRO =====================

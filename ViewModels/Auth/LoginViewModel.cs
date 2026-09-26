@@ -170,6 +170,9 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                         Documento = perfil.Documento,
                         Endereco = perfil.Endereco ?? string.Empty,
                         Tipo = tipoUsuario,
+                        // No backend, UsuarioId é o identificador usado nas ferramentas do locador.
+                        // O Desktop mantém esse mesmo ID em LocadorId para filtrar a área do locador.
+                        LocadorId = tipoUsuario == TipoUsuario.Locador ? perfil.Id.ToString() : null,
                         FotoUrl = perfil.FotoUrl,
                         EmailVerificado = false,
                         Desde = perfil.Desde,

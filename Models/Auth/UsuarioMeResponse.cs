@@ -20,6 +20,11 @@ namespace LOCATEM_DESKTOP.Models.Auth
 
         public string TipoUsuario { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Identificador do locador associado ao usuário autenticado.
+        /// </summary>
+        public string? LocadorId { get; set; }
+
         public string? Endereco { get; set; }
 
         public int Desde { get; set; }

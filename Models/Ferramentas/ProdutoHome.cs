@@ -26,8 +26,21 @@ namespace LOCATEM_DESKTOP.Models.Ferramentas
 
         public static ProdutoHome DeProduto(Produto produto)
         {
-            // Média e quantidade sempre calculadas das avaliações reais, nunca de campos fixos.
-            var resumo = AvaliacoesResumo.Calcular(produto.Avaliacoes);
+            double rating;
+            int reviewCount;
+
+            if (produto.TotalAvaliacoes > 0)
+            {
+                rating = produto.AvaliacaoMedia;
+                reviewCount = produto.TotalAvaliacoes;
+            }
+            else
+            {
+                var resumo = AvaliacoesResumo.Calcular(produto.Avaliacoes);
+
+                rating = resumo.Media;
+                reviewCount = resumo.Quantidade;
+            }
 
             return new ProdutoHome
             {
@@ -36,8 +49,8 @@ namespace LOCATEM_DESKTOP.Models.Ferramentas
                 Locador = produto.Locador,
                 Price = produto.Price,
                 Imagem = produto.Images.FirstOrDefault() ?? string.Empty,
-                Rating = resumo.Media,
-                ReviewCount = resumo.Quantidade,
+                Rating = rating,
+                ReviewCount = reviewCount,
                 Status = produto.Status
             };
         }

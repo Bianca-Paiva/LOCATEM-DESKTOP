@@ -6,6 +6,7 @@ using LOCATEM_DESKTOP.Helpers.Conta;
 using LOCATEM_DESKTOP.Models.Auth;
 using LOCATEM_DESKTOP.Models.Ferramentas;
 using LOCATEM_DESKTOP.Services.Auth;
+using LOCATEM_DESKTOP.Services.Cep;
 using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.ViewModels.Base;
 
@@ -18,9 +19,23 @@ public class FotoCadastro
     public string? CaminhoExistente { get; init; }
     public byte[]? Bytes { get; init; }
     public string ContentType { get; init; } = "image/jpeg";
-    public ImageSource Preview => Bytes is null
-        ? ImageSource.FromFile(CaminhoExistente ?? string.Empty)
-        : ImageSource.FromStream(() => new MemoryStream(Bytes!));
+    public ImageSource Preview
+    {
+        get
+        {
+            if (Bytes is not null)
+                return ImageSource.FromStream(() => new MemoryStream(Bytes));
+
+            var caminho = CaminhoExistente ?? string.Empty;
+            if (caminho.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                caminho.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                return ImageSource.FromUri(new Uri(caminho));
+            }
+
+            return ImageSource.FromFile(caminho);
+        }
+    }
 }
 
 // Representa uma linha editável da seção de especificações técnicas.
@@ -49,14 +64,15 @@ public class CadastroFerramentaViewModel : BaseViewModel
     private readonly IAuthSessionService _auth;
     private readonly ICatalogoService _catalogo;
     private readonly ICadastroFerramentaService _api;
+    private readonly ICepService _cepService;
     private Produto? _edicao;
     private bool _carregado;
     private DateTime _mes = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private readonly HashSet<string> _indisponiveis = new();
 
-    public CadastroFerramentaViewModel(IAuthSessionService auth, ICatalogoService catalogo, ICadastroFerramentaService api)
+    public CadastroFerramentaViewModel(IAuthSessionService auth, ICatalogoService catalogo, ICadastroFerramentaService api, ICepService cepService)
     {
-        _auth = auth; _catalogo = catalogo; _api = api;
+        _auth = auth; _catalogo = catalogo; _api = api; _cepService = cepService;
         NavegarCommand = new AsyncRelayCommand(async p =>
         {
             if (p is string rota && rota == "homeLocador") await Shell.Current.GoToAsync("//homeLocador");
@@ -96,6 +112,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
         SelecionarAprovacaoCommand = new RelayCommand(p => { if (p is string opcao) TipoAprovacao = opcao; });
         PublicarCommand = new AsyncRelayCommand(PublicarAsync);
         CancelarCommand = new AsyncRelayCommand(CancelarAsync);
+        BuscarCepCommand = new AsyncRelayCommand(BuscarCepAsync);
         Especificacoes.Add(new());
         MontarCalendario();
     }
@@ -120,7 +137,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
     public ObservableCollection<string> Acessorios { get; } = new();
     public ObservableCollection<DiaCadastro> Dias { get; } = new();
 
-    private string _nome = "", _marca = "", _modelo = "", _categoria = "", _estado = "", _fonte = "", _descricao = "", _diaria = "", _caucao = "", _acessorio = "", _aprovacao = "", _cep = "", _rua = "", _numero = "", _complemento = "", _erro = "", _nomeUsuario = "";
+    private string _nome = "", _marca = "", _modelo = "", _categoria = "", _estado = "", _fonte = "", _descricao = "", _diaria = "", _caucao = "", _acessorio = "", _aprovacao = "", _cep = "", _rua = "", _numero = "", _complemento = "", _bairro = "", _cidade = "", _uf = "", _erro = "", _nomeUsuario = "";
     private int _quantidade = 1;
     private ImageSource? _fotoUsuario;
     private string _titulo = "Cadastrar Ferramenta", _botaoPublicar = "Publicar Ferramenta", _mesTexto = "";
@@ -138,10 +155,23 @@ public class CadastroFerramentaViewModel : BaseViewModel
     public string Caucao { get => _caucao; set => SetProperty(ref _caucao, value); }
     public string AcessorioNovo { get => _acessorio; set => SetProperty(ref _acessorio, value); }
     public string TipoAprovacao { get => _aprovacao; set => SetProperty(ref _aprovacao, value); }
-    public string Cep { get => _cep; set => SetProperty(ref _cep, value); }
+    public string Cep
+    {
+        get => _cep;
+        set
+        {
+            var limpo = new string((value ?? string.Empty).Where(char.IsDigit).ToArray());
+            if (limpo.Length > 8) limpo = limpo[..8];
+            var mascarado = limpo.Length > 5 ? $"{limpo[..5]}-{limpo[5..]}" : limpo;
+            SetProperty(ref _cep, mascarado);
+        }
+    }
     public string RuaAvenida { get => _rua; set => SetProperty(ref _rua, value); }
     public string Numero { get => _numero; set => SetProperty(ref _numero, value); }
     public string Complemento { get => _complemento; set => SetProperty(ref _complemento, value); }
+    public string Bairro { get => _bairro; set => SetProperty(ref _bairro, value); }
+    public string Cidade { get => _cidade; set => SetProperty(ref _cidade, value); }
+    public string Estado { get => _uf; set => SetProperty(ref _uf, (value ?? string.Empty).Trim().ToUpperInvariant()); }
     // A visibilidade da mensagem acompanha o texto de erro.
     public string Erro { get => _erro; set { if (SetProperty(ref _erro, value)) OnPropertyChanged(nameof(TemErro)); } }
     public bool TemErro => !string.IsNullOrEmpty(Erro);
@@ -170,6 +200,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
     public ICommand SelecionarAprovacaoCommand { get; }
     public ICommand PublicarCommand { get; }
     public ICommand CancelarCommand { get; }
+    public ICommand BuscarCepCommand { get; }
 
     public async Task<bool> CarregarAsync()
     {
@@ -196,6 +227,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
             Descricao = _edicao.Descricao; ValorDiaria = _edicao.Price; Caucao = _edicao.Caucao;
             TipoAprovacao = _edicao.TipoAprovacao == "manual" ? Aprovacoes[0] : _edicao.TipoAprovacao == "automatica" ? Aprovacoes[1] : "";
             Cep = _edicao.Cep; RuaAvenida = _edicao.RuaAvenida; Numero = _edicao.Numero; Complemento = _edicao.Complemento;
+            Bairro = _edicao.Bairro; Cidade = _edicao.Cidade; Estado = _edicao.Estado;
             Fotos.Clear(); foreach (var foto in _edicao.Images) Fotos.Add(new() { Nome = Path.GetFileName(foto), CaminhoExistente = foto });
             Especificacoes.Clear(); foreach (var esp in _edicao.Especificacoes) Especificacoes.Add(new() { Label = esp.Label, Valor = esp.Valor });
             if (Especificacoes.Count == 0) Especificacoes.Add(new());
@@ -287,6 +319,9 @@ public class CadastroFerramentaViewModel : BaseViewModel
         if (new string(Cep.Where(char.IsDigit).ToArray()).Length != 8) erros.Add("Informe um CEP válido.");
         if (string.IsNullOrWhiteSpace(RuaAvenida)) erros.Add("Informe a rua/avenida.");
         if (string.IsNullOrWhiteSpace(Numero)) erros.Add("Informe o número.");
+        if (string.IsNullOrWhiteSpace(Bairro)) erros.Add("Informe o bairro.");
+        if (string.IsNullOrWhiteSpace(Cidade)) erros.Add("Informe a cidade.");
+        if (Estado.Length != 2) erros.Add("Informe o estado (UF).");
         return string.Join("\n", erros);
     }
 
@@ -306,10 +341,28 @@ public class CadastroFerramentaViewModel : BaseViewModel
         {
             Moeda(ValorDiaria, out var diaria);
             Moeda(Caucao, out var caucao);
-            if (_edicao is null && !string.IsNullOrWhiteSpace(usuario.Token) && !usuario.Token.StartsWith("mock-token-", StringComparison.Ordinal))
+            if (!string.IsNullOrWhiteSpace(usuario.Token) && !usuario.Token.StartsWith("mock-token-", StringComparison.Ordinal))
             {
-                var fotos = Fotos.Where(f => f.Bytes is not null).Select(f => new FotoFerramentaDados(f.Nome, f.ContentType, f.Bytes!)).ToArray();
-                await _api.CadastrarAsync(usuario.Token, new CadastroFerramentaDados(Nome.Trim(), Marca.Trim(), Modelo.Trim(), Descricao.Trim(), Acessorios.ToArray(), diaria, caucao, Array.IndexOf(Categorias.ToArray(), Categoria) + 1), fotos);
+                var dados = CriarDadosParaApi(diaria, caucao);
+
+                if (_edicao is null)
+                {
+                    var fotos = Fotos
+                        .Where(f => f.Bytes is not null)
+                        .Select(f => new FotoFerramentaDados(f.Nome, f.ContentType, f.Bytes!))
+                        .ToArray();
+
+                    await _api.CadastrarAsync(usuario.Token, dados, fotos);
+                }
+                else
+                {
+                    await _api.EditarAsync(usuario.Token, _edicao.Id, dados);
+                }
+
+                // Após salvar, sincroniza o catálogo local com o banco para que Home/Minhas Ferramentas
+                // não dependam mais do mock da sessão.
+                var ferramentasAtualizadas = await _api.ObterMinhasAsync(usuario.Token);
+                _catalogo.SubstituirTodos(ferramentasAtualizadas);
             }
             // O catálogo local usa caminhos em AppData para as fotos recém-selecionadas.
             var imagens = new List<string>();
@@ -348,7 +401,10 @@ public class CadastroFerramentaViewModel : BaseViewModel
                 Cep = Cep,
                 RuaAvenida = RuaAvenida,
                 Numero = Numero,
-                Complemento = Complemento
+                Complemento = Complemento,
+                Bairro = Bairro,
+                Cidade = Cidade,
+                Estado = Estado
             };
             if (_edicao is null) _catalogo.Adicionar(produto);
             else _catalogo.Atualizar(_edicao.Id, produto);
@@ -358,6 +414,73 @@ public class CadastroFerramentaViewModel : BaseViewModel
         }
         catch (Exception ex) { Erro = ex.Message; }
         finally { IsBusy = false; }
+    }
+
+    private CadastroFerramentaDados CriarDadosParaApi(decimal diaria, decimal caucao)
+    {
+        return new CadastroFerramentaDados(
+            Nome.Trim(),
+            Marca.Trim(),
+            Modelo.Trim(),
+            Descricao.Trim(),
+            Acessorios.ToArray(),
+            diaria,
+            caucao,
+            Array.IndexOf(Categorias.ToArray(), Categoria) + 1,
+            QuantidadeDisponivel,
+            EstadoConservacao,
+            FonteAlimentacao,
+            Especificacoes
+                .Where(e => !string.IsNullOrWhiteSpace(e.Label) || !string.IsNullOrWhiteSpace(e.Valor))
+                .Select(e => new EspecificacaoFerramenta
+                {
+                    Label = e.Label.Trim(),
+                    Valor = e.Valor.Trim()
+                })
+                .ToList(),
+            _indisponiveis.OrderBy(d => d).ToList(),
+            TipoAprovacao == Aprovacoes[1] ? "automatica" : "manual",
+            new EnderecoRetiradaDados(
+                new string(Cep.Where(char.IsDigit).ToArray()),
+                RuaAvenida.Trim(),
+                Numero.Trim(),
+                Complemento.Trim(),
+                Bairro.Trim(),
+                Cidade.Trim(),
+                Estado.Trim().ToUpperInvariant()));
+    }
+
+    private async Task BuscarCepAsync()
+    {
+        var cep = new string(Cep.Where(char.IsDigit).ToArray());
+        if (cep.Length != 8)
+            return;
+
+        try
+        {
+            var resultado = await _cepService.ConsultarAsync(cep);
+            if (resultado is null)
+            {
+                Erro = "CEP não encontrado.";
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(resultado.Logradouro))
+                RuaAvenida = resultado.Logradouro;
+            if (!string.IsNullOrWhiteSpace(resultado.Bairro))
+                Bairro = resultado.Bairro;
+            if (!string.IsNullOrWhiteSpace(resultado.Cidade))
+                Cidade = resultado.Cidade;
+            if (!string.IsNullOrWhiteSpace(resultado.Estado))
+                Estado = resultado.Estado;
+
+            Erro = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"ERRO AO CONSULTAR CEP DA FERRAMENTA: {ex}");
+            Erro = "Não foi possível consultar o CEP agora.";
+        }
     }
 
     private async Task CancelarAsync()

@@ -633,7 +633,7 @@
                                             <VerticalStackLayout Spacing="6">
                                                 <Label Text="CEP *" Style="{StaticResource Rotulo}"/>
                                                 <Border Style="{StaticResource CampoBorda}">
-                                                    <Entry Text="{Binding Cep}" Placeholder="00000-000" Style="{StaticResource Campo}" Keyboard="Numeric" MaxLength="9"/>
+                                                    <Entry Text="{Binding Cep}" Placeholder="00000-000" Style="{StaticResource Campo}" Keyboard="Numeric" MaxLength="9" Unfocused="Cep_Unfocused"/>
                                                 </Border>
                                             </VerticalStackLayout>
                                         </VerticalStackLayout>
@@ -669,9 +669,29 @@
                                     <VerticalStackLayout Spacing="6">
                                         <Label Text="Complemento (opcional)" Style="{StaticResource Rotulo}"/>
                                         <Border Style="{StaticResource EditorBorda}">
-                                            <Editor Text="{Binding Complemento}"  Placeholder="Apartamento, bloco, referência..." AutoSize="Disabled" HeightRequest="64" BackgroundColor="Transparent" TextColor="{StaticResource TextPrimaryColor}" PlaceholderColor="{StaticResource TextMutedColor}" FontFamily="InterRegular" FontSize="14"/>
+                                            <Editor Text="{Binding Complemento}" Placeholder="Apartamento, bloco, referência..." AutoSize="Disabled" HeightRequest="64" BackgroundColor="Transparent" TextColor="{StaticResource TextPrimaryColor}" PlaceholderColor="{StaticResource TextMutedColor}" FontFamily="InterRegular" FontSize="14"/>
                                         </Border>
                                     </VerticalStackLayout>
+                                    <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="16">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                            <Label Text="Bairro *" Style="{StaticResource Rotulo}"/>
+                                            <Border Style="{StaticResource CampoBorda}">
+                                                <Entry Text="{Binding Bairro}" Placeholder="Ex: Centro" Style="{StaticResource Campo}"/>
+                                            </Border>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                            <Label Text="Cidade *" Style="{StaticResource Rotulo}"/>
+                                            <Border Style="{StaticResource CampoBorda}">
+                                                <Entry Text="{Binding Cidade}" Placeholder="Ex: São Paulo" Style="{StaticResource Campo}"/>
+                                            </Border>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="2" Spacing="6" WidthRequest="90">
+                                            <Label Text="UF *" Style="{StaticResource Rotulo}"/>
+                                            <Border Style="{StaticResource CampoBorda}">
+                                                <Entry Text="{Binding Estado}" Placeholder="SP" Style="{StaticResource Campo}" MaxLength="2" HorizontalTextAlignment="Center"/>
+                                            </Border>
+                                        </VerticalStackLayout>
+                                    </Grid>
                                 </VerticalStackLayout>
                             </VerticalStackLayout>
                         </Border>

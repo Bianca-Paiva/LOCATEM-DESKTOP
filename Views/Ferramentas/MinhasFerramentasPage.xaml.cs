@@ -39,7 +39,7 @@ namespace LOCATEM_DESKTOP.Views.Ferramentas
 
             if (await _viewModel.GarantirAcessoAsync())
             {
-                _viewModel.Carregar();
+                await _viewModel.CarregarAsync();
             }
 
             AtualizarLarguraConteudo();

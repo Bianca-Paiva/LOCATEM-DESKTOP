@@ -49,6 +49,12 @@ public partial class CadastroFerramentaPage : ContentPage
         Grid.SetRow(BotaoCancelar, Width < 640 ? 1 : 0);
     }
 
+    private void Cep_Unfocused(object? sender, FocusEventArgs e)
+    {
+        if (_viewModel.BuscarCepCommand.CanExecute(null))
+            _viewModel.BuscarCepCommand.Execute(null);
+    }
+
     // Abre a consulta de CEP dos Correios no navegador padrão.
     private async void BuscarCep_Tapped(object? sender, TappedEventArgs e)
     {
