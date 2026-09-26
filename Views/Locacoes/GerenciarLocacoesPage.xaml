@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="LOCATEM_DESKTOP.Views.Locacoes.GerenciarLocacoesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layout="clr-namespace:LOCATEM_DESKTOP.Components.Layout"
+    xmlns:shared="clr-namespace:LOCATEM_DESKTOP.Components.Shared"
+    xmlns:gerenciar="clr-namespace:LOCATEM_DESKTOP.Components.Locacoes.Gerenciar"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Locacoes"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Locacoes"
+    x:Name="Pagina"
+    x:DataType="vm:GerenciarLocacoesViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource AuthBackgroundColor}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+                <layout:AppHeader
+                    RotaAtual="gerenciarLocacoes"
+                    NomeUsuario="{Binding NomeUsuario}"
+                    FotoUsuario="{Binding FotoUsuario}"
+                    NavegarCommand="{Binding NavegarCommand}" />
+
+                <VerticalStackLayout
+                    x:Name="ConteudoPagina"
+                    Padding="24,20,24,48"
+                    Spacing="0">
+
+                    <shared:CabecalhoPagina
+                        Titulo="Gerenciar Locações"
+                        Subtitulo="Acompanhe e gerencie as locações em andamento das suas ferramentas."
+                        Margin="0,0,0,30" />
+
+                    <shared:Abas
+                        ItemsSource="{Binding Abas}"
+                        SelecionarCommand="{Binding SelecionarAbaCommand}"
+                        Margin="0,0,0,20" />
+
+                    <ActivityIndicator
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        HorizontalOptions="Center"
+                        Margin="0,24" />
+
+                    <shared:EstadoVazio
+                        Titulo="Nenhuma locação encontrada"
+                        Descricao="Locações das suas ferramentas aparecerão aqui."
+                        IsVisible="{Binding SemLocacoes}" />
+
+                    <VerticalStackLayout
+                        Spacing="16"
+                        IsVisible="{Binding TemLocacoes}"
+                        BindableLayout.ItemsSource="{Binding Locacoes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Locacao">
+                                <gerenciar:LocacaoLocadorCard
+                                    Locacao="{Binding .}"
+                                    AbrirPendenteCommand="{Binding BindingContext.AbrirSolicitacaoCommand, Source={x:Reference Pagina}}" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <gerenciar:ModalAprovacaoLocacao
+            IsOpen="{Binding IsModalAprovacaoAberto}"
+            Locacao="{Binding LocacaoModal}"
+            ApproveCommand="{Binding AprovarCommand}"
+            RejectCommand="{Binding SolicitarRecusaCommand}"
+            CloseCommand="{Binding FecharModalCommand}" />
+
+        <shared:ConfirmModalView
+            IsOpen="{Binding IsConfirmandoRecusa}"
+            Title="Recusar solicitação"
+            Message="{Binding MensagemConfirmacaoRecusa}"
+            ConfirmText="Sim, recusar"
+            CancelText="Voltar"
+            ConfirmCommand="{Binding ConfirmarRecusaCommand}"
+            CancelCommand="{Binding CancelarRecusaCommand}" />
+    </Grid>
+</ContentPage>
