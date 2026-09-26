@@ -33,6 +33,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
                 "login",
                 "homeLocador",
                 "minhasFerramentas",
+                "gerenciarLocacoes",
                 "perfil"
             };
 

@@ -43,6 +43,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Ferramentas
             {
                 "homeLocador",
                 "minhasFerramentas",
+                "gerenciarLocacoes",
                 "perfil",
                 "cadastroFerramenta",
                 "ferramentaDetalhe"

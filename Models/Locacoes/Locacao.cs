@@ -35,5 +35,14 @@ namespace LOCATEM_DESKTOP.Models.Locacoes
 
         /// <summary>Valor total já formatado, ex: "R$ 200,00".</summary>
         public string Valor { get; set; } = string.Empty;
+
+        /// <summary>Endereço de entrega informado na solicitação.</summary>
+        public EnderecoLocacao? Endereco { get; set; }
+
+        /// <summary>Prazo limite para pagamento após a aprovação do locador.</summary>
+        public DateTimeOffset? PrazoPagamento { get; set; }
+
+        public string? MotivoRecusa { get; set; }
+        public string? MotivoCancelamento { get; set; }
     }
 }

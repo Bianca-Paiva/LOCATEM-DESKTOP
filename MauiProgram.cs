@@ -11,11 +11,13 @@ using LOCATEM_DESKTOP.ViewModels.Auth;
 using LOCATEM_DESKTOP.ViewModels.Conta;
 using LOCATEM_DESKTOP.ViewModels.Ferramentas;
 using LOCATEM_DESKTOP.ViewModels.Home;
+using LOCATEM_DESKTOP.ViewModels.Locacoes;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
 using LOCATEM_DESKTOP.Views.Ferramentas;
 using LOCATEM_DESKTOP.Views.Home;
+using LOCATEM_DESKTOP.Views.Locacoes;
 using Microsoft.Maui.Handlers;
 using LOCATEM_DESKTOP.Views.Home;
 
@@ -142,6 +144,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<MinhasFerramentasViewModel>();
             services.AddTransient<CadastroFerramentaViewModel>();
             services.AddTransient<FerramentaDetalheViewModel>();
+            services.AddTransient<GerenciarLocacoesViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -156,6 +159,7 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<MinhasFerramentasPage>();
             services.AddTransient<CadastroFerramentaPage>();
             services.AddTransient<FerramentaDetalhePage>();
+            services.AddTransient<GerenciarLocacoesPage>();
         }
     }
 }
