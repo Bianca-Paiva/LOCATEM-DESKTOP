@@ -83,6 +83,27 @@ namespace LOCATEM_DESKTOP
                     handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] =
                         transparentBrush;
                 });
+
+                // Mantém apenas a borda externa definida no XAML para os Editor no Windows.
+                EditorHandler.Mapper.AppendToMapping(
+                    "RemoveWindowsEditorBorder",
+                    (handler, view) =>
+                    {
+                        var transparente = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                            Microsoft.UI.Colors.Transparent);
+
+                        handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                        handler.PlatformView.BorderBrush = transparente;
+                        handler.PlatformView.Background = transparente;
+
+                        handler.PlatformView.Resources["TextControlBorderBrush"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderBrushFocused"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderBrushPointerOver"] = transparente;
+                        handler.PlatformView.Resources["TextControlBorderThemeThickness"] =
+                            new Microsoft.UI.Xaml.Thickness(0);
+                        handler.PlatformView.Resources["TextControlBorderThemeThicknessFocused"] =
+                            new Microsoft.UI.Xaml.Thickness(0);
+                });
 #endif
 
             RegisterServices(builder.Services);
