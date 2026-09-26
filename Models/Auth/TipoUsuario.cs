@@ -5,7 +5,7 @@ namespace LOCATEM_DESKTOP.Models.Auth
     /// </summary>
     public enum TipoUsuario
     {
-        Locatario,
-        Locador
+        Locatario = 1,
+        Locador = 2
     }
 }

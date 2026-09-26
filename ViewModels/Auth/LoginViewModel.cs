@@ -170,6 +170,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                         Documento = perfil.Documento,
                         Endereco = perfil.Endereco ?? string.Empty,
                         Tipo = tipoUsuario,
+                        LocadorId = perfil.LocadorId,
                         FotoUrl = perfil.FotoUrl,
                         EmailVerificado = false,
                         Desde = perfil.Desde,
