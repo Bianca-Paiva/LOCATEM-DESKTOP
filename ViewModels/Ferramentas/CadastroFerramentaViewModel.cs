@@ -63,6 +63,8 @@ public class CadastroFerramentaViewModel : BaseViewModel
             else if (p is string destino && destino == "minhasFerramentas") await VoltarAsync();
             else if (p is string gerenciar && gerenciar == "gerenciarLocacoes") await Shell.Current.GoToAsync("gerenciarLocacoes");
             else if (p is string historico && historico == "historicoLocacoes") await Shell.Current.GoToAsync("historicoLocacoes");
+            // Mantém o item Avaliações funcional também enquanto o usuário está no cadastro.
+            else if (p is string avaliacao && avaliacao == "avaliacao") await Shell.Current.GoToAsync("avaliacao");
             else if (p is string perfil && perfil == "perfil") await Shell.Current.GoToAsync("perfil");
         });
         // Comandos ligados aos controles de fotos e especificações da página.

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="LOCATEM_DESKTOP.Components.Avaliacoes.ModalAvaliacao"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:avaliacoes="clr-namespace:LOCATEM_DESKTOP.Components.Avaliacoes"
+    xmlns:models="clr-namespace:LOCATEM_DESKTOP.Models.Avaliacoes"
+    xmlns:vm="clr-namespace:LOCATEM_DESKTOP.ViewModels.Avaliacoes"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="Root"
+    x:DataType="vm:AvaliacaoViewModel"
+    IsVisible="{Binding IsModalAberto}">
+
+    <!-- A camada escura ocupa toda a página e mantém o foco visual no conteúdo da avaliação. -->
+    <Grid BackgroundColor="#730F0E0C" Padding="16">
+
+        <!-- O card central limita a largura em desktop e permite rolagem quando a janela estiver baixa. -->
+        <Border
+            MaximumWidthRequest="680"
+            MaximumHeightRequest="760"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            BackgroundColor="White"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 16">
+
+            <ScrollView>
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- Cabeçalho do modal com ação simples de retorno. -->
+                    <HorizontalStackLayout Padding="24,20,24,0">
+                        <Button
+                            Text="‹  Voltar"
+                            Command="{Binding FecharModalCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextMutedColor}"
+                            FontFamily="InterSemiBold"
+                            FontSize="13"
+                            Padding="0,6"
+                            HorizontalOptions="Start" />
+                    </HorizontalStackLayout>
+
+                    <!-- Resumo da ferramenta que originou a locação avaliada. -->
+                    <Grid
+                        Padding="24,20"
+                        ColumnDefinitions="90,*"
+                        ColumnSpacing="14"
+                        RowDefinitions="Auto">
+
+                        <!-- Imagem da ferramenta selecionada. -->
+                        <Image
+                            Grid.Column="0"
+                            Source="{Binding ProdutoAtual.Imagem}"
+                            WidthRequest="90"
+                            HeightRequest="90"
+                            Aspect="AspectFit" />
+
+                        <!-- Nome, período e locatário contextualizam a avaliação antes das notas. -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                            <Label
+                                Text="{Binding ProdutoAtual.Nome}"
+                                FontSize="15"
+                                FontFamily="InterBold"
+                                TextColor="{StaticResource TextPrimaryColor}"
+                                MaxLines="2"
+                                LineBreakMode="TailTruncation" />
+                            <Label
+                                Text="{Binding ProdutoAtual.DataLocacao}"
+                                FontSize="12"
+                                FontFamily="InterRegular"
+                                TextColor="{StaticResource TextMutedColor}" />
+                            <Label
+                                Text="{Binding ProdutoAtual.Locatario, StringFormat='Locatário: {0}'}"
+                                FontSize="12"
+                                FontFamily="InterMedium"
+                                TextColor="{StaticResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Os três aspectos obrigatórios do locador são gerados pela coleção do ViewModel. -->
+                    <FlexLayout
+                        Padding="24,0,24,8"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="SpaceBetween"
+                        AlignItems="Stretch"
+                        BindableLayout.ItemsSource="{Binding Aspectos}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:AvaliacaoAspectoItem">
+
+                                <!-- Cada bloco mantém ícone, rótulo e cinco estrelas ligados ao mesmo aspecto. -->
+                                <Border
+                                    WidthRequest="190"
+                                    Margin="0,0,8,12"
+                                    Padding="12"
+                                    BackgroundColor="#FAFAFA"
+                                    Stroke="{StaticResource InputBorderColor}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding TemErro}" Value="True">
+                                            <Setter Property="Stroke" Value="#E03E2D" />
+                                            <Setter Property="StrokeThickness" Value="2" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+
+                                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+
+                                        <!-- Rótulo do aspecto, como Avaliação Locatário, Entrega ou Plataforma. -->
+                                        <Label
+                                            Text="{Binding Label}"
+                                            FontSize="11"
+                                            FontFamily="InterSemiBold"
+                                            TextColor="{StaticResource TextSecondaryColor}"
+                                            HorizontalTextAlignment="Center"
+                                            TextTransform="Uppercase" />
+
+                                        <!-- Ícone Material evita dependência de foto do locatário, inexistente no modelo atual. -->
+                                        <Border
+                                            WidthRequest="46"
+                                            HeightRequest="46"
+                                            BackgroundColor="#F9FAFB"
+                                            Stroke="{StaticResource InputBorderColor}"
+                                            StrokeThickness="1.5"
+                                            StrokeShape="RoundRectangle 10">
+                                            <mi:MauiIcon
+                                                Icon="{Binding Icone}"
+                                                IconSize="21"
+                                                IconColor="{StaticResource TextPrimaryColor}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+                                        </Border>
+
+                                        <!-- A seleção da nota retorna o próprio aspecto como contexto para o ViewModel. -->
+                                        <avaliacoes:EstrelasAvaliacao
+                                            Nota="{Binding Nota}"
+                                            TamanhoEstrela="17"
+                                            Interativa="True"
+                                            Contexto="{Binding .}"
+                                            SelecionarNotaCommand="{Binding BindingContext.SelecionarAspectoNotaCommand, Source={x:Reference Root}}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+
+                    <!-- Mensagem única resume os campos obrigatórios que faltam antes do envio. -->
+                    <Label
+                        Text="{Binding MensagemErro}"
+                        IsVisible="{Binding ErroVisivel}"
+                        Margin="24,0,24,12"
+                        FontSize="12"
+                        FontFamily="InterSemiBold"
+                        TextColor="#E03E2D" />
+
+                    <!-- Observação é opcional e usa Editor sem a borda nativa do Windows, já tratada no MauiProgram. -->
+                    <VerticalStackLayout Padding="24,12,24,20" Spacing="10">
+                        <Label
+                            Text="Observações (opcional)"
+                            FontSize="13"
+                            FontFamily="InterSemiBold"
+                            TextColor="{StaticResource TextSecondaryColor}" />
+                        <Border
+                            Stroke="{StaticResource InputBorderColor}"
+                            StrokeThickness="1.5"
+                            StrokeShape="RoundRectangle 10"
+                            BackgroundColor="#F9FAFB"
+                            Padding="10,6">
+                            <Editor
+                                Text="{Binding ObservacaoRascunho, Mode=TwoWay}"
+                                Placeholder="Compartilhe sua experiência com esta locação..."
+                                PlaceholderColor="{StaticResource TextSecondaryColor}"
+                                TextColor="{StaticResource TextPrimaryColor}"
+                                FontFamily="InterRegular"
+                                FontSize="13"
+                                AutoSize="TextChanges"
+                                MinimumHeightRequest="90"
+                                MaximumHeightRequest="140" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- O botão envia uma nova avaliação ou atualiza a existente. -->
+                    <HorizontalStackLayout Padding="24,0,24,24" HorizontalOptions="End">
+                        <Button
+                            Text="{Binding TextoBotaoEnviar}"
+                            Command="{Binding EnviarAvaliacaoCommand}"
+                            BackgroundColor="{StaticResource AuthPrimaryColor}"
+                            TextColor="{StaticResource TextPrimaryColor}"
+                            FontFamily="InterSemiBold"
+                            FontSize="14"
+                            CornerRadius="10"
+                            Padding="34,13" />
+                    </HorizontalStackLayout>
+
+                    <!-- Carrossel horizontal exibe outras avaliações pendentes sem fechar o modal. -->
+                    <VerticalStackLayout IsVisible="{Binding TemItensCarrossel}" Spacing="10" Padding="24,0,24,24">
+                        <Label
+                            Text="OUTRAS AVALIAÇÕES PENDENTES"
+                            FontSize="11"
+                            FontFamily="InterSemiBold"
+                            TextColor="{StaticResource TextSecondaryColor}"
+                            CharacterSpacing="0.6" />
+
+                        <CollectionView
+                            ItemsSource="{Binding ItensCarrossel}"
+                            HeightRequest="142"
+                            HorizontalScrollBarVisibility="Never">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ProdutoAvaliacao">
+                                    <Border
+                                        WidthRequest="145"
+                                        Padding="10"
+                                        BackgroundColor="#F9FAFB"
+                                        Stroke="{StaticResource InputBorderColor}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding BindingContext.SelecionarItemCarrosselCommand, Source={x:Reference Root}}"
+                                                CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout Spacing="4">
+                                            <Image Source="{Binding Imagem}" HeightRequest="60" Aspect="AspectFit" />
+                                            <Label
+                                                Text="{Binding Nome}"
+                                                FontSize="11"
+                                                FontFamily="InterSemiBold"
+                                                TextColor="{StaticResource TextPrimaryColor}"
+                                                MaxLines="2"
+                                                LineBreakMode="TailTruncation" />
+                                            <Label
+                                                Text="{Binding DataLocacao}"
+                                                FontSize="9"
+                                                TextColor="{StaticResource TextMutedColor}"
+                                                MaxLines="1" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+    </Grid>
+</ContentView>

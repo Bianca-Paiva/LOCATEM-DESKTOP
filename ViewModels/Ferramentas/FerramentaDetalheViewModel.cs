@@ -69,6 +69,8 @@ public class FerramentaDetalheViewModel : BaseViewModel
             else if (rota == "minhasFerramentas") await VoltarAsync();
             else if (rota == "gerenciarLocacoes") await Shell.Current.GoToAsync("gerenciarLocacoes");
             else if (rota == "historicoLocacoes") await Shell.Current.GoToAsync("historicoLocacoes");
+            // Mantém o item Avaliações funcional também na página de detalhes da ferramenta.
+            else if (rota == "avaliacao") await Shell.Current.GoToAsync("avaliacao");
             else if (rota == "perfil") await Shell.Current.GoToAsync("perfil");
         });
         FotoAnteriorCommand = new RelayCommand(() => SelecionarFoto(_indiceFoto - 1));

@@ -7,11 +7,13 @@ using MauiIcons.Material.Outlined;
 using LOCATEM_DESKTOP.Services.Auth;
 using LOCATEM_DESKTOP.Services.Ferramentas;
 using LOCATEM_DESKTOP.Services.Locacoes;
+using LOCATEM_DESKTOP.ViewModels.Avaliacoes;
 using LOCATEM_DESKTOP.ViewModels.Auth;
 using LOCATEM_DESKTOP.ViewModels.Conta;
 using LOCATEM_DESKTOP.ViewModels.Ferramentas;
 using LOCATEM_DESKTOP.ViewModels.Home;
 using LOCATEM_DESKTOP.ViewModels.Locacoes;
+using LOCATEM_DESKTOP.Views.Avaliacoes;
 using LOCATEM_DESKTOP.Views.Auth;
 using LOCATEM_DESKTOP.Views.Auth.RecuperarSenha;
 using LOCATEM_DESKTOP.Views.Conta;
@@ -146,6 +148,8 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<FerramentaDetalheViewModel>();
             services.AddTransient<GerenciarLocacoesViewModel>();
             services.AddTransient<HistoricoLocacoesViewModel>();
+            // ViewModel da tela de Avaliações, derivada das locações finalizadas do locador.
+            services.AddTransient<AvaliacaoViewModel>();
         }
 
         private static void RegisterPages(IServiceCollection services)
@@ -162,6 +166,8 @@ namespace LOCATEM_DESKTOP
             services.AddTransient<FerramentaDetalhePage>();
             services.AddTransient<GerenciarLocacoesPage>();
             services.AddTransient<HistoricoLocacoesPage>();
+            // Página de Avaliações registrada no mesmo ciclo transient das demais telas internas.
+            services.AddTransient<AvaliacaoPage>();
         }
     }
 }

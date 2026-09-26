@@ -2,7 +2,12 @@
 <ContentView
     x:Class="LOCATEM_DESKTOP.Components.Avaliacoes.EstrelasAvaliacao"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="Root">
 
-    <HorizontalStackLayout x:Name="Fileira" Spacing="1" VerticalOptions="Center" />
+    <!-- A fileira é montada no code-behind para permitir cinco estrelas reutilizáveis e interativas sem duplicar markup. -->
+    <HorizontalStackLayout
+        x:Name="Fileira"
+        Spacing="4"
+        VerticalOptions="Center" />
 </ContentView>
