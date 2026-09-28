@@ -20,6 +20,7 @@ namespace LOCATEM_DESKTOP.Views.Locacoes
             SizeChanged += (_, _) => AtualizarResponsividade();
         }
 
+        // Revalida o acesso e recarrega o histórico para refletir locações encerradas desde a última visita.
         protected override async void OnAppearing()
         {
             base.OnAppearing();

@@ -36,6 +36,7 @@ public class EspecificacaoFerramentaDetalhe
     public Color Fundo { get; init; } = Colors.White;
 }
 
+/// <summary>Carrega a ferramenta selecionada, controla o carrossel e executa ações administrativas do locador.</summary>
 public class FerramentaDetalheViewModel : BaseViewModel
 {
     private readonly IAuthSessionService _auth;
@@ -135,6 +136,7 @@ public class FerramentaDetalheViewModel : BaseViewModel
     public string Receita { get => _receita; private set => SetProperty(ref _receita, value); }
     public string Avaliacao { get => _avaliacao; private set => SetProperty(ref _avaliacao, value); }
 
+    // Valida a sessão e confirma que a ferramenta pertence ao locador antes de expor seus dados na tela.
     public async Task<bool> CarregarAsync()
     {
         var usuario = _auth.UsuarioAtual;
@@ -203,6 +205,7 @@ public class FerramentaDetalheViewModel : BaseViewModel
         return ImageSource.FromFile(caminho);
     }
 
+    // Mantém a foto principal e o estado visual das miniaturas sincronizados pelo mesmo índice.
     private void SelecionarFoto(int indice)
     {
         if (indice < 0 || indice >= Fotos.Count) return;
@@ -219,6 +222,7 @@ public class FerramentaDetalheViewModel : BaseViewModel
         PodePausar = Status is StatusFerramenta.Disponivel or StatusFerramenta.Indisponivel;
     }
 
+    // Só permite pausar ou reativar estados administráveis e persiste a mudança no catálogo compartilhado.
     private void AlternarDisponibilidade()
     {
         if (_produto is null || !PodePausar) return;
@@ -227,6 +231,7 @@ public class FerramentaDetalheViewModel : BaseViewModel
         AtualizarStatus();
     }
 
+    // Remove a ferramenta do catálogo, limpa a seleção transitória e retorna para a listagem.
     private async Task RemoverAsync()
     {
         if (_produto is null) return;

@@ -18,6 +18,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
             _httpClient = httpClient ?? new HttpClient();
         }
 
+        // Envia o cadastro para a API e transforma respostas de erro em exceções para o ViewModel tratar.
         public async Task CriarUsuarioAsync(CadastroPayload payload)
         {
             var response = await _httpClient.PostAsJsonAsync(
@@ -36,6 +37,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
             }
         }
 
+        // Autentica as credenciais e só retorna quando a API responde com um objeto de login válido.
         public async Task<LoginResponse> LoginAsync(LoginPayload payload)
         {
             var response = await _httpClient.PostAsJsonAsync(
@@ -57,6 +59,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
             return resultado;
         }
 
+        // Consulta o usuário autenticado usando o token JWT no cabeçalho Authorization.
         public async Task<UsuarioMeResponse> BuscarUsuarioLogadoAsync(string token)
         {
             using var request = new HttpRequestMessage(
@@ -88,6 +91,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
             return usuario;
         }
 
+        // Atualiza os dados editáveis do usuário autenticado sem alterar informações controladas pela API.
         public async Task AtualizarPerfilAsync(
             string token,
             string nome,
@@ -123,6 +127,7 @@ namespace LOCATEM_DESKTOP.Services.Auth
             }
         }
 
+        // Envia a foto em multipart/form-data e devolve a URL fornecida pela API para atualizar a sessão.
         public async Task<string> UploadFotoPerfilAsync(
             string token,
             string usuarioId,

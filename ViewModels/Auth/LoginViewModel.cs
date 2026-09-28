@@ -101,6 +101,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public System.Windows.Input.ICommand EsqueceuSenhaCommand { get; }
         public System.Windows.Input.ICommand CriarContaCommand { get; }
 
+        // Valida os campos antes da API; em caso de sucesso, monta a sessão local e executa o redirecionamento pendente.
         private async Task EntrarAsync()
         {
             var possuiErro = false;
@@ -140,7 +141,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 }
                 else
                 {
-                    // Usuários reais continuam usando exatamente o fluxo existente da API.
+                    // Usuários reais autenticam na API; o token retornado é usado para consultar o perfil completo em /me.
                     var resultado = await _authService.LoginAsync(
                         new LoginPayload
                         {
@@ -185,6 +186,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                     };
                 }
 
+                // A sessão é definida antes da navegação para que a próxima tela já receba o usuário autenticado.
                 _authSession.DefinirUsuario(usuario);
 
                 SuccessMessage = "Login concluído com sucesso!";

@@ -373,7 +373,7 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:PainelPerfilItem">
                                         <Border
-                                            FlexLayout.Grow="1"
+                                            FlexLayout.Grow="0"
                                             FlexLayout.Shrink="0"
                                             FlexLayout.Basis="30%"
                                             MinimumWidthRequest="280"

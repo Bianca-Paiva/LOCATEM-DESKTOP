@@ -2,6 +2,7 @@ using LOCATEM_DESKTOP.Models.Ferramentas;
 
 namespace LOCATEM_DESKTOP.Services.Ferramentas
 {
+    /// <summary>Centraliza o catálogo em memória e notifica as telas sempre que uma ferramenta é alterada.</summary>
     public class CatalogoService : ICatalogoService
     {
         private readonly List<Produto> _produtos = ProdutosMock.Criar();
@@ -10,8 +11,10 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
 
         public event EventHandler? CatalogoAlterado;
 
+        // Transporta temporariamente o ID entre lista, detalhes e edição sem duplicar o objeto da ferramenta.
         public int? FerramentaSelecionadaId { get; set; }
 
+        // Restringe o catálogo ao locador atual para impedir que telas administrativas exibam itens de terceiros.
         public IReadOnlyList<Produto> ObterPorLocador(string? locadorId)
         {
             if (string.IsNullOrWhiteSpace(locadorId)) return Array.Empty<Produto>();
@@ -21,6 +24,7 @@ namespace LOCATEM_DESKTOP.Services.Ferramentas
                 .ToList();
         }
 
+        // Gera um ID local sequencial antes de inserir o item e propagar a alteração para as telas abertas.
         public void Adicionar(Produto produto)
         {
             produto.Id = _produtos.Count == 0 ? 1 : _produtos.Max(p => p.Id) + 1;

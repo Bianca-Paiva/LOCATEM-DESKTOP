@@ -43,6 +43,7 @@ public class DiaCadastro
     public Color CorTexto => !Ativo ? Color.FromArgb("#C8C8C8") : Indisponivel ? Color.FromArgb("#FF4D4D") : Color.FromArgb("#1A8A4A");
 }
 
+/// <summary>Coordena cadastro e edição de ferramentas, incluindo fotos, disponibilidade, validação e persistência.</summary>
 public class CadastroFerramentaViewModel : BaseViewModel
 {
     // Os serviços continuam responsáveis por sessão, catálogo local e cadastro remoto.
@@ -171,6 +172,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
     public ICommand PublicarCommand { get; }
     public ICommand CancelarCommand { get; }
 
+    // Garante acesso de locador e, quando há um ID selecionado, preenche o formulário com os dados para edição.
     public async Task<bool> CarregarAsync()
     {
         // Confere a sessão e preenche o mesmo formulário em modo cadastro ou edição.
@@ -306,6 +308,7 @@ public class CadastroFerramentaViewModel : BaseViewModel
         {
             Moeda(ValorDiaria, out var diaria);
             Moeda(Caucao, out var caucao);
+            // Novos anúncios com sessão real são enviados à API; edições continuam usando o catálogo local atual.
             if (_edicao is null && !string.IsNullOrWhiteSpace(usuario.Token) && !usuario.Token.StartsWith("mock-token-", StringComparison.Ordinal))
             {
                 var fotos = Fotos.Where(f => f.Bytes is not null).Select(f => new FotoFerramentaDados(f.Nome, f.ContentType, f.Bytes!)).ToArray();

@@ -24,6 +24,7 @@ namespace LOCATEM_DESKTOP.Views.Conta
             BindingContext = viewModel;
         }
 
+        // Revalida a sessão a cada entrada na página para impedir a exibição do perfil após logout.
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -37,6 +38,7 @@ namespace LOCATEM_DESKTOP.Views.Conta
         private void ConteudoPerfil_SizeChanged(object? sender, EventArgs e) =>
             AtualizarLayoutResponsivo();
 
+        // Centraliza os ajustes de largura para manter cabeçalho, informações e espaçamentos coerentes em janelas menores.
         private void AtualizarLayoutResponsivo()
         {
             if (ConteudoPerfil.Width <= 0)
@@ -46,6 +48,7 @@ namespace LOCATEM_DESKTOP.Views.Conta
             AtualizarHeaderPerfil();
         }
 
+        // Reorganiza os campos do perfil em menos colunas conforme a largura disponível, sem duplicar controles.
         private void AtualizarColunasInformacoes()
         {
             var duasColunas = ConteudoPerfil.Width >= LarguraMinimaDuasColunas;

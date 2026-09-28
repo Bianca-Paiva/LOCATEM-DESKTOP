@@ -49,6 +49,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Gerenciar
             card.AtualizarConteudo();
         }
 
+        // Solicitações pendentes abrem o modal de decisão; os demais estados apenas expandem os detalhes do card.
         private void OnCardTapped(object? sender, TappedEventArgs e)
         {
             if (Locacao is null)
@@ -64,6 +65,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Gerenciar
             AtualizarEstadoExpandido();
         }
 
+        // Traduz o status da locação em ação atual, próxima etapa e informações operacionais exibidas no card.
         private void AtualizarConteudo()
         {
             if (Locacao is null)
@@ -106,6 +108,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Gerenciar
                 : mostrarPainel ? "⌃" : "⌄";
         }
 
+        // Reorganiza o card apenas quando a largura efetiva muda de faixa, evitando trabalho visual desnecessário.
         private void AtualizarLayoutResponsivo()
         {
             if (Width <= 0 || Math.Abs(Width - _ultimaLargura) < 1)
@@ -160,6 +163,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Gerenciar
             AtualizarGradeInformacoes();
         }
 
+        // Distribui os quatro blocos de informação em uma ou duas colunas conforme o espaço disponível.
         private void AtualizarGradeInformacoes()
         {
             InfoGrade.ColumnDefinitions.Clear();

@@ -76,6 +76,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
 
         public ObservableCollection<PasswordValidationItem> PasswordValidationItems { get; } = new();
 
+        // Recalcula a força da senha e a lista de requisitos sempre que o texto digitado muda.
         private void AtualizarValidacaoSenha()
         {
             StrengthResult = PasswordValidator.CheckPasswordStrength(Senha);
@@ -110,6 +111,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public ICommand FecharAlertaCommand { get; }
         public ICommand ConfirmarSucessoCommand { get; }
 
+        // Aplica as mesmas regras de senha do cadastro e converte o resultado em erro visual ou confirmação de sucesso.
         private void Submit()
         {
             SenhaError.Reset();

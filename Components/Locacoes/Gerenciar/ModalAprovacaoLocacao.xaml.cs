@@ -61,6 +61,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Gerenciar
             set => SetValue(CloseCommandProperty, value);
         }
 
+        // Mostra somente as partes de endereço disponíveis para evitar separadores vazios no modal.
         private void AtualizarEndereco(Locacao? locacao)
         {
             EnderecoLabel.Text = locacao?.Endereco?.TextoExibicao ?? "Endereço não informado";

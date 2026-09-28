@@ -618,6 +618,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             ResetarErros();
         }
 
+        // Copia a imagem escolhida para o cache para permitir pré-visualização antes de confirmar o upload.
         private async Task SelecionarFotoAsync()
         {
             try
@@ -658,6 +659,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             }
         }
 
+        // Consulta o ViaCEP somente após validar o formato e preenche o endereço sem sobrescrever campos vazios à força.
         private async Task BuscarCepAsync()
         {
             if (!MaskHelper.ValidateCep(CepEdicao))
@@ -693,6 +695,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             }
         }
 
+        // Valida o formulário, envia foto/dados quando há token e sincroniza a sessão local com o resultado salvo.
         private async Task SalvarPerfilAsync()
         {
             if (IsBusy || _usuario is null)
@@ -783,6 +786,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             }
         }
 
+        // Converte os erros de validação em estados visuais por campo e em uma mensagem geral para o usuário.
         private bool TratarSubmitInvalido(PerfilFormSnapshot data)
         {
             var possuiVazio = false;
@@ -907,7 +911,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
             IsConfirmandoLogout = false;
             _authSession.Logout();
 
-            //a saída volta para a rota raiz de Login.
+            // A saída retorna à rota raiz para remover o histórico de páginas autenticadas.
             await Shell.Current.GoToAsync("//login");
         }
 
@@ -935,13 +939,18 @@ namespace LOCATEM_DESKTOP.ViewModels.Conta
         {
             OpcoesPainel.Clear();
 
-            AdicionarOpcao("Aluguéis Ativos", "Visualize seus equipamentos alugados atualmente.", MaterialIcons.CalendarToday, "minhasLocacoes");
+            AdicionarOpcao(
+                "Aluguéis Ativos",
+                "Visualize seus equipamentos alugados atualmente.",
+                MaterialIcons.CalendarToday,
+                "minhasFerramentas");
+
             AdicionarOpcao(
                 "Histórico de Locações",
                 "Consulte todas as suas locações anteriores.",
                 MaterialIcons.History,
                 EhLocador ? "historicoLocacoes" : null);
-            AdicionarOpcao("Favoritos", "Ferramentas e equipamentos salvos.", MaterialIcons.Star, null);
+
             AdicionarOpcao("Pagamentos", "Visualize pagamentos, cauções e reembolsos.", MaterialIcons.Payments, null);
             AdicionarOpcao("Contratos", "Acesse todos os contratos digitais.", MaterialIcons.Assignment, null);
             AdicionarOpcao("Endereços", "Gerencie seus endereços cadastrados.", MaterialIcons.Home, null);

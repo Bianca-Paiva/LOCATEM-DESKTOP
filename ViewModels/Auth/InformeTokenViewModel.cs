@@ -71,6 +71,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public ICommand VerificarCommand { get; }
         public ICommand ReenviarCommand { get; }
 
+        // Controla o intervalo mínimo para reenvio e atualiza automaticamente o estado do botão a cada segundo.
         private void IniciarContagem()
         {
             TimeLeft = DuracaoReenvioSegundos;
@@ -90,6 +91,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             _timer.Start();
         }
 
+        // Compara os cinco dígitos informados com o código temporário salvo na etapa anterior.
         private async void VerificarToken()
         {
             var tokenCorreto = Preferences.Default.Get<string?>("codigo_recuperacao", null);
@@ -119,6 +121,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             await Shell.Current.GoToAsync("informeNovaSenha");
         }
 
+        // Substitui o código temporário e reinicia o contador para impedir reenvios sucessivos imediatos.
         private void ReenviarCodigo()
         {
             var novoToken = new Random().Next(10000, 99999).ToString();
@@ -136,6 +139,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             IniciarContagem();
         }
 
+        // Interrompe o timer quando o ViewModel deixa de ser usado, evitando atualizações após sair da tela.
         public void Dispose()
         {
             _timer?.Stop();

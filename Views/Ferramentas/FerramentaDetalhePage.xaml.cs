@@ -15,6 +15,7 @@ public partial class FerramentaDetalhePage : ContentPage
         SizeChanged += (_, _) => AjustarColunas();
     }
 
+    // Recarrega a ferramenta ao retornar de uma edição para refletir imediatamente os dados atualizados.
     protected override async void OnAppearing()
     {
         base.OnAppearing();

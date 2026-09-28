@@ -108,6 +108,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             return false;
         }
 
+        // O histórico contém somente estados encerrados e sempre é filtrado pelo locador autenticado.
         public void Carregar()
         {
             var usuario = _authSession.UsuarioAtual;
@@ -141,6 +142,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             AtualizarTela();
         }
 
+        // Recalcula os totais das abas e aplica o filtro selecionado sem alterar a coleção histórica original.
         private void AtualizarTela()
         {
             Abas = DefinicaoAbas

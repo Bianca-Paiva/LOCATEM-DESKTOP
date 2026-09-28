@@ -3,6 +3,7 @@ using LOCATEM_DESKTOP.Services.Ferramentas;
 
 namespace LOCATEM_DESKTOP.Services.Locacoes
 {
+    /// <summary>Mantém as locações em memória e concentra alterações que precisam atualizar todas as telas.</summary>
     public class LocacaoService : ILocacaoService
     {
         private const string MensagemCancelamentoAutomatico =
@@ -29,6 +30,7 @@ namespace LOCATEM_DESKTOP.Services.Locacoes
                 .ToList();
         }
 
+        // Centraliza a mutação de uma locação e dispara o evento apenas quando o registro realmente existe.
         public bool AtualizarLocacao(string id, Action<Locacao> atualizar)
         {
             if (string.IsNullOrWhiteSpace(id) || atualizar is null)
@@ -43,6 +45,7 @@ namespace LOCATEM_DESKTOP.Services.Locacoes
             return true;
         }
 
+        // Regra de negócio: pedidos sem pagamento após o prazo são encerrados automaticamente como cancelados.
         public bool CancelarPagamentosVencidos()
         {
             var agora = DateTimeOffset.Now;

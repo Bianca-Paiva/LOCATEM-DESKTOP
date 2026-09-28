@@ -26,6 +26,7 @@ namespace LOCATEM_DESKTOP.Views.Locacoes
             SizeChanged += (_, _) => AtualizarResponsividade();
         }
 
+        // Recarrega as locações e inicia a verificação periódica dos prazos de pagamento enquanto a página está visível.
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -40,12 +41,14 @@ namespace LOCATEM_DESKTOP.Views.Locacoes
             AtualizarResponsividade();
         }
 
+        // Interrompe o timer ao sair da tela para não continuar verificando prazos sem necessidade.
         protected override void OnDisappearing()
         {
             _prazoTimer.Stop();
             base.OnDisappearing();
         }
 
+        // Ajusta margens e título conforme a largura da janela sem alterar o conteúdo ou o estado do ViewModel.
         private void AtualizarResponsividade()
         {
             if (Width <= 0)

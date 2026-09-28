@@ -44,6 +44,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Historico
             AtualizarEstadoExpandido();
         }
 
+        // Converte os dados da locação encerrada em valores, motivo e aparência apropriados ao histórico.
         private void AtualizarConteudo()
         {
             if (Locacao is null)
@@ -78,6 +79,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Historico
             MotivoCirculo.Stroke = new SolidColorBrush(Color.FromArgb(config.Borda));
         }
 
+        // Prioriza o motivo específico registrado na locação e usa mensagens padrão apenas como fallback.
         private static string ObterMotivoStatus(Locacao locacao)
         {
             if (locacao.Status == StatusLocacao.Cancelada &&
@@ -106,6 +108,7 @@ namespace LOCATEM_DESKTOP.Components.Locacoes.Historico
                 Color.FromArgb(_expandido ? "#D9DDE3" : "#E9EAEC"));
         }
 
+        // Alterna entre estruturas desktop e compacta somente quando o card cruza o breakpoint definido.
         private void AtualizarLayoutResponsivo()
         {
             if (Width <= 0)

@@ -155,6 +155,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             private set => SetProperty(ref _mensagemConfirmacaoRecusa, value);
         }
 
+        // A tela é exclusiva do locador; qualquer sessão incompatível é redirecionada para o login.
         public async Task<bool> GarantirAcessoAsync()
         {
             var usuario = _authSession.UsuarioAtual;
@@ -165,6 +166,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             return false;
         }
 
+        // Atualiza usuário, aplica cancelamentos por prazo vencido e mantém apenas locações ainda operacionais.
         public void Carregar()
         {
             var usuario = _authSession.UsuarioAtual;
@@ -203,6 +205,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             AtualizarTela();
         }
 
+        // Recalcula os contadores das abas e a lista visível a partir da mesma coleção de locações em aberto.
         private void AtualizarTela()
         {
             var contagem = DefinicaoAbas.ToDictionary(a => a.Chave, _ => 0);
@@ -248,6 +251,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             LocacaoModal = null;
         }
 
+        // Ao aprovar, inicia a etapa de pagamento e define o prazo máximo de 24 horas para o locatário.
         private void Aprovar(Locacao? locacao)
         {
             if (locacao is null || locacao.Status != StatusLocacao.Pendente)
@@ -281,6 +285,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Locacoes
             IsConfirmandoRecusa = false;
         }
 
+        // A recusa encerra a solicitação, registra o motivo e remove qualquer prazo de pagamento pendente.
         private void ConfirmarRecusa()
         {
             if (_locacaoParaRecusar is null)

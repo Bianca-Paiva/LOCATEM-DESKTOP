@@ -171,6 +171,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
             set => SetValue(CommandParameterProperty, value);
         }
 
+        // Mantém o texto exibido no card sincronizado com a quantidade numérica recebida por binding.
         private static void OnReviewCountChanged(
             BindableObject bindable,
             object oldValue,
@@ -180,6 +181,7 @@ namespace LOCATEM_DESKTOP.Components.Ferramentas
                 $"({newValue})";
         }
 
+        // Escolhe a origem correta para imagens remotas ou recursos locais e evita falhas visuais com caminhos inválidos.
         private static void OnImagemChanged(
             BindableObject bindable,
             object oldValue,

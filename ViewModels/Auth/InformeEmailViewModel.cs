@@ -37,6 +37,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
         public System.Windows.Input.ICommand IrParaCadastroCommand { get; }
         public System.Windows.Input.ICommand ContatoSuporteCommand { get; }
 
+        // Valida o e-mail antes de iniciar o fluxo; nesta versão, o código de recuperação é simulado localmente.
         private async void EnviarEmail()
         {
             if (!EmailValidator.IsValid(Email))

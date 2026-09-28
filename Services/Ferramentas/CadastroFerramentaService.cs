@@ -21,6 +21,7 @@ public class CadastroFerramentaService : ICadastroFerramentaService
     private const string ApiBase = "http://localhost:5033/api";
     private readonly HttpClient _http = new();
 
+    // O cadastro ocorre em duas etapas: cria a ferramenta, obtém seu ID e depois envia as fotos vinculadas a ela.
     public async Task CadastrarAsync(string token, CadastroFerramentaDados dados, IReadOnlyList<FotoFerramentaDados> fotos)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{ApiBase}/Ferramenta");
@@ -37,6 +38,7 @@ public class CadastroFerramentaService : ICadastroFerramentaService
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException(string.IsNullOrWhiteSpace(body) ? "Erro ao cadastrar ferramenta." : body);
 
+        // Sem fotos, o fluxo termina após a criação; caso contrário, a resposta precisa fornecer o ID para o upload.
         if (fotos.Count == 0) return;
         using var json = JsonDocument.Parse(body);
         if (!json.RootElement.TryGetProperty("ferramentaId", out var id) &&

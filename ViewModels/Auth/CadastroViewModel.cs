@@ -67,10 +67,8 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 }
                 else if (value != mascarado)
                 {
-                    // PULO DO GATO PARA DESKTOP:
-                    // Se o usuário digitou uma letra, o 'value' tem letra, mas o 'mascarado' não.
-                    // Como o SetProperty deu false (o valor final já era igual ao anterior),
-                    // precisamos forçar a tela a apagar a letra imediatamente:
+                    // Quando a máscara remove um caractere inválido sem alterar o valor final,
+                    // força a atualização do binding para que o caractere desapareça imediatamente.
                     OnPropertyChanged(nameof(Telefone));
                 }
             }
@@ -91,7 +89,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 }
                 else if (value != mascarado)
                 {
-                    OnPropertyChanged(nameof(Documento)); // Força apagar a letra
+                    OnPropertyChanged(nameof(Documento)); // Sincroniza o campo após remover caracteres inválidos.
                 }
             }
         }
@@ -111,7 +109,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
                 }
                 else if (value != mascarado)
                 {
-                    OnPropertyChanged(nameof(Cep)); // Força apagar a letra
+                    OnPropertyChanged(nameof(Cep)); // Sincroniza o campo após remover caracteres inválidos.
                 }
             }
         }
@@ -323,6 +321,7 @@ namespace LOCATEM_DESKTOP.ViewModels.Auth
             return _campoErros.HasErrors;
         }
 
+        // Converte os dados validados para o formato esperado pela API e controla o estado de carregamento do formulário.
         private async Task SubmitValidoAsync(CadastroFormSnapshot data)
         {
             IsBusy = true;
